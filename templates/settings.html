@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings — Prospector</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #1a1d27;
+      border-bottom: 1px solid #2d3148;
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header h1 { font-size: 18px; font-weight: 600; color: #f1f5f9; letter-spacing: -0.3px; }
+    header h1 span { color: #6366f1; }
+
+    .nav-links { display: flex; gap: 16px; }
+    .nav-links a {
+      font-size: 13px;
+      color: #94a3b8;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+    }
+    .nav-links a:hover { color: #e2e8f0; border-color: #2d3148; }
+    .nav-links a.active { color: #6366f1; border-color: #3730a3; background: #1e1b4b; }
+
+    main {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    .flash {
+      background: #064e3b;
+      border: 1px solid #065f46;
+      color: #6ee7b7;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 13px;
+      margin-bottom: 28px;
+    }
+
+    .section {
+      background: #1a1d27;
+      border: 1px solid #2d3148;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #475569;
+      margin-bottom: 20px;
+    }
+
+    .field { margin-bottom: 18px; }
+    .field:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: #475569;
+      margin-top: 4px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      background: #0f1117;
+      border: 1px solid #2d3148;
+      border-radius: 8px;
+      color: #e2e8f0;
+      font-size: 13px;
+      padding: 9px 12px;
+      font-family: inherit;
+      transition: border-color 0.15s;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #6366f1;
+    }
+
+    textarea { resize: vertical; line-height: 1.6; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+    .checkbox-grid {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #0f1117;
+      border: 1px solid #2d3148;
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+
+    .checkbox-item:has(input:checked) {
+      border-color: #6366f1;
+      background: #1e1b4b;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      accent-color: #6366f1;
+      width: 14px;
+      height: 14px;
+    }
+
+    .checkbox-item span {
+      font-size: 13px;
+      font-weight: 500;
+      color: #cbd5e1;
+    }
+
+    .save-bar {
+      position: sticky;
+      bottom: 0;
+      background: #1a1d27;
+      border-top: 1px solid #2d3148;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin: 0 -24px -40px;
+    }
+
+    .btn {
+      padding: 9px 22px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .btn:hover { opacity: 0.85; }
+
+    .btn-primary { background: #6366f1; color: white; }
+    .btn-ghost { background: transparent; color: #94a3b8; border: 1px solid #2d3148; }
+
+    input[type="number"] { -moz-appearance: textfield; }
+    input[type="number"]::-webkit-inner-spin-button { opacity: 0.4; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Prospector <span>Dashboard</span></h1>
+  <div class="nav-links">
+    <a href="/">Results</a>
+    <a href="/settings" class="active">Settings</a>
+  </div>
+</header>
+
+<main>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for msg in messages %}
+        <div class="flash">{{ msg }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <form method="POST" action="/settings">
+
+    <!-- Signal types -->
+    <div class="section">
+      <div class="section-title">Signal Types</div>
+      <div class="field">
+        <label>Which signals should the agent detect?</label>
+        <div class="checkbox-grid">
+          {% set enabled = s.signals_enabled %}
+          <label class="checkbox-item">
+            <input type="checkbox" name="signals_enabled" value="ae_spike" {% if 'ae_spike' in enabled %}checked{% endif %}>
+            <span>AE Spike</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="signals_enabled" value="sdr_spike" {% if 'sdr_spike' in enabled %}checked{% endif %}>
+            <span>SDR Spike</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="signals_enabled" value="funding" {% if 'funding' in enabled %}checked{% endif %}>
+            <span>Funding</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="signals_enabled" value="cro_hire" {% if 'cro_hire' in enabled %}checked{% endif %}>
+            <span>CRO Hire</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spike thresholds -->
+    <div class="section">
+      <div class="section-title">Spike Detection Thresholds</div>
+      <div class="grid-3" style="margin-bottom:18px">
+        <div class="field" style="margin:0">
+          <label>Min AE roles</label>
+          <input type="number" name="ae_min_absolute" value="{{ s.ae_min_absolute }}" min="1" max="20">
+          <div class="hint">Absolute minimum open AE roles</div>
+        </div>
+        <div class="field" style="margin:0">
+          <label>Min SDR roles</label>
+          <input type="number" name="sdr_min_absolute" value="{{ s.sdr_min_absolute }}" min="1" max="20">
+          <div class="hint">Absolute minimum open SDR roles</div>
+        </div>
+        <div class="field" style="margin:0">
+          <label>Recent window (days)</label>
+          <input type="number" name="recent_days" value="{{ s.recent_days }}" min="7" max="180">
+          <div class="hint">New postings in last N days</div>
+        </div>
+      </div>
+      <div class="field" style="margin:0;max-width:220px">
+        <label>Growth vs prior period (%)</label>
+        <input type="number" name="spike_growth_pct" value="{{ (s.spike_growth_pct * 100) | round(0) | int }}" min="10" max="500">
+        <div class="hint">% increase to qualify as spike</div>
+      </div>
+    </div>
+
+    <!-- Company size filter -->
+    <div class="section">
+      <div class="section-title">Company Size Filter</div>
+      <div class="field" style="margin:0;max-width:220px">
+        <label>Max total open roles</label>
+        <input type="number" name="max_total_roles" value="{{ s.max_total_roles }}" min="10" max="500">
+        <div class="hint">Skip companies larger than this (too enterprise). Min is auto-set to the lowest of your AE/SDR thresholds.</div>
+      </div>
+    </div>
+
+    <!-- Sender -->
+    <div class="section">
+      <div class="section-title">Sender Info</div>
+      <div class="grid-2" style="margin-bottom:18px">
+        <div class="field" style="margin:0">
+          <label>Your name</label>
+          <input type="text" name="sender_name" value="{{ s.sender_name }}">
+        </div>
+        <div class="field" style="margin:0">
+          <label>Your title</label>
+          <input type="text" name="sender_title" value="{{ s.sender_title }}">
+        </div>
+      </div>
+      <div class="field">
+        <label>Max contacts per company</label>
+        <input type="number" name="max_contacts_per_company" value="{{ s.max_contacts_per_company }}" min="1" max="10" style="max-width:120px">
+      </div>
+      <div class="field">
+        <label>Contact titles to target</label>
+        <textarea name="contact_titles" rows="6">{{ s.contact_titles | join('\n') }}</textarea>
+        <div class="hint">One title per line. Agent will search for contacts matching these roles.</div>
+      </div>
+    </div>
+
+    <!-- Blocklist -->
+    <div class="section">
+      <div class="section-title">Company Blocklist</div>
+      <div class="field">
+        <label>Companies to exclude from results</label>
+        <textarea name="blocklist_companies" rows="8" placeholder="hubspot&#10;salesforce&#10;...">{{ s.blocklist_companies | join('\n') }}</textarea>
+        <div class="hint">One company name per line. These will be skipped during detection and never appear in results.</div>
+      </div>
+    </div>
+
+    <div class="save-bar">
+      <a href="/" class="btn btn-ghost">Cancel</a>
+      <button type="submit" class="btn btn-primary">Save settings</button>
+    </div>
+
+  </form>
+</main>
+
+</body>
+</html>

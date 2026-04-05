@@ -1,0 +1,27 @@
+{
+  "signals_enabled": [
+    "ae_spike",
+    "sdr_spike",
+    "funding",
+    "cro_hire"
+  ],
+  "ae_min_absolute": 2,
+  "sdr_min_absolute": 2,
+  "spike_growth_pct": 0.5,
+  "recent_days": 45,
+  "max_total_roles": 100,
+  "sender_name": "Jacob Landsman",
+  "sender_title": "Demand Generation Leader",
+  "max_contacts_per_company": 5,
+  "contact_titles": [
+    "CRO",
+    "Chief Revenue Officer",
+    "CMO",
+    "Chief Marketing Officer",
+    "CEO",
+    "Co-Founder",
+    "VP Marketing",
+    "VP Demand Generation"
+  ],
+  "blocklist_companies": []
+}

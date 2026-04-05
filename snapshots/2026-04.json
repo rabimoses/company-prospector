@@ -1,0 +1,392 @@
+{
+  "asana": {
+    "ae": 11,
+    "sdr": 6,
+    "total": 151
+  },
+  "greenhouse": {
+    "ae": 2,
+    "sdr": 3,
+    "total": 28
+  },
+  "amplitude": {
+    "ae": 18,
+    "sdr": 0,
+    "total": 44
+  },
+  "upbound": {
+    "ae": 3,
+    "sdr": 0,
+    "total": 10
+  },
+  "modulate": {
+    "ae": 1,
+    "sdr": 0,
+    "total": 8
+  },
+  "yoodliinc": {
+    "ae": 7,
+    "sdr": 0,
+    "total": 13
+  },
+  "intercom": {
+    "ae": 20,
+    "sdr": 3,
+    "total": 194
+  },
+  "tridge": {
+    "ae": 4,
+    "sdr": 0,
+    "total": 13
+  },
+  "storyblok": {
+    "ae": 5,
+    "sdr": 0,
+    "total": 28
+  },
+  "emnify": {
+    "ae": 1,
+    "sdr": 0,
+    "total": 14
+  },
+  "articulate": {
+    "ae": 0,
+    "sdr": 1,
+    "total": 10
+  },
+  "workwave": {
+    "ae": 3,
+    "sdr": 0,
+    "total": 15
+  },
+  "cognism": {
+    "ae": 4,
+    "sdr": 4,
+    "total": 23
+  },
+  "justworks": {
+    "ae": 11,
+    "sdr": 3,
+    "total": 102
+  },
+  "coupa": {
+    "ae": 4,
+    "sdr": 0,
+    "total": 96
+  },
+  "klaviyo": {
+    "ae": 14,
+    "sdr": 4,
+    "total": 235
+  },
+  "trellis": {
+    "ae": 1,
+    "sdr": 1,
+    "total": 3
+  },
+  "workato": {
+    "ae": 15,
+    "sdr": 8,
+    "total": 171
+  },
+  "axonius": {
+    "ae": 5,
+    "sdr": 1,
+    "total": 30
+  },
+  "upguard": {
+    "ae": 1,
+    "sdr": 5,
+    "total": 23
+  },
+  "colabsoftware": {
+    "ae": 2,
+    "sdr": 0,
+    "total": 19
+  },
+  "docsumo": {
+    "ae": 1,
+    "sdr": 2,
+    "total": 5
+  },
+  "mindtickle": {
+    "ae": 3,
+    "sdr": 2,
+    "total": 40
+  },
+  "algolia": {
+    "ae": 4,
+    "sdr": 0,
+    "total": 29
+  },
+  "impact": {
+    "ae": 7,
+    "sdr": 3,
+    "total": 88
+  },
+  "hellomongoose": {
+    "ae": 1,
+    "sdr": 0,
+    "total": 2
+  },
+  "salesloft": {
+    "ae": 2,
+    "sdr": 0,
+    "total": 30
+  },
+  "6sense": {
+    "ae": 3,
+    "sdr": 3,
+    "total": 42
+  },
+  "crossbeam": {
+    "ae": 1,
+    "sdr": 0,
+    "total": 2
+  },
+  "cloaked-app": {
+    "ae": 1,
+    "sdr": 0,
+    "total": 9
+  },
+  "amplemarket": {
+    "ae": 2,
+    "sdr": 2,
+    "total": 19
+  },
+  "samsara": {
+    "ae": 87,
+    "sdr": 0,
+    "total": 390
+  },
+  "lighthouse": {
+    "ae": 8,
+    "sdr": 3,
+    "total": 67
+  },
+  "brex": {
+    "ae": 19,
+    "sdr": 12,
+    "total": 255
+  },
+  "abnormalsecurity": {
+    "ae": 25,
+    "sdr": 2,
+    "total": 95
+  },
+  "loopreturns": {
+    "ae": 2,
+    "sdr": 3,
+    "total": 10
+  },
+  "distro": {
+    "ae": 1,
+    "sdr": 5,
+    "total": 172
+  },
+  "lattice": {
+    "ae": 2,
+    "sdr": 0,
+    "total": 11
+  },
+  "fulcrumpro": {
+    "ae": 2,
+    "sdr": 1,
+    "total": 3
+  },
+  "chainguard": {
+    "ae": 7,
+    "sdr": 5,
+    "total": 58
+  },
+  "typeform": {
+    "ae": 0,
+    "sdr": 2,
+    "total": 20
+  },
+  "pallet": {
+    "ae": 2,
+    "sdr": 0,
+    "total": 19
+  },
+  "pipedrive": {
+    "ae": 0,
+    "sdr": 1,
+    "total": 33
+  },
+  "brainstorminc": {
+    "ae": 1,
+    "sdr": 0,
+    "total": 3
+  },
+  "showpad": {
+    "ae": 2,
+    "sdr": 3,
+    "total": 28
+  },
+  "iterable": {
+    "ae": 3,
+    "sdr": 2,
+    "total": 48
+  },
+  "olo": {
+    "ae": 1,
+    "sdr": 0,
+    "total": 18
+  },
+  "outreach": {
+    "ae": 3,
+    "sdr": 1,
+    "total": 35
+  },
+  "levelai": {
+    "ae": 1,
+    "sdr": 3,
+    "total": 25
+  },
+  "databricks": {
+    "ae": 117,
+    "sdr": 9,
+    "total": 854
+  },
+  "pendo": {
+    "ae": 5,
+    "sdr": 0,
+    "total": 20
+  },
+  "suger": {
+    "ae": 1,
+    "sdr": 1,
+    "total": 4
+  },
+  "Highlight": {
+    "ae": 2,
+    "sdr": 0,
+    "total": 3
+  },
+  "revefi": {
+    "ae": 1,
+    "sdr": 2,
+    "total": 11
+  },
+  "upshop": {
+    "ae": 3,
+    "sdr": 0,
+    "total": 15
+  },
+  "palantir": {
+    "ae": 1,
+    "sdr": 0,
+    "total": 237
+  },
+  "Onehouse": {
+    "ae": 1,
+    "sdr": 1,
+    "total": 12
+  },
+  "contentful": {
+    "ae": 3,
+    "sdr": 8,
+    "total": 111
+  },
+  "veriff": {
+    "ae": 1,
+    "sdr": 0,
+    "total": 33
+  },
+  "hive": {
+    "ae": 7,
+    "sdr": 7,
+    "total": 88
+  },
+  "finix": {
+    "ae": 1,
+    "sdr": 1,
+    "total": 11
+  },
+  "pandadoc": {
+    "ae": 1,
+    "sdr": 0,
+    "total": 82
+  },
+  "customerio": {
+    "ae": 3,
+    "sdr": 0,
+    "total": 23
+  },
+  "zoominfo": {
+    "ae": 11,
+    "sdr": 20,
+    "total": 102
+  },
+  "mixpanel": {
+    "ae": 13,
+    "sdr": 0,
+    "total": 48
+  },
+  "CordTechnologies": {
+    "ae": 3,
+    "sdr": 1,
+    "total": 70
+  },
+  "greenlight": {
+    "ae": 1,
+    "sdr": 1,
+    "total": 28
+  },
+  "aizon": {
+    "ae": 1,
+    "sdr": 0,
+    "total": 2
+  },
+  "fivetran": {
+    "ae": 17,
+    "sdr": 2,
+    "total": 159
+  },
+  "zuora": {
+    "ae": 4,
+    "sdr": 4,
+    "total": 51
+  },
+  "webflow": {
+    "ae": 8,
+    "sdr": 5,
+    "total": 51
+  },
+  "Eve": {
+    "ae": 8,
+    "sdr": 0,
+    "total": 57
+  },
+  "castaigroupinc": {
+    "ae": 1,
+    "sdr": 3,
+    "total": 25
+  },
+  "carta": {
+    "ae": 7,
+    "sdr": 6,
+    "total": 79
+  },
+  "logrocket": {
+    "ae": 0,
+    "sdr": 1,
+    "total": 10
+  },
+  "smartbear": {
+    "ae": 7,
+    "sdr": 2,
+    "total": 45
+  },
+  "mongodb": {
+    "ae": 57,
+    "sdr": 11,
+    "total": 442
+  },
+  "braze": {
+    "ae": 35,
+    "sdr": 1,
+    "total": 173
+  }
+}

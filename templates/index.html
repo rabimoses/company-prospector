@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prospector Dashboard</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #1a1d27;
+      border-bottom: 1px solid #2d3148;
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #f1f5f9;
+      letter-spacing: -0.3px;
+    }
+
+    header h1 span {
+      color: #6366f1;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge-count {
+      background: #6366f1;
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .date-selector {
+      background: #1e2130;
+      border: 1px solid #2d3148;
+      color: #e2e8f0;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 28px;
+    }
+
+    .date-selector:focus { outline: none; border-color: #6366f1; }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .filter-btn {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid #2d3148;
+      background: #1a1d27;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-btn:hover { border-color: #6366f1; color: #e2e8f0; }
+    .filter-btn.active { background: #6366f1; border-color: #6366f1; color: white; }
+
+    .empty {
+      text-align: center;
+      padding: 80px 0;
+      color: #475569;
+    }
+
+    .empty p { font-size: 15px; }
+
+    .grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .card {
+      background: #1a1d27;
+      border: 1px solid #2d3148;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.15s;
+    }
+
+    .card:hover { border-color: #4b5280; }
+
+    .card-header {
+      padding: 20px 24px 16px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid #2d3148;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: #f1f5f9;
+    }
+
+    .signal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .signal-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .card-detail {
+      padding: 14px 24px;
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .source-link {
+      color: #6366f1;
+      text-decoration: none;
+      font-size: 12px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .source-link:hover { text-decoration: underline; }
+
+    .card-section {
+      padding: 16px 24px;
+      border-top: 1px solid #1e2130;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #475569;
+      margin-bottom: 12px;
+    }
+
+    .no-contact {
+      font-size: 13px;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .no-contact a {
+      color: #6366f1;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .no-contact a:hover { text-decoration: underline; }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #1e2130;
+    }
+
+    .contact-row:last-child { border-bottom: none; }
+
+    .contact-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #2d3148;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: #94a3b8;
+      flex-shrink: 0;
+    }
+
+    .contact-info { flex: 1; min-width: 0; }
+
+    .contact-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #e2e8f0;
+    }
+
+    .contact-title {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 1px;
+    }
+
+    .contact-links {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .contact-link {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      border: 1px solid;
+    }
+
+    .link-email {
+      color: #6366f1;
+      border-color: #3730a3;
+      background: #1e1b4b;
+    }
+
+    .link-email:hover { background: #2e27a3; }
+
+    /* Email accordion */
+    .email-toggle {
+      width: 100%;
+      background: none;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #94a3b8;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 0;
+    }
+
+    .email-toggle .chevron {
+      transition: transform 0.2s;
+      color: #475569;
+    }
+
+    .email-toggle.open .chevron { transform: rotate(180deg); }
+
+    .email-body-wrap {
+      display: none;
+      margin-top: 12px;
+    }
+
+    .email-body-wrap.open { display: block; }
+
+    .email-subject {
+      font-size: 13px;
+      font-weight: 500;
+      color: #e2e8f0;
+      margin-bottom: 8px;
+    }
+
+    .email-subject span {
+      font-weight: 400;
+      color: #64748b;
+    }
+
+    .email-text {
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      background: #0f1117;
+      border: 1px solid #1e2130;
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .li-note {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #64748b;
+      background: #1e2130;
+      border-radius: 6px;
+      padding: 8px 12px;
+    }
+
+    .li-note strong { color: #94a3b8; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Prospector <span>Dashboard</span></h1>
+  <div class="header-right">
+    <span class="badge-count">{{ total }} companies</span>
+    <select class="date-selector" onchange="window.location='/date/' + this.value">
+      {% for d in all_dates %}
+      <option value="{{ d }}" {% if d == selected_date %}selected{% endif %}>{{ d }}</option>
+      {% endfor %}
+    </select>
+    <a href="/settings" style="color:#6366f1;font-size:13px;text-decoration:none;padding:6px 14px;border:1px solid #3730a3;border-radius:8px;background:#1e1b4b;white-space:nowrap;">⚙ Settings</a>
+  </div>
+</header>
+
+<main>
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-signal="all" onclick="filterCards(this, 'all')">All</button>
+    {% for sig in all_signals %}
+    <button class="filter-btn" data-signal="{{ sig }}" onclick="filterCards(this, '{{ sig }}')">
+      {{ signal_labels.get(sig, sig) }}
+    </button>
+    {% endfor %}
+  </div>
+
+  {% if not companies %}
+  <div class="empty">
+    <p>No results for {{ selected_date }}</p>
+  </div>
+  {% else %}
+  <div class="grid" id="card-grid">
+    {% for co in companies %}
+    <div class="card" data-signal="{{ co.signal }}">
+
+      <div class="card-header">
+        <div>
+          <div class="card-title">{{ co.name }}</div>
+        </div>
+        <span class="signal-badge" style="color:{{ co.signal_color }};background:{{ co.signal_color }}18;border:1px solid {{ co.signal_color }}40;">
+          <span class="signal-dot"></span>
+          {{ co.signal_label }}
+        </span>
+      </div>
+
+      <div class="card-detail">
+        <span>{{ co.signal_detail }}</span>
+        {% if co.source_url and co.source_url != 'N/A' %}
+        <a class="source-link" href="{{ co.source_url }}" target="_blank" rel="noopener">Source ↗</a>
+        {% endif %}
+      </div>
+
+      <div class="card-section">
+        <div class="section-label">Contacts</div>
+        {% if co.contacts %}
+          {% for c in co.contacts %}
+          <div class="contact-row">
+            <div class="contact-avatar">{{ c.name[0] if c.name else '?' }}</div>
+            <div class="contact-info">
+              <div class="contact-name">{{ c.name }}</div>
+              <div class="contact-title">{{ c.title }}</div>
+            </div>
+            <div class="contact-links">
+              {% if c.email and c.email not in ('N/A', '') %}
+              <a class="contact-link link-email" href="mailto:{{ c.email }}" title="{{ c.email }}">Email</a>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+        <div class="no-contact">
+          No contacts found —
+          <a href="{{ co.verify_linkedin }}" target="_blank" rel="noopener">find on LinkedIn ↗</a>
+        </div>
+        {% endif %}
+      </div>
+
+      {% set has_email = co.contacts and co.contacts[0].email_body %}
+      {% if has_email %}
+      <div class="card-section">
+        <div class="section-label">Outreach</div>
+        {% for c in co.contacts if c.email_body %}
+        <div style="margin-bottom:12px">
+          <button class="email-toggle" onclick="toggleEmail(this)">
+            <span>{{ c.name }} — {{ c.email_subject[:60] }}{% if c.email_subject|length > 60 %}…{% endif %}</span>
+            <svg class="chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="email-body-wrap">
+            <div class="email-subject">Subject: <span>{{ c.email_subject }}</span></div>
+            <pre class="email-text">{{ c.email_body }}</pre>
+            {% if c.li_note %}
+            <div class="li-note"><strong>LinkedIn note:</strong> {{ c.li_note }}</div>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</main>
+
+<script>
+  function filterCards(btn, signal) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.card').forEach(card => {
+      card.style.display = (signal === 'all' || card.dataset.signal === signal) ? '' : 'none';
+    });
+  }
+
+  function toggleEmail(btn) {
+    btn.classList.toggle('open');
+    btn.nextElementSibling.classList.toggle('open');
+  }
+</script>
+</body>
+</html>

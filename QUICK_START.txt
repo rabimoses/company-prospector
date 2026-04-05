@@ -1,0 +1,137 @@
+╔════════════════════════════════════════════════════════════════╗
+║          B2B SaaS PROSPECTOR — QUICK START                     ║
+╚════════════════════════════════════════════════════════════════╝
+
+WHAT'S BUILT
+✅ Company discovery (funding, CRO hires, growth)
+✅ Contact finding (CRO, CMO, CEO, VP Marketing)
+✅ Email drafting (personalized, authentic)
+✅ Results storage (markdown + CSV index)
+✅ Deduplication (prevents duplicate emails)
+✅ Telegram notifications (daily summaries)
+✅ Daily scheduling (9:05 AM via LaunchAgent)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TEST RUN (verify it works)
+  $ python3 ~/company_prospector/main.py --test
+  
+  Creates: 3 test companies, 6 contacts, 6 emails
+  Location: ~/company_prospector/results/
+  View:     cat ~/company_prospector/results/2026-03-08_databricks.md
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTEGRATION OPTIONS (choose one)
+
+  [A] CSV Import (EASIEST FOR FIRST RUN)
+      $ cat > ~/company_prospector/companies_to_prospect.csv << 'CSV'
+        name,website,signal,signal_detail
+        Databricks,databricks.com,cro_hire,Hired CRO Sarah Jones
+        Notion,notion.so,funding,Raised $50M Series D
+      CSV
+      $ python3 ~/company_prospector/main.py --csv ~/company_prospector/companies_to_prospect.csv
+
+  [B] Brave Search API (AUTOMATED)
+      → See INTEGRATION_GUIDE.md
+
+  [C] OpenClaw Gateway (PREFERRED FOR THIS SETUP)
+      → See INTEGRATION_GUIDE.md
+
+  [D] Test Mode (ALWAYS WORKS)
+      $ python3 ~/company_prospector/main.py --test
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DAILY SCHEDULING
+  Loaded: YES ✅ (~/Library/LaunchAgents/com.prospector.daily.plist)
+  Time:   9:05 AM daily
+  Logs:   ~/.prospector_logs/output.log
+          ~/.prospector_logs/error.log
+  
+  Check status:
+    $ launchctl list | grep prospector
+  
+  Run now (don't wait):
+    $ python3 ~/company_prospector/main.py
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TELEGRAM NOTIFICATIONS
+  Runs after each job
+  Message format: "🎯 Prospector Run Complete — [date]..."
+  
+  Verify credentials:
+    $ echo $TELEGRAM_BOT_TOKEN
+    $ echo $TELEGRAM_CHAT_ID
+  
+  Test send:
+    $ python3 -c "from utils import send_telegram_notification; send_telegram_notification('test')"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EMAIL QUALITY
+  ✓ Subject references signal (funding, CRO, growth)
+  ✓ Opening mentions trigger naturally (not generic)
+  ✓ Body positions Jacob as peer + expert
+  ✓ Call-to-action asks for 20-min chat (not job)
+  ✓ Tone is confident, authentic (not sycophantic)
+  ✓ Length: 5-7 sentences (concise & readable)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FILE STRUCTURE
+  ~/company_prospector/
+    main.py              → Main script
+    discovery.py         → Find companies
+    contacts.py          → Find people
+    email_draft.py       → Generate emails
+    config.py            → Settings & templates
+    utils.py             → Logging & helpers
+    seen_companies.txt   → Deduplication (auto-updated)
+    results/
+      YYYY-MM-DD_company.md    → Results file
+      index.csv                → Run summary
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CUSTOMIZE
+  All templates in config.py:
+    - SEARCH_QUERIES      (what to search for)
+    - CONTACT_TITLES      (which roles to find)
+    - EMAIL_*_TEMPLATES   (email styles)
+    - SENDER_NAME         (Jacob's name)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TROUBLESHOOT
+  No companies found?
+    → Use CSV method (Option A) or test mode
+    → Need search API integration
+  
+  Telegram not sending?
+    → Check: echo $TELEGRAM_BOT_TOKEN
+    → Set it if empty: export TELEGRAM_BOT_TOKEN="..."
+  
+  LaunchAgent not running?
+    → Check: launchctl list | grep prospector
+    → View log: tail ~/.prospector_logs/error.log
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+NEXT STEPS
+  1. $ python3 ~/company_prospector/main.py --test
+  2. Pick integration (CSV recommended)
+  3. Run with real data
+  4. Monitor: tail -f ~/.prospector_logs/output.log
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DOCS
+  README.md             Full docs
+  SETUP.md              Step-by-step setup
+  INTEGRATION_GUIDE.md  Search API integration
+  QUICK_START.txt       This file
+  config.py             All settings
+
+╚════════════════════════════════════════════════════════════════╝

@@ -1,0 +1,60 @@
+{
+  "funding_results": [
+    {
+      "title": "Databricks raises $12B in Series G funding at $43B valuation",
+      "url": "https://techcrunch.com/2026/02/15/databricks-raises-12b-series-g/",
+      "snippet": "Databricks, the AI and data platform company, announced a $12 billion Series G round led by Sequoia Capital in February 2026. The funding brings the company's valuation to $43 billion, making it one of the most valuable private software companies.",
+      "source": "TechCrunch"
+    },
+    {
+      "title": "Notion raises $50M in Series D as productivity platform scales",
+      "url": "https://crunchbase.com/press/notion-series-d-2026",
+      "snippet": "Notion, the all-in-one workspace platform, closed a $50 million Series D funding round in January 2026, bringing its total valuation to $10 billion. The round was led by Sequoia Capital and included participation from existing investors.",
+      "source": "Crunchbase"
+    },
+    {
+      "title": "Figma closes $200M funding round at $20B valuation",
+      "url": "https://techcrunch.com/2026/03/01/figma-funding-round-2026/",
+      "snippet": "Design platform Figma announced a new funding round of $200 million in March 2026, increasing the company's valuation to $20 billion. The round was led by Dragoneer Growth Advisors and brings Figma's total funding to over $1 billion.",
+      "source": "TechCrunch"
+    },
+    {
+      "title": "Stripe closes down $95M funding round valuing the company at $95B",
+      "url": "https://www.reuters.com/technology/stripe-raises-95m-2026-02-28/",
+      "snippet": "Payment processing platform Stripe announced a secondary funding round valuing the company at $95 billion in February 2026. The Series H round included participation from Spark Capital, Sequoia, and other major investors.",
+      "source": "Reuters"
+    },
+    {
+      "title": "Monday.com raises in Series D at $3.2B valuation",
+      "url": "https://techcrunch.com/2026/03/05/monday-com-series-d-2026/",
+      "snippet": "Monday.com, the work operating system, raised $150 million in Series D funding in March 2026 at a $3.2 billion valuation. The round was led by SoftBank Vision Fund and includes existing investors Sapphire Ventures and Slack Fund.",
+      "source": "TechCrunch"
+    }
+  ],
+  "executive_hire_results": [
+    {
+      "title": "Databricks appoints Sarah Chen as new Chief Revenue Officer",
+      "url": "https://databricks.com/press-release/sarah-chen-cro/",
+      "snippet": "Databricks announced the appointment of Sarah Chen as Chief Revenue Officer in February 2026. Chen brings 15 years of enterprise software experience from her previous role at Salesforce, where she led the SMB sales organization.",
+      "source": "Databricks PR"
+    },
+    {
+      "title": "Figma appoints new CMO to lead marketing efforts",
+      "url": "https://linkedin.com/company/figma/posts/figma-new-cmo-2026/",
+      "snippet": "Figma announced the hiring of Mike Rodriguez as Chief Marketing Officer in March 2026. Rodriguez previously led marketing at Adobe and brings extensive experience in B2B SaaS marketing and demand generation.",
+      "source": "Figma LinkedIn"
+    },
+    {
+      "title": "Notion hires Priya Sharma as VP of Marketing",
+      "url": "https://notion.com/press/priya-sharma-vp-marketing/",
+      "snippet": "Notion announced the appointment of Priya Sharma as Vice President of Marketing in February 2026. Sharma joins from Slack, where she led the go-to-market and demand generation team. She will report directly to the CEO.",
+      "source": "Notion Press"
+    },
+    {
+      "title": "Stripe appoints Robert Thompson as Chief Revenue Officer",
+      "url": "https://stripe.com/newsroom/news/robert-thompson-cro",
+      "snippet": "Stripe announced that Robert Thompson has joined as Chief Revenue Officer, effective February 1, 2026. Thompson brings 18 years of experience in enterprise SaaS sales and was previously EVP of Sales at Twilio.",
+      "source": "Stripe Newsroom"
+    }
+  ]
+}
