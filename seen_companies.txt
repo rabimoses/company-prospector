@@ -18,7 +18,6 @@ Impact|2026-04-05
 LastPass|2026-04-05
 Lattice|2026-04-05
 Lighthouse|2026-04-05
-Mindtickle|2026-04-05
 Mixpanel|2026-04-05
 MongoDB|2026-04-05
 Newrelic|2026-04-05
