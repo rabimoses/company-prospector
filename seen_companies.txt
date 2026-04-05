@@ -4,6 +4,8 @@ Amplemarket|2026-04-05
 Amplitude|2026-04-05
 Appfire|2026-04-05
 Axonius|2026-04-05
+Chainguard|2026-04-05
+Chargepoint|2026-04-05
 Cloaked|2026-04-05
 Cognism|2026-04-05
 Coupa|2026-04-05
@@ -19,6 +21,7 @@ Lighthouse|2026-04-05
 Mindtickle|2026-04-05
 Mixpanel|2026-04-05
 MongoDB|2026-04-05
+Newrelic|2026-04-05
 OpenObserve|2026-04-05
 Pallet|2026-04-05
 Pendo|2026-04-05
