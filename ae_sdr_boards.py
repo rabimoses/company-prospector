@@ -208,9 +208,12 @@ def detect_spikes(seen: Set[str], found: Set[str]) -> List[Dict]:
         if not ae_primary and not sdr_primary and not sales_secondary:
             continue
 
+        def spike_str(recent, prior, total, label):
+            pct = f"+∞%" if prior == 0 else f"+{round((recent - prior) / prior * 100)}%"
+            return f"{recent} new {label} roles in last 45d (prior 45d: {prior} → now: {recent}, {pct}) | {total} total open {label}"
+
         if ae_primary:
-            g = "new push (0 prior)" if ae_prior_count == 0 else f"+{round(ae_growth*100)}% vs prior 45d"
-            signal_str = f"{ae_recent_count} new AE roles in last 45d ({g}) | {ae_count} total open AE"
+            signal_str = spike_str(ae_recent_count, ae_prior_count, ae_count, "AE")
             if sdr_recent_count > 0:
                 signal_str += f" + {sdr_recent_count} SDR"
             log_info(f"  ✅ AE SPIKE: {name} — {signal_str}")
@@ -225,8 +228,7 @@ def detect_spikes(seen: Set[str], found: Set[str]) -> List[Dict]:
             found.add(name.lower())
 
         elif sdr_primary and name.lower() not in found:
-            g = "new push (0 prior)" if sdr_prior_count == 0 else f"+{round(sdr_growth*100)}% vs prior 45d"
-            signal_str = f"{sdr_recent_count} new SDR roles in last 45d ({g}) | {sdr_count} total open SDR"
+            signal_str = spike_str(sdr_recent_count, sdr_prior_count, sdr_count, "SDR")
             log_info(f"  ✅ SDR SPIKE: {name} — {signal_str}")
             companies.append({
                 "name": name,
@@ -239,8 +241,8 @@ def detect_spikes(seen: Set[str], found: Set[str]) -> List[Dict]:
             found.add(name.lower())
 
         elif sales_secondary and name.lower() not in found:
-            g = "new push (0 prior)" if sales_prior == 0 else f"+{round(sales_growth*100)}% vs prior 45d"
-            signal_str = f"{sales_recent} new sales roles in last 45d ({g}) — {ae_recent_count} AE + {sdr_recent_count} SDR | {ae_count+sdr_count} total open"
+            pct = f"+∞%" if sales_prior == 0 else f"+{round((sales_recent - sales_prior) / sales_prior * 100)}%"
+            signal_str = f"{sales_recent} new sales roles in last 45d (prior 45d: {sales_prior} → now: {sales_recent}, {pct}) — {ae_recent_count} AE + {sdr_recent_count} SDR | {ae_count+sdr_count} total open"
             log_info(f"  ✅ SALES SPIKE: {name} — {signal_str}")
             companies.append({
                 "name": name,
