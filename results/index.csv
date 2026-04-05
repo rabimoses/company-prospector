@@ -33,3 +33,6 @@ date,company,signal,signal_detail,contacts_found,contacts_unverified,emails_draf
 2026-04-05,Algolia,ae_spike,3 new AE roles in last 45d (+200% vs prior 45d) | 4 total open AE,3,0,3,https://job-boards.greenhouse.io/algolia/jobs/5818281004,/app/results/2026-04-05_algolia.md
 2026-04-05,Upshop,ae_spike,2 new AE roles in last 45d (new push (0 prior)) | 3 total open AE,4,0,4,https://job-boards.greenhouse.io/upshop/jobs/4991696007,/app/results/2026-04-05_upshop.md
 2026-04-05,Smartbear,ae_spike,6 new AE roles in last 45d (+500% vs prior 45d) | 7 total open AE,3,0,3,https://job-boards.greenhouse.io/smartbear/jobs/7659639003,/app/results/2026-04-05_smartbear.md
+2026-04-05,Newrelic,ae_spike,10 new AE roles in last 45d (+150% vs prior 45d) | 14 total open AE + 1 SDR,5,0,5,https://job-boards.greenhouse.io/newrelic/jobs/5172371008,/app/results/2026-04-05_newrelic.md
+2026-04-05,Chargepoint,ae_spike,4 new AE roles in last 45d (new push (0 prior)) | 5 total open AE,5,0,5,https://www.chargepoint.com/about/opportunities/job/?gh_jid=8481934002,/app/results/2026-04-05_chargepoint.md
+2026-04-05,Chainguard,ae_spike,5 new AE roles in last 45d (+400% vs prior 45d) | 7 total open AE + 2 SDR,5,0,5,https://job-boards.greenhouse.io/chainguard/jobs/4628484006,/app/results/2026-04-05_chainguard.md
