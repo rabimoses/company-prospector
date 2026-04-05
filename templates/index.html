@@ -32,7 +32,7 @@
     }
 
     header h1 span {
-      color: #6366f1;
+      color: #a5b4fc;
     }
 
     .header-right {
@@ -42,8 +42,8 @@
     }
 
     .badge-count {
-      background: #6366f1;
-      color: white;
+      background: #4f46e5;
+      color: #e0e7ff;
       font-size: 12px;
       font-weight: 600;
       padding: 3px 10px;
@@ -66,7 +66,7 @@
       padding-right: 28px;
     }
 
-    .date-selector:focus { outline: none; border-color: #6366f1; }
+    .date-selector:focus { outline: none; border-color: #818cf8; }
 
     main {
       max-width: 1100px;
@@ -93,8 +93,8 @@
       transition: all 0.15s;
     }
 
-    .filter-btn:hover { border-color: #6366f1; color: #e2e8f0; }
-    .filter-btn.active { background: #6366f1; border-color: #6366f1; color: white; }
+    .filter-btn:hover { border-color: #818cf8; color: #e2e8f0; }
+    .filter-btn.active { background: #4f46e5; border-color: #818cf8; color: #e0e7ff; }
 
     .empty {
       text-align: center;
@@ -166,7 +166,7 @@
     }
 
     .source-link {
-      color: #6366f1;
+      color: #818cf8;
       text-decoration: none;
       font-size: 12px;
       white-space: nowrap;
@@ -185,20 +185,20 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      color: #475569;
+      color: #7a8aa0;
       margin-bottom: 12px;
     }
 
     .no-contact {
       font-size: 13px;
-      color: #475569;
+      color: #7a8aa0;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
     .no-contact a {
-      color: #6366f1;
+      color: #818cf8;
       text-decoration: none;
       font-size: 12px;
     }
@@ -239,7 +239,7 @@
 
     .contact-title {
       font-size: 12px;
-      color: #64748b;
+      color: #8899b0;
       margin-top: 1px;
     }
 
@@ -259,12 +259,12 @@
     }
 
     .link-email {
-      color: #6366f1;
-      border-color: #3730a3;
-      background: #1e1b4b;
+      color: #c7d2fe;
+      border-color: #4f46e5;
+      background: #2e2b5f;
     }
 
-    .link-email:hover { background: #2e27a3; }
+    .link-email:hover { background: #3d38a0; }
 
     /* Email accordion */
     .email-toggle {
@@ -276,7 +276,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      color: #94a3b8;
+      color: #b0bcd4;
       font-size: 12px;
       font-weight: 500;
       padding: 0;
@@ -284,7 +284,7 @@
 
     .email-toggle .chevron {
       transition: transform 0.2s;
-      color: #475569;
+      color: #7a8aa0;
     }
 
     .email-toggle.open .chevron { transform: rotate(180deg); }
@@ -310,11 +310,11 @@
 
     .email-text {
       font-size: 13px;
-      color: #94a3b8;
+      color: #c8d4e8;
       line-height: 1.7;
       white-space: pre-wrap;
       background: #0f1117;
-      border: 1px solid #1e2130;
+      border: 1px solid #2d3148;
       border-radius: 8px;
       padding: 14px;
     }
@@ -322,13 +322,13 @@
     .li-note {
       margin-top: 10px;
       font-size: 12px;
-      color: #64748b;
+      color: #8899b0;
       background: #1e2130;
       border-radius: 6px;
       padding: 8px 12px;
     }
 
-    .li-note strong { color: #94a3b8; }
+    .li-note strong { color: #b0bcd4; }
   </style>
 </head>
 <body>
@@ -342,7 +342,7 @@
       <option value="{{ d }}" {% if d == selected_date %}selected{% endif %}>{{ d }}</option>
       {% endfor %}
     </select>
-    <a href="/settings" style="color:#6366f1;font-size:13px;text-decoration:none;padding:6px 14px;border:1px solid #3730a3;border-radius:8px;background:#1e1b4b;white-space:nowrap;">⚙ Settings</a>
+    <a href="/settings" style="color:#c7d2fe;font-size:13px;text-decoration:none;padding:6px 14px;border:1px solid #4f46e5;border-radius:8px;background:#2e2b5f;white-space:nowrap;">⚙ Settings</a>
   </div>
 </header>
 
