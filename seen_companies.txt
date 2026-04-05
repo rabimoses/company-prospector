@@ -26,10 +26,12 @@ OpenObserve|2026-04-05
 Pallet|2026-04-05
 Pendo|2026-04-05
 Platformsh|2026-04-05
+Rhombus Systems|2026-04-05
 Salesloft|2026-04-05
 Showpad|2026-04-05
 Smartbear|2026-04-05
 Typeform|2026-04-05
+Udemy|2026-04-05
 Upguard|2026-04-05
 Upshop|2026-04-05
 Webflow|2026-04-05
