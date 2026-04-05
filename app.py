@@ -20,12 +20,12 @@ SIGNAL_LABELS = {
 }
 
 SIGNAL_COLORS = {
-    "ae_spike": "#2563eb",
-    "sdr_spike": "#7c3aed",
-    "funding": "#059669",
-    "cro_hire": "#d97706",
-    "vp_hire": "#d97706",
-    "expansion": "#0891b2",
+    "ae_spike": "#60a5fa",
+    "sdr_spike": "#a78bfa",
+    "funding": "#34d399",
+    "cro_hire": "#fbbf24",
+    "vp_hire": "#fbbf24",
+    "expansion": "#22d3ee",
 }
 
 
