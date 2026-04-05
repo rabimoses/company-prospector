@@ -13,6 +13,7 @@
 | Daniel Chait | CEO | [Link](https://www.linkedin.com/in/dhchait) | daniel@greenhouse.com | ✓ Verified (https://www.linkedin.com/in/dhchait) |
 | Corey Greenhouse | CMO | [Link](https://www.linkedin.com/posts/coreygreenhouse_creativetesting-performancemarketing-brandandperformance-activity-7425550083850633216-XC3N) | corey@greenhouse.com | ✓ Verified (https://www.linkedin.com/posts/coreygreenhouse_creativetesting-performancemarketing-brandandperformance-activity-7425550083850633216-XC3N) |
 | Role Evolved | CMO | [Link](https://www.linkedin.com/posts/coreygreenhouse_couldnt-agree-more-with-this-the-role-of-activity-7421347755677159424-FmUf) | role@greenhouse.com | ✓ Verified (https://www.linkedin.com/posts/coreygreenhouse_couldnt-agree-more-with-this-the-role-of-activity-7421347755677159424-FmUf) |
+| Marc Jacobs | CRO | [Link](https://www.linkedin.com/in/marcajacobs) | marc@greenhouse.com | ✓ Verified (https://www.linkedin.com/in/marcajacobs) |
 
 ## Outreach Emails
 
@@ -72,3 +73,22 @@ Best,
 Jacob Landsman
 
 **LI Note:** Hi Role — noticed Greenhouse is scaling its AE team. I build demand gen engines for B2B SaaS companies at this stage. Would love to connect.
+
+### Email 4
+
+**To:** Marc Jacobs (CRO)
+
+**Subject:** Saw Greenhouse is scaling its sales team, Marc
+
+**Body:**
+
+I noticed Greenhouse is actively expanding its AE team — usually a strong signal that pipeline and demand gen are about to become top priorities. Wanted to reach out while the timing is right.
+
+I lead demand generation strategy for B2B SaaS companies, and I've spent the last several years building pipeline engines that actually move revenue. When teams are scaling like Greenhouse, there's typically a moment when demand gen strategy becomes critical — and I thought it might be worth a quick conversation.
+
+No pitch, no process — just 20 minutes to explore if there's a fit. Would you be open to that?
+
+Best,
+Jacob Landsman
+
+**LI Note:** Hi Marc — noticed Greenhouse is scaling its AE team. I build demand gen engines for B2B SaaS companies at this stage. Would love to connect.
