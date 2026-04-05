@@ -60,7 +60,11 @@ def is_real_name(name: str) -> bool:
         return False
     return True
 TITLE_RE = re.compile(
-    r'(Chief Revenue Officer|CRO|Chief Marketing Officer|CMO|Chief Executive Officer|CEO|VP(?:\s+of)?\s+Marketing|VP(?:\s+of)?\s+Demand)',
+    r'(Chief Revenue Officer|CRO|Chief Marketing Officer|CMO|Chief Executive Officer|CEO|'
+    r'VP(?:\s+of)?\s+Marketing|VP(?:\s+of)?\s+Sales|VP(?:\s+of)?\s+Revenue|VP(?:\s+of)?\s+Demand|'
+    r'Head of (?:Marketing|Sales|Demand|Revenue|Growth)|'
+    r'Vice President(?:\s+of)?\s+(?:Marketing|Sales|Revenue|Demand|Growth)|'
+    r'SVP(?:\s+of)?\s+(?:Marketing|Sales|Revenue))',
     re.IGNORECASE
 )
 
@@ -88,18 +92,33 @@ def find_contacts(company_name: str, company_website: str = None, signal_data: D
 
     # Search for additional contacts
     queries = [
+        # LinkedIn searches by role
         f'"{company_name}" CEO site:linkedin.com',
         f'"{company_name}" CMO OR "VP Marketing" site:linkedin.com',
+        f'"{company_name}" CRO OR "VP Sales" OR "VP Revenue" site:linkedin.com',
+        f'"{company_name}" "Head of Demand" OR "VP Demand" OR "Demand Generation" site:linkedin.com',
+        # Press/news fallback — catches appointment announcements
+        f'"{company_name}" appoints OR hires OR joins "VP" OR "Chief" OR "Head of"',
+        f'"{company_name}" leadership team',
     ]
 
+    max_contacts = _get_settings()["max_contacts_per_company"]
+
     for query in queries:
+        if len(contacts) >= max_contacts:
+            break
+
         data = serper_search(query)
         for r in data.get("organic", []):
+            if len(contacts) >= max_contacts:
+                break
+
             title = r.get("title", "")
             snippet = r.get("snippet", "")
             combined = title + " " + snippet
 
-            name_match = NAME_RE.search(title)
+            # Try name from title first, then snippet
+            name_match = NAME_RE.search(title) or NAME_RE.search(snippet)
             title_match = TITLE_RE.search(combined)
 
             if not name_match or not title_match:
@@ -130,13 +149,8 @@ def find_contacts(company_name: str, company_website: str = None, signal_data: D
             seen_names.add(name.lower())
             log_info(f"  ~ Found: {name} ({role}) — verify before sending")
 
-            max_contacts = _get_settings()["max_contacts_per_company"]
-            if len(contacts) >= max_contacts:
-                break
-
     if not contacts:
         log_info(f"  No contacts found for {company_name}")
 
     log_info(f"  Total: {len(contacts)} contacts found")
-    max_contacts = _get_settings()["max_contacts_per_company"]
     return contacts[:max_contacts]
