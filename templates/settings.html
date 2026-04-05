@@ -9,34 +9,35 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #0f1117;
-      color: #e2e8f0;
+      background: #f1f5f9;
+      color: #0f172a;
       min-height: 100vh;
     }
 
     header {
-      background: #1a1d27;
-      border-bottom: 1px solid #2d3148;
-      padding: 20px 32px;
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 16px 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
-    header h1 { font-size: 18px; font-weight: 600; color: #f1f5f9; letter-spacing: -0.3px; }
-    header h1 span { color: #6366f1; }
+    header h1 { font-size: 18px; font-weight: 700; color: #0f172a; letter-spacing: -0.3px; }
+    header h1 span { color: #4f46e5; }
 
-    .nav-links { display: flex; gap: 16px; }
+    .nav-links { display: flex; gap: 8px; }
     .nav-links a {
       font-size: 13px;
-      color: #94a3b8;
+      font-weight: 500;
+      color: #475569;
       text-decoration: none;
       padding: 6px 14px;
       border-radius: 8px;
       border: 1px solid transparent;
     }
-    .nav-links a:hover { color: #e2e8f0; border-color: #2d3148; }
-    .nav-links a.active { color: #6366f1; border-color: #3730a3; background: #1e1b4b; }
+    .nav-links a:hover { color: #0f172a; background: #f1f5f9; }
+    .nav-links a.active { color: #4f46e5; border-color: #c7d2fe; background: #ede9fe; }
 
     main {
       max-width: 780px;
@@ -45,29 +46,29 @@
     }
 
     .flash {
-      background: #064e3b;
-      border: 1px solid #065f46;
-      color: #6ee7b7;
+      background: #dcfce7;
+      border: 1px solid #bbf7d0;
+      color: #166534;
       border-radius: 8px;
       padding: 12px 16px;
       font-size: 13px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
 
     .section {
-      background: #1a1d27;
-      border: 1px solid #2d3148;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
       border-radius: 12px;
       padding: 24px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .section-title {
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 11px;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      color: #475569;
+      color: #94a3b8;
       margin-bottom: 20px;
     }
 
@@ -78,13 +79,13 @@
       display: block;
       font-size: 13px;
       font-weight: 500;
-      color: #cbd5e1;
+      color: #0f172a;
       margin-bottom: 6px;
     }
 
     .hint {
       font-size: 11px;
-      color: #475569;
+      color: #94a3b8;
       margin-top: 4px;
     }
 
@@ -92,10 +93,10 @@
     input[type="number"],
     textarea {
       width: 100%;
-      background: #0f1117;
-      border: 1px solid #2d3148;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
       border-radius: 8px;
-      color: #e2e8f0;
+      color: #0f172a;
       font-size: 13px;
       padding: 9px 12px;
       font-family: inherit;
@@ -106,7 +107,8 @@
     input[type="number"]:focus,
     textarea:focus {
       outline: none;
-      border-color: #6366f1;
+      border-color: #4f46e5;
+      background: #ffffff;
     }
 
     textarea { resize: vertical; line-height: 1.6; }
@@ -114,31 +116,27 @@
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
 
-    .checkbox-grid {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+    .checkbox-grid { display: flex; gap: 10px; flex-wrap: wrap; }
 
     .checkbox-item {
       display: flex;
       align-items: center;
       gap: 8px;
-      background: #0f1117;
-      border: 1px solid #2d3148;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
       border-radius: 8px;
       padding: 8px 14px;
       cursor: pointer;
-      transition: border-color 0.15s;
+      transition: all 0.15s;
     }
 
     .checkbox-item:has(input:checked) {
-      border-color: #6366f1;
-      background: #1e1b4b;
+      border-color: #4f46e5;
+      background: #ede9fe;
     }
 
     .checkbox-item input[type="checkbox"] {
-      accent-color: #6366f1;
+      accent-color: #4f46e5;
       width: 14px;
       height: 14px;
     }
@@ -146,14 +144,14 @@
     .checkbox-item span {
       font-size: 13px;
       font-weight: 500;
-      color: #cbd5e1;
+      color: #0f172a;
     }
 
     .save-bar {
       position: sticky;
       bottom: 0;
-      background: #1a1d27;
-      border-top: 1px solid #2d3148;
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
       padding: 16px 24px;
       display: flex;
       justify-content: flex-end;
@@ -172,9 +170,8 @@
     }
 
     .btn:hover { opacity: 0.85; }
-
-    .btn-primary { background: #6366f1; color: white; }
-    .btn-ghost { background: transparent; color: #94a3b8; border: 1px solid #2d3148; }
+    .btn-primary { background: #4f46e5; color: white; }
+    .btn-ghost { background: transparent; color: #64748b; border: 1px solid #cbd5e1; }
 
     input[type="number"] { -moz-appearance: textfield; }
     input[type="number"]::-webkit-inner-spin-button { opacity: 0.4; }
@@ -201,7 +198,6 @@
 
   <form method="POST" action="/settings">
 
-    <!-- Signal types -->
     <div class="section">
       <div class="section-title">Signal Types</div>
       <div class="field">
@@ -228,7 +224,6 @@
       </div>
     </div>
 
-    <!-- Spike thresholds -->
     <div class="section">
       <div class="section-title">Spike Detection Thresholds</div>
       <div class="grid-3" style="margin-bottom:18px">
@@ -255,7 +250,6 @@
       </div>
     </div>
 
-    <!-- Company size filter -->
     <div class="section">
       <div class="section-title">Company Size Filter</div>
       <div class="field" style="margin:0;max-width:220px">
@@ -265,7 +259,6 @@
       </div>
     </div>
 
-    <!-- Sender -->
     <div class="section">
       <div class="section-title">Sender Info</div>
       <div class="grid-2" style="margin-bottom:18px">
@@ -289,7 +282,6 @@
       </div>
     </div>
 
-    <!-- Blocklist -->
     <div class="section">
       <div class="section-title">Company Blocklist</div>
       <div class="field">
