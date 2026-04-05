@@ -1,10 +1,12 @@
 """Configuration for company prospector."""
 
+import os
+
 # Anthropic API
-ANTHROPIC_API_KEY = "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"
+ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 
 # SERPER.DEV API Configuration
-SERPER_API_KEY = "9a825cda6b2f831aa4d935f9a8dcabf22360b707"
+SERPER_API_KEY = os.environ.get("SERPER_API_KEY", "")
 SERPER_API_URL = "https://google.serper.dev/search"
 
 # Improved search queries targeting specific news sources

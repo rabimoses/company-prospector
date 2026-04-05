@@ -44,7 +44,7 @@ def main():
         log_info("Running in TEST MODE with mock data")
     
     # Ensure output directories exist
-    results_dir = Path.home() / "company_prospector" / "results"
+    results_dir = Path(__file__).parent / "results"
     results_dir.mkdir(parents=True, exist_ok=True)
     
     # Load seen companies to avoid duplicates
@@ -178,15 +178,37 @@ def push_results_to_git(run_date):
     import subprocess
 
     repo_dir = Path(__file__).parent
+
+    # Configure git identity (required on Railway where git config is blank)
+    git_name  = os.environ.get("GIT_USER_NAME", "Prospector Agent")
+    git_email = os.environ.get("GIT_USER_EMAIL", "agent@prospector.local")
+    gh_token  = os.environ.get("GH_TOKEN", "")
+
+    subprocess.run(["git", "-C", str(repo_dir), "config", "user.name",  git_name],  capture_output=True)
+    subprocess.run(["git", "-C", str(repo_dir), "config", "user.email", git_email], capture_output=True)
+
+    # Inject token into remote URL so push authenticates on Railway
+    if gh_token:
+        r = subprocess.run(["git", "-C", str(repo_dir), "remote", "get-url", "origin"],
+                           capture_output=True, text=True)
+        url = r.stdout.strip()
+        if "github.com" in url and f"{gh_token}@" not in url:
+            authed = url.replace("https://", f"https://{gh_token}@")
+            subprocess.run(["git", "-C", str(repo_dir), "remote", "set-url", "origin", authed], capture_output=True)
+
+    # Collect files to commit
+    files = ["results/outreach.csv", "results/index.csv", "seen_companies.txt"]
+    for md in (repo_dir / "results").glob(f"{run_date}_*.md"):
+        files.append(str(md.relative_to(repo_dir)))
+
     commands = [
-        ["git", "-C", str(repo_dir), "add", "results/outreach.csv", "results/index.csv"],
+        ["git", "-C", str(repo_dir), "add"] + files,
         ["git", "-C", str(repo_dir), "commit", "-m", f"prospector run {run_date}"],
         ["git", "-C", str(repo_dir), "push"],
     ]
     for cmd in commands:
         result = subprocess.run(cmd, capture_output=True, text=True)
         if result.returncode != 0:
-            # "nothing to commit" is fine; anything else log as a warning
             if "nothing to commit" not in result.stdout + result.stderr:
                 log_error(f"git command failed: {' '.join(cmd[2:])}\n{result.stderr.strip()}")
             return
@@ -292,8 +314,8 @@ def load_companies_from_csv(csv_path, seen):
 
 def save_company_results(company_name, company_data, contacts, emails, run_date):
     """Save company results to markdown file with verification status."""
-    results_dir = Path.home() / "company_prospector" / "results"
-    
+    results_dir = Path(__file__).parent / "results"
+
     safe_name = company_name.lower().replace(" ", "_").replace(".", "")[:30]
     filename = f"{run_date}_{safe_name}.md"
     filepath = results_dir / filename
@@ -348,7 +370,7 @@ def save_company_results(company_name, company_data, contacts, emails, run_date)
 
 def update_contacts_csv(index_data):
     """Write flat contacts CSV — one row per contact with email body."""
-    results_dir = Path.home() / "company_prospector" / "results"
+    results_dir = Path(__file__).parent / "results"
     csv_path = results_dir / "outreach.csv"
 
     # Load existing rows excluding today's companies (will rewrite them)
@@ -460,7 +482,7 @@ def update_contacts_csv(index_data):
 
 def update_index_csv(index_data):
     """Update or create index CSV."""
-    results_dir = Path.home() / "company_prospector" / "results"
+    results_dir = Path(__file__).parent / "results"
     csv_path = results_dir / "index.csv"
     
     existing_data = []

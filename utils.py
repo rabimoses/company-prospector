@@ -14,7 +14,7 @@ SEEN_EXPIRY_DAYS = 90
 def load_seen_companies() -> Set[str]:
     """Load seen companies, dropping entries older than SEEN_EXPIRY_DAYS."""
     from datetime import date, timedelta
-    seen_file = Path.home() / "company_prospector" / "seen_companies.txt"
+    seen_file = Path(__file__).parent / "seen_companies.txt"
 
     if not seen_file.exists():
         return set()
@@ -46,7 +46,7 @@ def load_seen_companies() -> Set[str]:
 def save_seen_companies(companies: Set[str]) -> None:
     """Save seen companies with today's date, preserving existing dates."""
     from datetime import date, timedelta
-    seen_file = Path.home() / "company_prospector" / "seen_companies.txt"
+    seen_file = Path(__file__).parent / "seen_companies.txt"
     cutoff = date.today() - timedelta(days=SEEN_EXPIRY_DAYS)
     today = date.today().isoformat()
 
