@@ -43,10 +43,15 @@ NOISE_WORDS = {
     'holdings', 'achieves', 'candidates', 'deepfake', 'workleap', 'advanced',
     'manufacturing', 'lead', 'identity', 'matters', 'building', 'trust',
     'enabling', 'driving', 'scaling', 'transforming', 'connecting', 'helping',
-    'corporate', 'director', 'officer', 'president', 'founder', 'investor',
+    'corporate', 'director', 'officer', 'president', 'founder', 'founders', 'investor',
     'beth', 'ann', 'marie', 'lee', 'lynn', 'jean', 'sue', 'kay',
     'about', 'power', 'how', 'all', 'lio', 'openai', 'harmattan',
     'getreal', 'openobserve', 'lastpass', 'elevenlabs', 'upwind', 'superorganism',
+    # common fake-name patterns from search snippets
+    'revenue', 'leader', 'spotlight', 'unique', 'advantage', 'featured', 'welcome',
+    'meet', 'join', 'joined', 'named', 'promoted', 'hiring', 'opportunity',
+    'demand', 'generation', 'pipeline', 'forecast', 'quota', 'target',
+    'learn', 'read', 'watch', 'listen', 'discover', 'explore', 'find',
 }
 
 def is_real_name(name: str) -> bool:
