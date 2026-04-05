@@ -12,9 +12,9 @@
 |------|-------|----------|-------|--------|
 | Ron Markezich | CEO | [Link](https://www.linkedin.com/in/ron-markezich) | ron@lighthouse.com | ✓ Verified (https://www.linkedin.com/in/ron-markezich) |
 | Jon Goss | CEO | [Link](https://www.linkedin.com/in/jon-goss-9a75339) | jon@lighthouse.com | ✓ Verified (https://www.linkedin.com/in/jon-goss-9a75339) |
-| Randy Harris | CEO | [Link](https://www.linkedin.com/in/randyharrisonline) | randy@lighthouse.com | ✓ Verified (https://www.linkedin.com/in/randyharrisonline) |
-| Lighthouse Youth | CEO | [Link](https://www.linkedin.com/posts/gilmanpartners_lighthouse-youth-family-services-president-activity-7332766015375687680-egCZ) | lighthouse@lighthouse.com | ✓ Verified (https://www.linkedin.com/posts/gilmanpartners_lighthouse-youth-family-services-president-activity-7332766015375687680-egCZ) |
-| Lighthouse Financial | VP of Marketing | [Link](https://www.linkedin.com/jobs/view/vp-of-marketing-at-lighthouse-financial-group-a-life-and-annuity-company-4386827022) | lighthouse@lighthouse.com | ✓ Verified (https://www.linkedin.com/jobs/view/vp-of-marketing-at-lighthouse-financial-group-a-life-and-annuity-company-4386827022) |
+| Lighthouse Financial | Vice President of Marketing | [Link](https://www.linkedin.com/jobs/view/vp-of-marketing-at-lighthouse-financial-group-a-life-and-annuity-company-4386827022) | lighthouse@lighthouse.com | ✓ Verified (https://www.linkedin.com/jobs/view/vp-of-marketing-at-lighthouse-financial-group-a-life-and-annuity-company-4386827022) |
+| Samantha Lynch | VP Marketing | [Link](https://sg.linkedin.com/in/samanthaling) | samantha@lighthouse.com | ✓ Verified (https://sg.linkedin.com/in/samanthaling) |
+| Michael Baker | VP Sales | [Link](https://www.linkedin.com/in/michael-baker-964164a1) | michael@lighthouse.com | ✓ Verified (https://www.linkedin.com/in/michael-baker-964164a1) |
 
 ## Outreach Emails
 
@@ -58,9 +58,9 @@ Jacob Landsman
 
 ### Email 3
 
-**To:** Randy Harris (CEO)
+**To:** Lighthouse Financial (Vice President of Marketing)
 
-**Subject:** Saw Lighthouse is scaling its sales team, Randy
+**Subject:** Saw Lighthouse is scaling its sales team, Lighthouse
 
 **Body:**
 
@@ -73,13 +73,13 @@ No pitch, no process — just 20 minutes to explore if there's a fit. Would you 
 Best,
 Jacob Landsman
 
-**LI Note:** Hi Randy — noticed Lighthouse is scaling its AE team. I build demand gen engines for B2B SaaS companies at this stage. Would love to connect.
+**LI Note:** Hi Lighthouse — noticed Lighthouse is scaling its AE team. I build demand gen engines for B2B SaaS companies at this stage. Would love to connect.
 
 ### Email 4
 
-**To:** Lighthouse Youth (CEO)
+**To:** Samantha Lynch (VP Marketing)
 
-**Subject:** Saw Lighthouse is scaling its sales team, Lighthouse
+**Subject:** Saw Lighthouse is scaling its sales team, Samantha
 
 **Body:**
 
@@ -92,13 +92,13 @@ No pitch, no process — just 20 minutes to explore if there's a fit. Would you 
 Best,
 Jacob Landsman
 
-**LI Note:** Hi Lighthouse — noticed Lighthouse is scaling its AE team. I build demand gen engines for B2B SaaS companies at this stage. Would love to connect.
+**LI Note:** Hi Samantha — noticed Lighthouse is scaling its AE team. I build demand gen engines for B2B SaaS companies at this stage. Would love to connect.
 
 ### Email 5
 
-**To:** Lighthouse Financial (VP of Marketing)
+**To:** Michael Baker (VP Sales)
 
-**Subject:** Saw Lighthouse is scaling its sales team, Lighthouse
+**Subject:** Saw Lighthouse is scaling its sales team, Michael
 
 **Body:**
 
@@ -111,4 +111,4 @@ No pitch, no process — just 20 minutes to explore if there's a fit. Would you 
 Best,
 Jacob Landsman
 
-**LI Note:** Hi Lighthouse — noticed Lighthouse is scaling its AE team. I build demand gen engines for B2B SaaS companies at this stage. Would love to connect.
+**LI Note:** Hi Michael — noticed Lighthouse is scaling its AE team. I build demand gen engines for B2B SaaS companies at this stage. Would love to connect.
