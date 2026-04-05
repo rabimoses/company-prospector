@@ -11,9 +11,10 @@
 | Name | Title | LinkedIn | Email | Status |
 |------|-------|----------|-------|--------|
 | Beth Harhai | CRO | [Link](https://linkedin.com/search/results/people/?keywords=Beth%20Harhai) | beth@groupmanagementservices.com | ✓ Verified (https://www.prnewswire.com/news-releases/group-management-services-appoints-beth-harhai-as-chief-revenue-officer-to-drive-strategic-growth-302716428.html) |
-| Charral Izhiman | CMO | [Link](https://ae.linkedin.com/in/charralizhiman) | charral@groupmanagementservices.com | ✓ Verified (https://ae.linkedin.com/in/charralizhiman) |
-| Claira Cain | cro | [Link](https://za.linkedin.com/in/clairacain?trk=public_profile_browsemap) | claira@groupmanagementservices.com | ✓ Verified (https://za.linkedin.com/in/clairacain?trk=public_profile_browsemap) |
-| Deanna Leonard | CMO | [Link](https://www.linkedin.com/pub/dir/Deanna/Leonard) | deanna@groupmanagementservices.com | ✓ Verified (https://www.linkedin.com/pub/dir/Deanna/Leonard) |
+| Supports Small | CMO | [Link](https://www.linkedin.com/posts/sarah-hodges-1a9a547_small-businesses-dont-have-layers-of-support-activity-7437557741205868546-9rxW) | supports@groupmanagementservices.com | ✓ Verified (https://www.linkedin.com/posts/sarah-hodges-1a9a547_small-businesses-dont-have-layers-of-support-activity-7437557741205868546-9rxW) |
+| Anne Pao | CMO | [Link](https://www.linkedin.com/posts/annepao_the-biggest-predictors-of-success-in-gtm-activity-7280643766124691460-SDp-) | anne@groupmanagementservices.com | ✓ Verified (https://www.linkedin.com/posts/annepao_the-biggest-predictors-of-success-in-gtm-activity-7280643766124691460-SDp-) |
+| Retirement Industry | chief revenue officer | [Link](https://www.plansponsor.com/retirement-industry-people-moves-112_3_20_2026/) | retirement@groupmanagementservices.com | ✓ Verified (https://www.plansponsor.com/retirement-industry-people-moves-112_3_20_2026/) |
+| Mike Kahoe | Chief Executive Officer | [Link](https://www.groupmgmt.com/about-us/management-team/mike-kahoe/) | mike@groupmanagementservices.com | ✓ Verified (https://www.groupmgmt.com/about-us/management-team/mike-kahoe/) |
 
 ## Outreach Emails
 
@@ -38,9 +39,9 @@ Jacob Landsman
 
 ### Email 2
 
-**To:** Charral Izhiman (CMO)
+**To:** Supports Small (CMO)
 
-**Subject:** Welcome to Group Management Services, Charral
+**Subject:** Welcome to Group Management Services, Supports
 
 **Body:**
 
@@ -53,13 +54,32 @@ No pitch, no process — just 20 minutes to explore if there's a fit. Would you 
 Best,
 Jacob Landsman
 
-**LI Note:** Hi Charral — saw Group Management Services just brought on a new CRO. I specialize in demand gen for scaling B2B SaaS teams. Would love to connect.
+**LI Note:** Hi Supports — saw Group Management Services just brought on a new CRO. I specialize in demand gen for scaling B2B SaaS teams. Would love to connect.
 
 ### Email 3
 
-**To:** Claira Cain (cro)
+**To:** Anne Pao (CMO)
 
-**Subject:** Welcome to Group Management Services, Claira
+**Subject:** Welcome to Group Management Services, Anne
+
+**Body:**
+
+I noticed Group Management Services just brought on a new CRO — often a signal that pipeline and demand gen become top priorities. Wanted to reach out.
+
+I lead demand generation strategy for B2B SaaS companies, and I've spent the last several years building pipeline engines that actually move revenue. When teams are scaling like Group Management Services, there's typically a moment when demand gen strategy becomes critical — and I thought it might be worth a quick conversation.
+
+No pitch, no process — just 20 minutes to explore if there's a fit. Would you be open to that?
+
+Best,
+Jacob Landsman
+
+**LI Note:** Hi Anne — saw Group Management Services just brought on a new CRO. I specialize in demand gen for scaling B2B SaaS teams. Would love to connect.
+
+### Email 4
+
+**To:** Retirement Industry (chief revenue officer)
+
+**Subject:** Welcome to Group Management Services, Retirement
 
 **Body:**
 
@@ -72,17 +92,17 @@ No pitch, no process — just 20 minutes to explore if there's a fit. Would you 
 Best,
 Jacob Landsman
 
-**LI Note:** Hi Claira — saw Group Management Services just brought on a new CRO. I specialize in demand gen for scaling B2B SaaS teams. Would love to connect.
+**LI Note:** Hi Retirement — saw Group Management Services just brought on a new CRO. I specialize in demand gen for scaling B2B SaaS teams. Would love to connect.
 
-### Email 4
+### Email 5
 
-**To:** Deanna Leonard (CMO)
+**To:** Mike Kahoe (Chief Executive Officer)
 
-**Subject:** Welcome to Group Management Services, Deanna
+**Subject:** Welcome to Group Management Services, Mike
 
 **Body:**
 
-I noticed Group Management Services just brought on a new CRO — often a signal that pipeline and demand gen become top priorities. Wanted to reach out.
+I saw Group Management Services recently appointed a new CRO and wanted to connect while the team is thinking about go-to-market.
 
 I lead demand generation strategy for B2B SaaS companies, and I've spent the last several years building pipeline engines that actually move revenue. When teams are scaling like Group Management Services, there's typically a moment when demand gen strategy becomes critical — and I thought it might be worth a quick conversation.
 
@@ -91,4 +111,4 @@ No pitch, no process — just 20 minutes to explore if there's a fit. Would you 
 Best,
 Jacob Landsman
 
-**LI Note:** Hi Deanna — saw Group Management Services just brought on a new CRO. I specialize in demand gen for scaling B2B SaaS teams. Would love to connect.
+**LI Note:** Hi Mike — saw Group Management Services just brought on a new CRO. I specialize in demand gen for scaling B2B SaaS teams. Would love to connect.
