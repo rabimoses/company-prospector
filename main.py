@@ -174,45 +174,58 @@ def main():
 
 
 def push_results_to_git(run_date):
-    """Stage results and push so Railway picks up the latest CSV."""
-    import subprocess
+    """Push results to GitHub via REST API — no git binary required."""
+    import base64
+    import requests as req
+
+    gh_token = os.environ.get("GH_TOKEN", "")
+    gh_repo  = os.environ.get("GH_REPO", "")  # e.g. "rabimoses/company-prospector"
+
+    if not gh_token or not gh_repo:
+        log_error("GH_TOKEN or GH_REPO not set — skipping git push")
+        return
 
     repo_dir = Path(__file__).parent
+    headers = {
+        "Authorization": f"token {gh_token}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+    api_base = f"https://api.github.com/repos/{gh_repo}/contents"
 
-    # Configure git identity (required on Railway where git config is blank)
-    git_name  = os.environ.get("GIT_USER_NAME", "Prospector Agent")
-    git_email = os.environ.get("GIT_USER_EMAIL", "agent@prospector.local")
-    gh_token  = os.environ.get("GH_TOKEN", "")
-
-    subprocess.run(["git", "-C", str(repo_dir), "config", "user.name",  git_name],  capture_output=True)
-    subprocess.run(["git", "-C", str(repo_dir), "config", "user.email", git_email], capture_output=True)
-
-    # Inject token into remote URL so push authenticates on Railway
-    if gh_token:
-        r = subprocess.run(["git", "-C", str(repo_dir), "remote", "get-url", "origin"],
-                           capture_output=True, text=True)
-        url = r.stdout.strip()
-        if "github.com" in url and f"{gh_token}@" not in url:
-            authed = url.replace("https://", f"https://{gh_token}@")
-            subprocess.run(["git", "-C", str(repo_dir), "remote", "set-url", "origin", authed], capture_output=True)
-
-    # Collect files to commit
-    files = ["results/outreach.csv", "results/index.csv", "seen_companies.txt"]
+    # Collect files to push
+    files_to_push = ["results/outreach.csv", "results/index.csv", "seen_companies.txt"]
     for md in (repo_dir / "results").glob(f"{run_date}_*.md"):
-        files.append(str(md.relative_to(repo_dir)))
+        files_to_push.append(str(md.relative_to(repo_dir)))
 
-    commands = [
-        ["git", "-C", str(repo_dir), "add"] + files,
-        ["git", "-C", str(repo_dir), "commit", "-m", f"prospector run {run_date}"],
-        ["git", "-C", str(repo_dir), "push"],
-    ]
-    for cmd in commands:
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        if result.returncode != 0:
-            if "nothing to commit" not in result.stdout + result.stderr:
-                log_error(f"git command failed: {' '.join(cmd[2:])}\n{result.stderr.strip()}")
-            return
-    log_info("Pushed results to git — Railway will redeploy")
+    pushed = 0
+    for rel_path in files_to_push:
+        local_path = repo_dir / rel_path
+        if not local_path.exists():
+            continue
+
+        content_b64 = base64.b64encode(local_path.read_bytes()).decode()
+
+        # Get current SHA (needed for updates)
+        sha = None
+        r = req.get(f"{api_base}/{rel_path}", headers=headers, timeout=10)
+        if r.status_code == 200:
+            sha = r.json().get("sha")
+
+        payload = {
+            "message": f"prospector run {run_date}",
+            "content": content_b64,
+        }
+        if sha:
+            payload["sha"] = sha
+
+        r = req.put(f"{api_base}/{rel_path}", json=payload, headers=headers, timeout=30)
+        if r.status_code in (200, 201):
+            pushed += 1
+        else:
+            log_error(f"GitHub API error pushing {rel_path}: {r.status_code} {r.text[:200]}")
+
+    if pushed:
+        log_info(f"Pushed {pushed} files to GitHub via API — Railway will redeploy")
 
 
 def get_test_companies(seen):
