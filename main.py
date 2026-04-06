@@ -19,7 +19,6 @@ sys.path.insert(0, str(Path(__file__).parent))
 from utils import (
     load_seen_companies,
     save_seen_companies,
-    send_telegram_notification,
     log_error,
     log_info,
 )
@@ -60,15 +59,7 @@ def main():
         companies = find_companies(seen_companies)
     
     if not companies:
-        message = (
-            f"🎯 Prospector Run — {run_date}\n"
-            f"Companies found: 0\n"
-            f"Contacts identified: 0\n"
-            f"Emails drafted: 0\n\n"
-            f"No new qualifying companies found."
-        )
         log_info("No new companies found")
-        send_telegram_notification(message)
         return
     
     log_info(f"Processing {len(companies)} companies...")
@@ -156,14 +147,6 @@ def main():
     # Send Telegram notification
     message = (
         f"🎯 Prospector Run Complete — {run_date}\n"
-        f"Companies found: {len(companies)}\n"
-        f"Verified contacts: {total_emails}\n"
-        f"Unverified contacts: {total_unverified}\n"
-        f"Emails drafted: {total_emails}\n\n"
-        f"Files saved to ~/company_prospector/results/"
-    )
-    send_telegram_notification(message)
-    
     elapsed = (datetime.now() - start_time).total_seconds()
     log_info(f"Run complete in {elapsed:.1f}s")
     log_info(f"Summary: {len(companies)} companies, {total_contacts} total contacts ({total_emails} verified, {total_unverified} unverified), {total_emails} emails drafted")
