@@ -14,18 +14,22 @@
       min-height: 100vh;
     }
 
+    /* ── Header ── */
     header {
       background: #ffffff;
       border-bottom: 1px solid #e2e8f0;
-      padding: 16px 32px;
+      padding: 14px 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
     header h1 {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
       color: #0f172a;
       letter-spacing: -0.3px;
@@ -36,7 +40,7 @@
     .header-right {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .badge-count {
@@ -52,40 +56,335 @@
       background: #f8fafc;
       border: 1px solid #cbd5e1;
       color: #0f172a;
-      padding: 6px 28px 6px 12px;
+      padding: 6px 28px 6px 10px;
       border-radius: 8px;
       font-size: 13px;
       cursor: pointer;
       appearance: none;
       -webkit-appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 10px center;
+      background-position: right 9px center;
     }
 
     .date-selector:focus { outline: none; border-color: #4f46e5; }
 
+    .nav-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: #475569;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+    }
+
+    .nav-link:hover { background: #f1f5f9; color: #0f172a; }
+
+    /* ── Main layout ── */
     main {
       max-width: 1100px;
       margin: 0 auto;
       padding: 28px 24px;
     }
 
+    /* ── Run panel ── */
+    .run-panel {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .run-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      cursor: pointer;
+      user-select: none;
+      gap: 12px;
+    }
+
+    .run-panel-header:hover { background: #f8fafc; }
+
+    .run-panel-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .run-panel-title .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #cbd5e1;
+    }
+
+    .run-panel-title .dot.live {
+      background: #22c55e;
+      box-shadow: 0 0 0 3px #dcfce7;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 3px #dcfce7; }
+      50%       { box-shadow: 0 0 0 5px #dcfce7; }
+    }
+
+    .run-chevron {
+      color: #94a3b8;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+
+    .run-chevron.open { transform: rotate(180deg); }
+
+    .run-panel-body {
+      display: none;
+      padding: 0 20px 20px;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .run-panel-body.open { display: block; }
+
+    /* Signal toggles */
+    .signal-toggles {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 16px 0;
+    }
+
+    .signal-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1.5px solid #e2e8f0;
+      background: #f8fafc;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      color: #475569;
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .signal-toggle input { display: none; }
+    .signal-toggle.checked { background: #ede9fe; border-color: #4f46e5; color: #4f46e5; }
+    .signal-toggle .check { font-size: 11px; }
+
+    /* Threshold grid */
+    .threshold-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .threshold-field label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #94a3b8;
+      margin-bottom: 5px;
+    }
+
+    .threshold-field input {
+      width: 100%;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      color: #0f172a;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 10px;
+      font-family: inherit;
+    }
+
+    .threshold-field input:focus {
+      outline: none;
+      border-color: #4f46e5;
+      background: #fff;
+    }
+
+    .run-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 4px;
+    }
+
+    .run-hint {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .btn-run {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      background: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn-run:hover { background: #4338ca; }
+    .btn-run:disabled { background: #a5b4fc; cursor: not-allowed; }
+
+    /* ── Progress overlay ── */
+    .progress-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .progress-overlay.active { display: flex; }
+
+    .progress-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 32px;
+      width: 560px;
+      max-width: calc(100vw - 48px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+
+    .progress-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    .progress-subtitle {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 20px;
+    }
+
+    .progress-bar-track {
+      background: #f1f5f9;
+      border-radius: 99px;
+      height: 8px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4f46e5, #818cf8);
+      border-radius: 99px;
+      transition: width 0.6s ease;
+      width: 0%;
+    }
+
+    .progress-pct {
+      font-size: 12px;
+      color: #94a3b8;
+      text-align: right;
+      margin-bottom: 16px;
+    }
+
+    .progress-log {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 11px;
+      color: #475569;
+      line-height: 1.7;
+      max-height: 200px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .progress-log .log-ok   { color: #16a34a; }
+    .progress-log .log-skip { color: #94a3b8; }
+    .progress-log .log-err  { color: #dc2626; }
+
+    .progress-done {
+      display: none;
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #dcfce7;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      font-size: 13px;
+      color: #166534;
+      font-weight: 500;
+    }
+
+    .progress-done.show { display: block; }
+
+    .progress-error {
+      display: none;
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+      font-size: 13px;
+      color: #dc2626;
+    }
+
+    .progress-error.show { display: block; }
+
+    .btn-close-progress {
+      display: none;
+      margin-top: 16px;
+      width: 100%;
+      padding: 10px;
+      background: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-close-progress.show { display: block; }
+    .btn-close-progress:hover { background: #4338ca; }
+
+    /* ── Filters ── */
     .filters {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .filter-btn {
-      padding: 6px 14px;
+      padding: 5px 14px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: 500;
-      border: 1px solid #cbd5e1;
+      border: 1.5px solid #e2e8f0;
       background: #ffffff;
-      color: #475569;
+      color: #64748b;
       cursor: pointer;
       transition: all 0.15s;
     }
@@ -93,6 +392,7 @@
     .filter-btn:hover { border-color: #4f46e5; color: #4f46e5; }
     .filter-btn.active { background: #4f46e5; border-color: #4f46e5; color: white; }
 
+    /* ── Empty state ── */
     .empty {
       text-align: center;
       padding: 80px 0;
@@ -101,20 +401,21 @@
 
     .empty p { font-size: 15px; }
 
+    /* ── Company cards ── */
     .grid { display: grid; gap: 16px; }
 
     .card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
       transition: box-shadow 0.15s;
     }
 
-    .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+    .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
 
     .card-header {
-      padding: 18px 22px 14px;
+      padding: 18px 20px 14px;
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
@@ -124,7 +425,7 @@
 
     .card-title {
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 700;
       color: #0f172a;
     }
 
@@ -142,14 +443,13 @@
     }
 
     .signal-dot {
-      width: 6px;
-      height: 6px;
+      width: 6px; height: 6px;
       border-radius: 50%;
       background: currentColor;
     }
 
     .card-detail {
-      padding: 12px 22px;
+      padding: 12px 20px;
       font-size: 13px;
       color: #475569;
       line-height: 1.5;
@@ -157,8 +457,6 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      background: #f8fafc;
-      border-bottom: 1px solid #f1f5f9;
     }
 
     .source-link {
@@ -172,15 +470,16 @@
 
     .source-link:hover { text-decoration: underline; }
 
-    .card-section { padding: 14px 22px; }
-
-    .card-section + .card-section { border-top: 1px solid #f1f5f9; }
+    .card-section {
+      padding: 14px 20px;
+      border-top: 1px solid #f1f5f9;
+    }
 
     .section-label {
-      font-size: 11px;
-      font-weight: 600;
+      font-size: 10px;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
+      letter-spacing: 1px;
       color: #94a3b8;
       margin-bottom: 10px;
     }
@@ -206,22 +505,21 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 8px 0;
-      border-bottom: 1px solid #f1f5f9;
+      padding: 9px 0;
+      border-bottom: 1px solid #f8fafc;
     }
 
     .contact-row:last-child { border-bottom: none; }
 
     .contact-avatar {
-      width: 34px;
-      height: 34px;
+      width: 34px; height: 34px;
       border-radius: 50%;
       background: #ede9fe;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       color: #4f46e5;
       flex-shrink: 0;
     }
@@ -234,32 +532,29 @@
       color: #0f172a;
     }
 
-    .contact-title {
+    .contact-title-text {
       font-size: 12px;
       color: #64748b;
       margin-top: 1px;
     }
 
-    .contact-links { display: flex; gap: 8px; flex-shrink: 0; }
+    .contact-links { display: flex; gap: 6px; flex-shrink: 0; }
 
     .contact-link {
-      font-size: 12px;
+      font-size: 11px;
+      font-weight: 600;
       padding: 4px 10px;
       border-radius: 6px;
       text-decoration: none;
-      font-weight: 500;
-      border: 1px solid;
-    }
-
-    .link-email {
+      border: 1.5px solid #c7d2fe;
       color: #4f46e5;
-      border-color: #c7d2fe;
       background: #ede9fe;
+      transition: background 0.15s;
     }
 
-    .link-email:hover { background: #ddd6fe; }
+    .contact-link:hover { background: #ddd6fe; }
 
-    /* Email accordion */
+    /* ── Email accordion ── */
     .email-toggle {
       width: 100%;
       background: none;
@@ -270,24 +565,26 @@
       align-items: center;
       justify-content: space-between;
       color: #475569;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 500;
       padding: 0;
+      font-family: inherit;
     }
 
     .email-toggle .chevron {
       transition: transform 0.2s;
       color: #94a3b8;
+      flex-shrink: 0;
     }
 
     .email-toggle.open .chevron { transform: rotate(180deg); }
 
-    .email-body-wrap { display: none; margin-top: 10px; }
+    .email-body-wrap { display: none; margin-top: 12px; }
     .email-body-wrap.open { display: block; }
 
     .email-subject {
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
       color: #0f172a;
       margin-bottom: 8px;
     }
@@ -314,7 +611,11 @@
       padding: 8px 12px;
     }
 
-    .li-note strong { color: #475569; }
+    .li-note strong { color: #0f172a; }
+
+    /* ── Utility ── */
+    input[type="number"] { -moz-appearance: textfield; }
+    input[type="number"]::-webkit-inner-spin-button { opacity: 0.3; }
   </style>
 </head>
 <body>
@@ -323,28 +624,101 @@
   <h1>Prospector <span>Dashboard</span></h1>
   <div class="header-right">
     <span class="badge-count">{{ total }} companies</span>
-    <select class="date-selector" onchange="window.location='/date/' + this.value">
+    <select class="date-selector" onchange="window.location='/date/'+this.value">
       {% for d in all_dates %}
       <option value="{{ d }}" {% if d == selected_date %}selected{% endif %}>{{ d }}</option>
       {% endfor %}
     </select>
-    <a href="/settings" style="color:#4f46e5;font-size:13px;text-decoration:none;padding:6px 14px;border:1px solid #c7d2fe;border-radius:8px;background:#ede9fe;white-space:nowrap;font-weight:500;">⚙ Settings</a>
+    <a href="/settings" class="nav-link">⚙ Settings</a>
   </div>
 </header>
 
 <main>
+
+  <!-- ── Run Panel ── -->
+  <div class="run-panel">
+    <div class="run-panel-header" onclick="toggleRunPanel()">
+      <div class="run-panel-title">
+        <span class="dot {% if run_state.running %}live{% endif %}" id="live-dot"></span>
+        {% if run_state.running %}
+          Agent running…
+        {% else %}
+          Configure &amp; Run
+        {% endif %}
+      </div>
+      <svg class="run-chevron" id="run-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="run-panel-body" id="run-panel-body">
+      <form id="run-form" onsubmit="startRun(event)">
+
+        <!-- Signal types -->
+        <div class="signal-toggles">
+          {% set enabled = s.signals_enabled %}
+          {% for sig, label in [('ae_spike','AE Spike'),('sdr_spike','SDR Spike'),('funding','Funding'),('cro_hire','CRO Hire')] %}
+          <label class="signal-toggle {% if sig in enabled %}checked{% endif %}" onclick="toggleSignal(this)">
+            <input type="checkbox" name="signals_enabled" value="{{ sig }}" {% if sig in enabled %}checked{% endif %}>
+            <span class="check">{% if sig in enabled %}✓{% else %}○{% endif %}</span>
+            {{ label }}
+          </label>
+          {% endfor %}
+        </div>
+
+        <!-- Thresholds -->
+        <div class="threshold-grid">
+          <div class="threshold-field">
+            <label>Min AE roles</label>
+            <input type="number" name="ae_min_absolute" value="{{ s.ae_min_absolute }}" min="1" max="20">
+          </div>
+          <div class="threshold-field">
+            <label>Min SDR roles</label>
+            <input type="number" name="sdr_min_absolute" value="{{ s.sdr_min_absolute }}" min="1" max="20">
+          </div>
+          <div class="threshold-field">
+            <label>Recent window (days)</label>
+            <input type="number" name="recent_days" value="{{ s.recent_days }}" min="7" max="180">
+          </div>
+          <div class="threshold-field">
+            <label>Growth % threshold</label>
+            <input type="number" name="spike_growth_pct" value="{{ (s.spike_growth_pct * 100)|round(0)|int }}" min="10" max="500">
+          </div>
+          <div class="threshold-field">
+            <label>Max total open roles</label>
+            <input type="number" name="max_total_roles" value="{{ s.max_total_roles }}" min="10" max="500">
+          </div>
+          <div class="threshold-field">
+            <label>Max contacts / co.</label>
+            <input type="number" name="max_contacts_per_company" value="{{ s.max_contacts_per_company }}" min="1" max="10">
+          </div>
+        </div>
+
+        <div class="run-actions">
+          <span class="run-hint">Settings are saved and the agent runs immediately.</span>
+          <button class="btn-run" type="submit" id="run-btn">
+            ▶ Run Now
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- ── Filters ── -->
   <div class="filters" id="filters">
-    <button class="filter-btn active" data-signal="all" onclick="filterCards(this, 'all')">All</button>
+    <button class="filter-btn active" data-signal="all" onclick="filterCards(this,'all')">All</button>
     {% for sig in all_signals %}
-    <button class="filter-btn" data-signal="{{ sig }}" onclick="filterCards(this, '{{ sig }}')">
+    <button class="filter-btn" data-signal="{{ sig }}" onclick="filterCards(this,'{{ sig }}')">
       {{ signal_labels.get(sig, sig) }}
     </button>
     {% endfor %}
   </div>
 
+  <!-- ── Results ── -->
   {% if not companies %}
   <div class="empty">
-    <p>No results for {{ selected_date }}</p>
+    <p>No results for {{ selected_date }} — run the agent to populate results.</p>
   </div>
   {% else %}
   <div class="grid" id="card-grid">
@@ -353,7 +727,7 @@
 
       <div class="card-header">
         <div class="card-title">{{ co.name }}</div>
-        <span class="signal-badge" style="color:{{ co.signal_color }};background:{{ co.signal_color }}18;border:1px solid {{ co.signal_color }}40;">
+        <span class="signal-badge" style="color:{{ co.signal_color }};background:{{ co.signal_color }}18;border:1px solid {{ co.signal_color }}44;">
           <span class="signal-dot"></span>
           {{ co.signal_label }}
         </span>
@@ -374,11 +748,11 @@
             <div class="contact-avatar">{{ c.name[0] if c.name else '?' }}</div>
             <div class="contact-info">
               <div class="contact-name">{{ c.name }}</div>
-              <div class="contact-title">{{ c.title }}</div>
+              <div class="contact-title-text">{{ c.title }}</div>
             </div>
             <div class="contact-links">
               {% if c.email and c.email not in ('N/A', '') %}
-              <a class="contact-link link-email" href="mailto:{{ c.email }}" title="{{ c.email }}">Email</a>
+              <a class="contact-link" href="mailto:{{ c.email }}" title="{{ c.email }}">Email</a>
               {% endif %}
             </div>
           </div>
@@ -419,9 +793,55 @@
     {% endfor %}
   </div>
   {% endif %}
+
 </main>
 
+<!-- ── Progress Overlay ── -->
+<div class="progress-overlay" id="progress-overlay">
+  <div class="progress-card">
+    <div class="progress-title">Agent Running</div>
+    <div class="progress-subtitle" id="progress-subtitle">Starting up…</div>
+
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progress-bar"></div>
+    </div>
+    <div class="progress-pct" id="progress-pct">0%</div>
+
+    <div class="progress-log" id="progress-log">Initializing…</div>
+
+    <div class="progress-done" id="progress-done"></div>
+    <div class="progress-error" id="progress-error"></div>
+    <button class="btn-close-progress" id="btn-close-progress" onclick="closeProgress()">
+      View Results
+    </button>
+  </div>
+</div>
+
 <script>
+  // ── Run panel toggle ──
+  function toggleRunPanel() {
+    const body    = document.getElementById('run-panel-body');
+    const chevron = document.getElementById('run-chevron');
+    body.classList.toggle('open');
+    chevron.classList.toggle('open');
+  }
+
+  // Open panel by default if no results yet
+  {% if not companies %}
+  toggleRunPanel();
+  {% endif %}
+
+  // ── Signal toggle ──
+  function toggleSignal(label) {
+    const cb = label.querySelector('input');
+    cb.checked = !cb.checked;
+    label.classList.toggle('checked', cb.checked);
+    label.querySelector('.check').textContent = cb.checked ? '✓' : '○';
+    // Prevent the label's default click from double-toggling
+    return false;
+  }
+
+  // ── Card filter ──
   function filterCards(btn, signal) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
@@ -430,10 +850,115 @@
     });
   }
 
+  // ── Email accordion ──
   function toggleEmail(btn) {
     btn.classList.toggle('open');
     btn.nextElementSibling.classList.toggle('open');
   }
+
+  // ── Run agent ──
+  let pollTimer = null;
+
+  function startRun(e) {
+    e.preventDefault();
+    const form = document.getElementById('run-form');
+    const data = new FormData(form);
+
+    fetch('/run', { method: 'POST', body: data })
+      .then(r => r.json())
+      .then(res => {
+        if (res.error) { alert(res.error); return; }
+        showProgress();
+        pollStatus();
+      })
+      .catch(err => alert('Failed to start: ' + err));
+  }
+
+  function showProgress() {
+    document.getElementById('progress-overlay').classList.add('active');
+    document.getElementById('run-btn').disabled = true;
+    document.getElementById('live-dot').classList.add('live');
+    setProgress(0, 'Starting up…', []);
+  }
+
+  function closeProgress() {
+    document.getElementById('progress-overlay').classList.remove('active');
+    window.location.reload();
+  }
+
+  function setProgress(pct, subtitle, logLines) {
+    document.getElementById('progress-bar').style.width  = pct + '%';
+    document.getElementById('progress-pct').textContent  = pct + '%';
+    document.getElementById('progress-subtitle').textContent = subtitle;
+
+    const logEl = document.getElementById('progress-log');
+    logEl.innerHTML = logLines.map(line => {
+      if (line.includes('✅') || line.includes('EXTRACTED') || line.includes('Found') || line.includes('Pushed'))
+        return `<span class="log-ok">${escHtml(line)}</span>`;
+      if (line.includes('❌') || line.includes('SKIP') || line.includes('FILTERED'))
+        return `<span class="log-skip">${escHtml(line)}</span>`;
+      if (line.includes('ERROR') || line.includes('error'))
+        return `<span class="log-err">${escHtml(line)}</span>`;
+      return escHtml(line);
+    }).join('\n');
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function pollStatus() {
+    fetch('/run/status')
+      .then(r => r.json())
+      .then(data => {
+        const subtitle = data.running
+          ? progressSubtitle(data.progress)
+          : (data.error ? 'Error occurred' : 'Complete!');
+
+        setProgress(data.progress, subtitle, data.log_tail || []);
+
+        if (data.finished) {
+          clearTimeout(pollTimer);
+          document.getElementById('live-dot').classList.remove('live');
+          document.getElementById('run-btn').disabled = false;
+
+          if (data.error) {
+            const errEl = document.getElementById('progress-error');
+            errEl.textContent = data.error;
+            errEl.classList.add('show');
+          } else {
+            const doneEl = document.getElementById('progress-done');
+            doneEl.textContent = data.summary
+              ? '✓ ' + data.summary
+              : '✓ Run complete — results updated.';
+            doneEl.classList.add('show');
+          }
+          document.getElementById('btn-close-progress').classList.add('show');
+        } else if (data.running) {
+          pollTimer = setTimeout(pollStatus, 2000);
+        }
+      })
+      .catch(() => { pollTimer = setTimeout(pollStatus, 3000); });
+  }
+
+  function progressSubtitle(pct) {
+    if (pct < 10) return 'Starting up…';
+    if (pct < 25) return 'Searching for signals…';
+    if (pct < 40) return 'Scanning job boards…';
+    if (pct < 55) return 'Filtering companies…';
+    if (pct < 70) return 'Finding contacts…';
+    if (pct < 85) return 'Drafting emails…';
+    if (pct < 95) return 'Saving results…';
+    return 'Pushing to GitHub…';
+  }
+
+  // Auto-resume polling if agent was already running when page loaded
+  {% if run_state.running %}
+  showProgress();
+  pollStatus();
+  {% endif %}
 </script>
+
 </body>
 </html>
