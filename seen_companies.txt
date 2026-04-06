@@ -9,6 +9,7 @@ Cognism|2026-04-06
 Coupa|2026-04-06
 Customerio|2026-04-06
 DataGuard|2026-04-06
+Dilitrust|2026-04-06
 Greenhouse|2026-04-06
 Impact|2026-04-06
 LastPass|2026-04-06
@@ -21,7 +22,11 @@ OpenObserve|2026-04-06
 Pallet|2026-04-06
 Pendo|2026-04-06
 Salesloft|2026-04-06
+Sapiens|2026-04-06
 Showpad|2026-04-06
 Smartbear|2026-04-06
+Sonatype|2026-04-06
 Upguard|2026-04-06
+Upshop|2026-04-06
+Webflow|2026-04-06
 Zuora|2026-04-06
