@@ -30,3 +30,4 @@ date,company,signal,signal_detail,contacts_found,contacts_unverified,emails_draf
 2026-04-05,Customerio,ae_spike,2 new AE roles in last 45d (+100% vs prior 45d) | 3 total open AE,5,0,5,https://job-boards.greenhouse.io/customerio/jobs/7724525,/app/results/2026-04-05_customerio.md
 2026-04-05,Axonius,ae_spike,4 new AE roles in last 45d (new push (0 prior)) | 5 total open AE,5,0,5,https://www.axonius.com/company/careers/open-jobs?gh_jid=7682373003,/app/results/2026-04-05_axonius.md
 2026-04-05,Smartbear,ae_spike,6 new AE roles in last 45d (+500% vs prior 45d) | 7 total open AE,5,0,5,https://job-boards.greenhouse.io/smartbear/jobs/7659639003,/app/results/2026-04-05_smartbear.md
+2026-04-06,Upguard,sdr_spike,"4 new SDR roles in last 45d (prior 45d: 1 → now: 4, +300%) | 5 total open SDR",3,0,3,https://jobs.lever.co/upguard/ec8a8969-67b9-41d8-b185-151406c06156,/app/results/2026-04-06_upguard.md
