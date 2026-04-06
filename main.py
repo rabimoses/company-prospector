@@ -16,7 +16,6 @@ import time
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from config import SEARCH_QUERIES
 from utils import (
     load_seen_companies,
     save_seen_companies,

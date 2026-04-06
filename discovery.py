@@ -2,6 +2,7 @@
 
 import sys, json, re, requests
 from pathlib import Path
+from datetime import datetime, timedelta
 from typing import List, Dict, Set
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -9,12 +10,21 @@ from config import SERPER_API_KEY, SERPER_API_URL, ANTHROPIC_API_KEY
 from utils import log_info, log_error
 from ae_sdr_boards import detect_spikes
 
-SEARCH_QUERIES = [
-    ("funding", "raised Series B SaaS site:techcrunch.com after:2025-12-01"),
-    ("funding", "raised Series C SaaS site:techcrunch.com after:2025-12-01"),
-    ("cro",     "appointed CRO B2B SaaS site:businesswire.com after:2025-12-01"),
-    ("cro",     "appointed Chief Revenue Officer site:prnewswire.com after:2025-12-01"),
-]
+def _after(days: int = 60) -> str:
+    """Return a Serper-compatible after: date string N days ago."""
+    return (datetime.utcnow() - timedelta(days=days)).strftime("%Y-%m-%d")
+
+def get_search_queries():
+    after = _after(60)
+    return [
+        ("funding", f"raised Series B SaaS site:techcrunch.com after:{after}"),
+        ("funding", f"raised Series C SaaS site:techcrunch.com after:{after}"),
+        ("funding", f"raised funding B2B SaaS site:techcrunch.com after:{after}"),
+        ("cro",     f"appointed CRO B2B SaaS site:businesswire.com after:{after}"),
+        ("cro",     f"appointed Chief Revenue Officer site:prnewswire.com after:{after}"),
+        ("cro",     f"appointed Chief Marketing Officer B2B SaaS site:prnewswire.com after:{after}"),
+        ("cro",     f"appointed \"VP of Sales\" OR \"VP Sales\" SaaS site:businesswire.com after:{after}"),
+    ]
 
 AE_SDR_QUERIES = [
     ("ae_spike",  '"account executive" "B2B SaaS" site:linkedin.com/jobs'),
@@ -52,7 +62,7 @@ def find_companies(seen: Set[str]) -> List[Dict]:
 
     companies, found = [], set()
 
-    for kind, query in SEARCH_QUERIES:
+    for kind, query in get_search_queries():
         log_info(f"\n{'─'*80}")
         log_info(f"QUERY: {query}")
         log_info(f"{'─'*80}")
