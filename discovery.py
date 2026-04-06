@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import List, Dict, Set
 
 sys.path.insert(0, str(Path(__file__).parent))
-from config import SERPER_API_KEY, SERPER_API_URL
+from config import SERPER_API_KEY, SERPER_API_URL, ANTHROPIC_API_KEY
 from utils import log_info, log_error
 from ae_sdr_boards import detect_spikes
 
@@ -94,6 +94,7 @@ def find_companies(seen: Set[str]) -> List[Dict]:
     companies.extend(spike_batch)
     found.update(c["name"] for c in spike_batch)
 
+    # Step 1: keyword-based non-SaaS filter (fast, free)
     filtered = []
     for c in companies:
         if not is_likely_b2b_saas(c):
@@ -103,6 +104,9 @@ def find_companies(seen: Set[str]) -> List[Dict]:
             log_info(f"  ⛔ BLOCKED: {c['name']}")
             continue
         filtered.append(c)
+
+    # Step 2: Claude-powered B2B SaaS confirmation (positive signal check)
+    filtered = claude_saas_filter(filtered)
     companies = filtered
     companies = dedupe(companies)
     log_info(f"\n{'='*80}")
@@ -373,6 +377,73 @@ def clean_name(raw: str) -> str:
     if len(name.split()) > 5:
         return ""
     return name
+
+
+def claude_saas_filter(companies: list) -> list:
+    """Use Claude to confirm each company is a B2B SaaS business. Batches all in one call."""
+    if not companies or not ANTHROPIC_API_KEY:
+        return companies
+
+    # Build a compact list for Claude to evaluate
+    company_list = "\n".join(
+        f"{i+1}. {c['name']} — {c.get('signal_detail', '')} | source: {c.get('source_title', '')}"
+        for i, c in enumerate(companies)
+    )
+
+    prompt = f"""You are a B2B SaaS classifier. For each company below, reply with just the number and YES or NO.
+
+A company qualifies as B2B SaaS if it sells software subscriptions to businesses (not consumers, not hardware, not services/consulting, not crypto/DeFi, not defense/aerospace, not biotech/pharma, not a VC/fund).
+
+{company_list}
+
+Reply in this exact format, one per line:
+1. YES
+2. NO
+etc."""
+
+    try:
+        r = requests.post(
+            "https://api.anthropic.com/v1/messages",
+            headers={
+                "x-api-key": ANTHROPIC_API_KEY,
+                "anthropic-version": "2023-06-01",
+                "content-type": "application/json",
+            },
+            json={
+                "model": "claude-haiku-4-5",
+                "max_tokens": 256,
+                "messages": [{"role": "user", "content": prompt}],
+            },
+            timeout=20,
+        )
+        r.raise_for_status()
+        response_text = r.json()["content"][0]["text"]
+
+        # Parse YES/NO answers
+        kept = []
+        for line in response_text.strip().splitlines():
+            line = line.strip()
+            m = re.match(r'^(\d+)\.\s*(YES|NO)', line, re.IGNORECASE)
+            if m:
+                idx = int(m.group(1)) - 1
+                verdict = m.group(2).upper()
+                if 0 <= idx < len(companies):
+                    if verdict == "YES":
+                        kept.append(companies[idx])
+                    else:
+                        log_info(f"  🚫 FILTERED (Claude, non-SaaS): {companies[idx]['name']}")
+
+        # Fallback: if parsing failed, return original list
+        if not kept and len(companies) > 0:
+            log_info("  ⚠️ Claude SaaS filter parse failed — keeping all companies")
+            return companies
+
+        log_info(f"  🤖 Claude SaaS filter: {len(kept)}/{len(companies)} passed")
+        return kept
+
+    except Exception as e:
+        log_error(f"Claude SaaS filter error: {e} — skipping filter")
+        return companies
 
 
 NON_SAAS_KEYWORDS = {
