@@ -189,6 +189,19 @@ def by_date(run_date):
     )
 
 
+@app.route("/cron", methods=["GET", "POST"])
+def cron_trigger():
+    """Called by cron-job.org daily. Protected by CRON_SECRET env var."""
+    secret = os.environ.get("CRON_SECRET", "")
+    if secret and request.args.get("secret") != secret:
+        return jsonify({"error": "unauthorized"}), 401
+    state = _get_run_state()
+    if state.get("running"):
+        return jsonify({"status": "already running"}), 200
+    threading.Thread(target=_run_agent_thread, daemon=True).start()
+    return jsonify({"status": "started"}), 200
+
+
 @app.route("/run", methods=["POST"])
 def run_agent():
     state = _get_run_state()
