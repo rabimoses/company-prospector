@@ -25,6 +25,7 @@ Platformsh|2026-04-05
 Salesloft|2026-04-05
 Showpad|2026-04-05
 Smartbear|2026-04-05
+Upguard|2026-04-06
 Upshop|2026-04-05
 Webflow|2026-04-05
 Windward|2026-04-05
