@@ -950,9 +950,10 @@
   }
 
   function closeProgress() {
-    // "View Results" button: reload to show fresh data
+    // "View Results" button: go to today's date so partial results are visible
     sessionStorage.removeItem(DISMISSED_KEY);
-    window.location.reload();
+    const today = new Date().toISOString().split('T')[0];
+    window.location.href = '/date/' + today;
   }
 
   function stopRun() {
