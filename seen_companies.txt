@@ -6,6 +6,7 @@ Cognism|2026-04-07
 Coupa|2026-04-07
 Customerio|2026-04-07
 DataGuard|2026-04-07
+Druva|2026-04-07
 Impact|2026-04-07
 Kantata|2026-04-07
 LastPass|2026-04-07
