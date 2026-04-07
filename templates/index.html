@@ -152,6 +152,64 @@
 
     .run-panel-body.open { display: block; }
 
+    /* How it works */
+    .how-it-works {
+      margin: 18px 0 4px;
+      padding: 16px 18px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+    }
+
+    .how-it-works-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #94a3b8;
+      margin-bottom: 10px;
+    }
+
+    .how-it-works p {
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.6;
+      margin: 0 0 12px;
+    }
+
+    .signal-descriptions {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .signal-desc {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+
+    .signal-desc-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 3px;
+    }
+
+    .signal-desc-text {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .signal-desc-source {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
     /* Signal toggles */
     .signal-toggles {
       display: flex;
@@ -697,6 +755,34 @@
 
     <div class="run-panel-body" id="run-panel-body">
       <form id="run-form" onsubmit="startRun(event)">
+
+        <!-- How it works -->
+        <div class="how-it-works">
+          <div class="how-it-works-title">How it works</div>
+          <p>This agent runs daily and automatically scans for B2B SaaS companies showing growth signals — then finds key contacts and drafts a personalized outreach email for each. Select which signals to monitor and hit Run.</p>
+          <div class="signal-descriptions">
+            <div class="signal-desc">
+              <div class="signal-desc-name">📈 AE Spike</div>
+              <div class="signal-desc-text">Companies with a sudden surge in Account Executive job postings — a strong signal they're scaling revenue.</div>
+              <div class="signal-desc-source">Source: Greenhouse &amp; Lever job boards</div>
+            </div>
+            <div class="signal-desc">
+              <div class="signal-desc-name">📣 SDR Spike</div>
+              <div class="signal-desc-text">Companies rapidly hiring Sales Development Reps — indicates pipeline investment and top-of-funnel build-out.</div>
+              <div class="signal-desc-source">Source: Greenhouse &amp; Lever job boards</div>
+            </div>
+            <div class="signal-desc">
+              <div class="signal-desc-name">💰 Funding</div>
+              <div class="signal-desc-text">B2B SaaS companies that recently raised a Series B or C — fresh capital often triggers a demand gen push.</div>
+              <div class="signal-desc-source">Source: TechCrunch</div>
+            </div>
+            <div class="signal-desc">
+              <div class="signal-desc-name">🎯 CRO Hire</div>
+              <div class="signal-desc-text">Companies that just appointed a new Chief Revenue Officer — new CROs bring new vendors and new strategies.</div>
+              <div class="signal-desc-source">Source: BusinessWire &amp; PRNewswire</div>
+            </div>
+          </div>
+        </div>
 
         <!-- Signal types -->
         <div class="signal-toggles">
