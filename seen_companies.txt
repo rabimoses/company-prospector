@@ -20,6 +20,8 @@ Mindtickle|2026-04-07
 Mixpanel|2026-04-07
 MongoDB|2026-04-07
 Obsidian Security|2026-04-07
+Olio|2026-04-07
+OneDay|2026-04-07
 OneSpan|2026-04-07
 Paddle|2026-04-07
 Pendo|2026-04-07
@@ -28,6 +30,7 @@ Profound|2026-04-07
 Rocketlane|2026-04-07
 SaaS procurement - TechCrunch CADDi|2026-04-07
 Salesloft|2026-04-07
+Second Front Systems|2026-04-07
 Showpad|2026-04-07
 Tiugo Technologies|2026-04-07
 Tropic|2026-04-07
