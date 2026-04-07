@@ -352,6 +352,46 @@
 
     .progress-error.show { display: block; }
 
+    .progress-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .btn-x {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #94a3b8;
+      padding: 2px 4px;
+      border-radius: 6px;
+      font-size: 18px;
+      line-height: 1;
+      flex-shrink: 0;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .btn-x:hover { color: #475569; background: #f1f5f9; }
+
+    .btn-stop {
+      display: none;
+      margin-top: 16px;
+      width: 100%;
+      padding: 10px;
+      background: #fff;
+      color: #dc2626;
+      border: 1.5px solid #fca5a5;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-stop.show { display: block; }
+    .btn-stop:hover { background: #fef2f2; }
+
     .btn-close-progress {
       display: none;
       margin-top: 16px;
@@ -427,7 +467,10 @@
       font-size: 16px;
       font-weight: 700;
       color: #0f172a;
+      text-decoration: none;
     }
+
+    .card-title:hover { color: #4f46e5; }
 
     .signal-badge {
       display: inline-flex;
@@ -625,6 +668,7 @@
   <div class="header-right">
     <span class="badge-count">{{ total }} companies</span>
     <select class="date-selector" onchange="window.location='/date/'+this.value">
+      <option value="all" {% if not selected_date %}selected{% endif %}>All dates</option>
       {% for d in all_dates %}
       <option value="{{ d }}" {% if d == selected_date %}selected{% endif %}>{{ d }}</option>
       {% endfor %}
@@ -726,7 +770,7 @@
     <div class="card" data-signal="{{ co.signal }}">
 
       <div class="card-header">
-        <div class="card-title">{{ co.name }}</div>
+        <a class="card-title" href="{{ co.company_website }}" target="_blank" rel="noopener">{{ co.name }} ↗</a>
         <span class="signal-badge" style="color:{{ co.signal_color }};background:{{ co.signal_color }}18;border:1px solid {{ co.signal_color }}44;">
           <span class="signal-dot"></span>
           {{ co.signal_label }}
@@ -799,8 +843,13 @@
 <!-- ── Progress Overlay ── -->
 <div class="progress-overlay" id="progress-overlay">
   <div class="progress-card">
-    <div class="progress-title">Agent Running</div>
-    <div class="progress-subtitle" id="progress-subtitle">Starting up…</div>
+    <div class="progress-card-header">
+      <div>
+        <div class="progress-title" id="progress-title">Agent Running</div>
+        <div class="progress-subtitle" id="progress-subtitle">Starting up…</div>
+      </div>
+      <button class="btn-x" onclick="dismissOverlay()" title="Close">✕</button>
+    </div>
 
     <div class="progress-bar-track">
       <div class="progress-bar-fill" id="progress-bar"></div>
@@ -809,6 +858,7 @@
 
     <div class="progress-log" id="progress-log">Initializing…</div>
 
+    <button class="btn-stop" id="btn-stop" onclick="stopRun()">⏹ Stop</button>
     <div class="progress-done" id="progress-done"></div>
     <div class="progress-error" id="progress-error"></div>
     <button class="btn-close-progress" id="btn-close-progress" onclick="closeProgress()">
@@ -826,10 +876,8 @@
     chevron.classList.toggle('open');
   }
 
-  // Open panel by default if no results yet
-  {% if not companies %}
+  // Always open run panel by default
   toggleRunPanel();
-  {% endif %}
 
   // ── Signal toggle ──
   function toggleSignal(label) {
@@ -874,16 +922,46 @@
       .catch(err => alert('Failed to start: ' + err));
   }
 
+  const DISMISSED_KEY = 'progressDismissed';
+
   function showProgress() {
-    document.getElementById('progress-overlay').classList.add('active');
+    sessionStorage.removeItem(DISMISSED_KEY);
+    // Reset all overlay state before showing
+    document.getElementById('progress-title').textContent = 'Agent Running';
+    document.getElementById('progress-done').classList.remove('show');
+    document.getElementById('progress-error').classList.remove('show');
+    document.getElementById('btn-close-progress').classList.remove('show');
+    const stopBtn = document.getElementById('btn-stop');
+    stopBtn.disabled = false;
+    stopBtn.textContent = '⏹ Stop';
+    stopBtn.classList.add('show');
     document.getElementById('run-btn').disabled = true;
+    document.getElementById('run-btn').textContent = '▶ Run Now';
+    document.querySelector('.run-hint').textContent = 'Settings are saved and the agent runs immediately.';
     document.getElementById('live-dot').classList.add('live');
-    setProgress(0, 'Starting up…', []);
+    setProgress(0, 'Scanning signals & job boards — hang tight, this takes a minute…', []);
+    document.getElementById('progress-overlay').classList.add('active');
+  }
+
+  function dismissOverlay() {
+    // X button = stop the agent and close the dialog
+    stopRun();
+    document.getElementById('progress-overlay').classList.remove('active');
   }
 
   function closeProgress() {
-    document.getElementById('progress-overlay').classList.remove('active');
+    // "View Results" button: reload to show fresh data
+    sessionStorage.removeItem(DISMISSED_KEY);
     window.location.reload();
+  }
+
+  function stopRun() {
+    const btn = document.getElementById('btn-stop');
+    btn.disabled = true;
+    btn.textContent = 'Stopping…';
+    fetch('/run/stop', { method: 'POST' })
+      .then(() => setTimeout(pollStatus, 500))
+      .catch(() => {});
   }
 
   function setProgress(pct, subtitle, logLines) {
@@ -922,35 +1000,41 @@
           clearTimeout(pollTimer);
           document.getElementById('live-dot').classList.remove('live');
           document.getElementById('run-btn').disabled = false;
+          document.getElementById('run-btn').textContent = '▶ Run Now';
+
+          // Hide stop, show done/error, show View Results
+          document.getElementById('btn-stop').classList.remove('show');
+          document.getElementById('btn-close-progress').classList.add('show');
 
           if (data.error) {
+            document.getElementById('progress-title').textContent = 'Stopped';
             const errEl = document.getElementById('progress-error');
             errEl.textContent = data.error;
             errEl.classList.add('show');
           } else {
+            document.getElementById('progress-title').textContent = 'Complete!';
             const doneEl = document.getElementById('progress-done');
             doneEl.textContent = data.summary
               ? '✓ ' + data.summary
               : '✓ Run complete — results updated.';
             doneEl.classList.add('show');
           }
-          document.getElementById('btn-close-progress').classList.add('show');
         } else if (data.running) {
           pollTimer = setTimeout(pollStatus, 2000);
+        } else {
+          // Not running, not finished yet (state mid-update) — check again soon
+          pollTimer = setTimeout(pollStatus, 1000);
         }
       })
       .catch(() => { pollTimer = setTimeout(pollStatus, 3000); });
   }
 
   function progressSubtitle(pct) {
-    if (pct < 10) return 'Starting up…';
-    if (pct < 25) return 'Searching for signals…';
-    if (pct < 40) return 'Scanning job boards…';
-    if (pct < 55) return 'Filtering companies…';
-    if (pct < 70) return 'Finding contacts…';
-    if (pct < 85) return 'Drafting emails…';
-    if (pct < 95) return 'Saving results…';
-    return 'Pushing to GitHub…';
+    if (pct === 0) return 'Scanning signals & job boards — hang tight, this takes a minute…';
+    if (pct < 20) return 'Companies found! Starting contact research…';
+    if (pct < 50) return 'Finding contacts and drafting emails…';
+    if (pct < 85) return 'Almost there — wrapping up remaining companies…';
+    return 'Saving and pushing results…';
   }
 
   // Auto-resume polling if agent was already running when page loaded

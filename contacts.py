@@ -5,23 +5,13 @@ from pathlib import Path
 from typing import List, Dict, Optional
 
 sys.path.insert(0, str(Path(__file__).parent))
-from config import SERPER_API_KEY, SERPER_API_URL, MAX_CONTACTS_PER_COMPANY
+from config import MAX_CONTACTS_PER_COMPANY
+from search import web_search
 from settings_manager import get_settings as _get_settings
 from utils import log_info, log_error, extract_domain_from_url
 
 def serper_search(query: str) -> Dict:
-    try:
-        r = requests.post(
-            SERPER_API_URL,
-            headers={"X-API-KEY": SERPER_API_KEY, "Content-Type": "application/json"},
-            json={"q": query, "num": 5},
-            timeout=10,
-        )
-        r.raise_for_status()
-        return r.json()
-    except Exception as e:
-        log_error(f"Serper error: {e}")
-        return {"organic": []}
+    return web_search(query, num=5)
 
 NAME_RE = re.compile(r'\b([A-Z][a-z]{2,}\s+[A-Z][a-z]{2,})\b')
 NOISE_NAMES = {'How Karim', 'Future Secured', 'New Era', 'Chief Executive', 'Staying Ahead',
@@ -99,11 +89,11 @@ def find_contacts(company_name: str, company_website: str = None, signal_data: D
     queries = [
         # LinkedIn searches by role
         f'"{company_name}" CEO site:linkedin.com',
-        f'"{company_name}" CMO OR "VP Marketing" site:linkedin.com',
-        f'"{company_name}" CRO OR "VP Sales" OR "VP Revenue" site:linkedin.com',
-        f'"{company_name}" "Head of Demand" OR "VP Demand" OR "Demand Generation" site:linkedin.com',
-        # Press/news fallback — catches appointment announcements
-        f'"{company_name}" appoints OR hires OR joins "VP" OR "Chief" OR "Head of"',
+        f'"{company_name}" "VP Marketing" OR CMO site:linkedin.com',
+        f'"{company_name}" "VP Sales" OR CRO site:linkedin.com',
+        f'"{company_name}" "Head of Demand" OR "Demand Generation" site:linkedin.com',
+        # Press/news fallback — simpler queries Serper handles reliably
+        f'"{company_name}" appoints Chief Revenue Officer OR "VP Sales"',
         f'"{company_name}" leadership team',
     ]
 

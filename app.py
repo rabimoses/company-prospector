@@ -1,6 +1,7 @@
 import csv
 import json
 import os
+import signal
 import subprocess
 import threading
 from datetime import date, datetime
@@ -37,6 +38,9 @@ SIGNAL_COLORS = {
 
 # ── run-state helpers ──────────────────────────────────────────────────────────
 
+_current_proc: subprocess.Popen | None = None
+_proc_lock = threading.Lock()
+
 def _get_run_state() -> dict:
     try:
         return json.loads(RUN_STATE.read_text()) if RUN_STATE.exists() else {}
@@ -47,27 +51,31 @@ def _save_run_state(state: dict):
     RUN_STATE.parent.mkdir(parents=True, exist_ok=True)
     RUN_STATE.write_text(json.dumps(state))
 
-# Progress milestones: (log substring, pct)
-_MILESTONES = [
-    ("Starting prospecting run",  5),
-    ("SERPER.DEV LIVE SEARCH",   10),
-    ("Scanning Greenhouse",       25),
-    ("Total companies to scan",   38),
-    ("TOTAL:",                    52),
-    ("Processing ",               58),
-    ("Drafting",                  70),
-    ("Updated outreach.csv",      85),
-    ("Telegram notification",     93),
-    ("Pushed ",                  100),
-]
-
 def _estimate_progress(log_lines: list) -> int:
+    """Progress tied to what's actually visible in the results list.
+    Stays 0 until the first CSV write; then scales with processing."""
+    import re
     text = "\n".join(log_lines)
-    pct = 0
-    for substring, val in _MILESTONES:
-        if substring in text:
-            pct = val
-    return pct
+
+    if "Pushed " in text:
+        return 100
+
+    # Count how many pre-writes have happened (one per phase batch)
+    pre_writes = list(re.finditer(r"Pre-wrote (\d+) discovered companies", text))
+    if not pre_writes:
+        return 0  # Nothing written yet — stopping shows nothing
+
+    # Total companies discovered across all phases
+    total_discovered = sum(int(m.group(1)) for m in pre_writes)
+    if total_discovered == 0:
+        return 0
+
+    # Count fully-processed companies
+    writes = text.count("Updated outreach.csv")
+
+    # Phase 1 done = 15%, scale 15→90% as companies are processed
+    pct = 15 + int((writes / total_discovered) * 75)
+    return min(pct, 90)
 
 def _parse_summary(log_text: str) -> str:
     for line in log_text.splitlines():
@@ -76,20 +84,31 @@ def _parse_summary(log_text: str) -> str:
     return ""
 
 def _run_agent_thread():
-    _save_run_state({"running": True, "started_at": datetime.utcnow().isoformat()})
+    global _current_proc
+    # Clear the log BEFORE marking as running so stale progress from the
+    # previous run is never shown during the first few polls of the new run.
     RUN_LOG.parent.mkdir(parents=True, exist_ok=True)
+    RUN_LOG.write_text("")
+    _save_run_state({"running": True, "started_at": datetime.utcnow().isoformat()})
     env = {**os.environ, "PYTHONUNBUFFERED": "1"}
     try:
         with open(RUN_LOG, "w") as log_f:
-            proc = subprocess.Popen(
-                ["python3", str(BASE_DIR / "main.py")],
-                stdout=log_f, stderr=subprocess.STDOUT,
-                cwd=str(BASE_DIR), env=env,
-            )
+            with _proc_lock:
+                proc = subprocess.Popen(
+                    ["python3", str(BASE_DIR / "main.py")],
+                    stdout=log_f, stderr=subprocess.STDOUT,
+                    cwd=str(BASE_DIR), env=env,
+                    start_new_session=True,  # own process group so we can kill all children
+                )
+                _current_proc = proc
             proc.wait()
+        with _proc_lock:
+            _current_proc = None
         log_text = RUN_LOG.read_text(errors="replace")
         summary  = _parse_summary(log_text)
-        error    = "" if proc.returncode == 0 else f"Exit code {proc.returncode}"
+        error    = "" if proc.returncode == 0 else (
+            "Stopped by user." if proc.returncode in (-9, -15) else f"Exit code {proc.returncode}"
+        )
         _save_run_state({
             "running": False,
             "finished_at": datetime.utcnow().isoformat(),
@@ -97,6 +116,8 @@ def _run_agent_thread():
             "error": error,
         })
     except Exception as e:
+        with _proc_lock:
+            _current_proc = None
         _save_run_state({"running": False, "error": str(e)})
 
 def _apply_settings_from_form(f):
@@ -135,6 +156,11 @@ def group_companies(rows, filter_date=None):
             continue
         name = row["company"]
         if name not in companies:
+            # Derive company website: use stored value or fall back to name-based guess
+            stored_website = row.get("company_website", "")
+            if not stored_website:
+                slug = name.lower().replace(" ", "").replace(",", "").replace(".", "")
+                stored_website = f"https://{slug}.com"
             companies[name] = {
                 "name": name,
                 "date": row.get("date", ""),
@@ -143,6 +169,7 @@ def group_companies(rows, filter_date=None):
                 "signal_color": SIGNAL_COLORS.get(row.get("signal", ""), "#6b7280"),
                 "signal_detail": row.get("signal_detail", ""),
                 "source_url": row.get("source_url", ""),
+                "company_website": stored_website,
                 "verify_linkedin": row.get("verify_demand_gen_linkedin", ""),
                 "contacts": [],
             }
@@ -161,15 +188,15 @@ def group_companies(rows, filter_date=None):
 
 @app.route("/")
 def index():
-    rows       = load_rows()
-    today      = date.today().isoformat()
-    all_dates  = sorted({r["date"] for r in rows}, reverse=True)
+    rows        = load_rows()
+    all_dates   = sorted({r["date"] for r in rows}, reverse=True)
     all_signals = sorted({r["signal"] for r in rows if r.get("signal")})
-    selected   = all_dates[0] if all_dates else today
-    companies  = group_companies(rows, filter_date=selected)
+    # Default: no date filter — show all companies, most recent first
+    companies   = group_companies(rows, filter_date=None)
+    companies   = sorted(companies, key=lambda c: c["date"], reverse=True)
     return render_template("index.html",
         companies=companies, all_dates=all_dates, all_signals=all_signals,
-        selected_date=selected, signal_labels=SIGNAL_LABELS,
+        selected_date=None, signal_labels=SIGNAL_LABELS,
         total=len(companies), s=get_settings(),
         run_state=_get_run_state(),
     )
@@ -180,10 +207,16 @@ def by_date(run_date):
     rows        = load_rows()
     all_dates   = sorted({r["date"] for r in rows}, reverse=True)
     all_signals = sorted({r["signal"] for r in rows if r.get("signal")})
-    companies   = group_companies(rows, filter_date=run_date)
+    if run_date == "all":
+        companies = group_companies(rows, filter_date=None)
+        companies = sorted(companies, key=lambda c: c["date"], reverse=True)
+        selected  = None
+    else:
+        companies = group_companies(rows, filter_date=run_date)
+        selected  = run_date
     return render_template("index.html",
         companies=companies, all_dates=all_dates, all_signals=all_signals,
-        selected_date=run_date, signal_labels=SIGNAL_LABELS,
+        selected_date=selected, signal_labels=SIGNAL_LABELS,
         total=len(companies), s=get_settings(),
         run_state=_get_run_state(),
     )
@@ -210,6 +243,26 @@ def run_agent():
     _apply_settings_from_form(request.form)
     threading.Thread(target=_run_agent_thread, daemon=True).start()
     return jsonify({"started": True})
+
+
+@app.route("/run/stop", methods=["POST"])
+def stop_agent():
+    global _current_proc
+    with _proc_lock:
+        proc = _current_proc
+    if proc and proc.poll() is None:
+        try:
+            # Kill the entire process group (catches child processes too)
+            os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+    # Force state to stopped immediately so UI updates right away
+    _save_run_state({
+        "running": False,
+        "finished_at": datetime.utcnow().isoformat(),
+        "error": "Stopped by user.",
+    })
+    return jsonify({"stopped": True})
 
 
 @app.route("/run/status")

@@ -125,7 +125,7 @@ def is_sdr_role(title: str) -> bool:
 
 def detect_spikes(seen: Set[str], found: Set[str]) -> List[Dict]:
     """Scan company list for AE/SDR hiring spikes using ratio-based thresholds."""
-    from config import SERPER_API_KEY
+    from search import web_search
     from settings_manager import get_settings
     s = get_settings()
 
@@ -143,7 +143,7 @@ def detect_spikes(seen: Set[str], found: Set[str]) -> List[Dict]:
     companies = []
 
     # Combine seed list + dynamically discovered companies
-    dynamic = discover_companies_via_serper(SERPER_API_KEY)
+    dynamic = discover_companies_via_serper()
     dynamic_slugs = [d["slug"] for d in dynamic]
     all_companies = list(set(AE_SDR_COMPANIES + dynamic_slugs))
     log_info(f"  Total companies to scan: {len(all_companies)} ({len(dynamic_slugs)} discovered dynamically)")
@@ -257,33 +257,25 @@ def detect_spikes(seen: Set[str], found: Set[str]) -> List[Dict]:
     return companies
 
 
-def discover_companies_via_serper(serper_api_key: str) -> list:
-    """Dynamically discover B2B SaaS company slugs from Greenhouse/Lever via Serper."""
-    import requests
+def discover_companies_via_serper() -> list:
+    """Dynamically discover B2B SaaS company slugs from Greenhouse/Lever via Tavily."""
+    import re
     slugs = {}  # slug -> board type
 
     queries = [
         ('greenhouse', 'site:boards.greenhouse.io "account executive" "B2B SaaS"'),
-        ('greenhouse', 'site:boards.greenhouse.io "account executive" "series B" OR "series C"'),
         ('greenhouse', 'site:boards.greenhouse.io "account executive" software'),
         ('lever',      'site:jobs.lever.co "account executive" "B2B SaaS"'),
-        ('lever',      'site:jobs.lever.co "account executive" "series B" OR "series C"'),
         ('lever',      'site:jobs.lever.co "account executive" software'),
     ]
 
-    import re
-    GH_RE   = re.compile(r'boards\.greenhouse\.io/([a-z0-9_\-]+)/', re.IGNORECASE)
+    GH_RE    = re.compile(r'boards\.greenhouse\.io/([a-z0-9_\-]+)/', re.IGNORECASE)
     LEVER_RE = re.compile(r'jobs\.lever\.co/([a-z0-9_\-]+)/', re.IGNORECASE)
 
     for board, query in queries:
         try:
-            r = requests.post(
-                'https://google.serper.dev/search',
-                headers={"X-API-KEY": serper_api_key, "Content-Type": "application/json"},
-                json={"q": query, "num": 10},
-                timeout=10,
-            )
-            for result in r.json().get("organic", []):
+            data = web_search(query, num=10)
+            for result in data.get("organic", []):
                 url = result.get("link", "")
                 if board == "greenhouse":
                     m = GH_RE.search(url)
@@ -296,5 +288,5 @@ def discover_companies_via_serper(serper_api_key: str) -> list:
         except:
             pass
 
-    log_info(f"  Discovered {len(slugs)} companies dynamically via Serper")
+    log_info(f"  Discovered {len(slugs)} companies dynamically via Tavily")
     return [{"slug": slug, "board": board} for slug, board in slugs.items()]

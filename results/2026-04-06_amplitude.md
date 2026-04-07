@@ -1,7 +1,7 @@
 # Amplitude
 
 **Signal:** ae_spike
-**Detail:** 13 new AE roles in last 45d (prior 45d: 2 → now: 13, +550%) | 18 total open AE
+**Detail:** 14 new AE roles in last 45d (prior 45d: 1 → now: 14, +1300%) | 18 total open AE
 **Date Found:** 2026-04-06
 **Website:** https://job-boards.greenhouse.io/amplitude/jobs/8440299002
 **Source:** [Unknown](https://job-boards.greenhouse.io/amplitude/jobs/8440299002)

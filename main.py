@@ -14,6 +14,17 @@ from datetime import datetime
 from pathlib import Path
 import time
 
+
+def _atomic_csv_write(csv_path: Path, fieldnames: list, rows: list):
+    """Write CSV atomically via a temp file + rename so SIGKILL can't corrupt it.
+    extrasaction='ignore' tolerates rows with extra/unexpected columns (e.g. old format)."""
+    tmp_path = csv_path.with_suffix(".tmp")
+    with open(tmp_path, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(rows)
+    os.replace(tmp_path, csv_path)  # atomic rename — never leaves a partial file
+
 sys.path.insert(0, str(Path(__file__).parent))
 
 from utils import (
@@ -22,7 +33,7 @@ from utils import (
     log_error,
     log_info,
 )
-from discovery import find_companies
+from discovery import find_signal_companies, find_spike_companies
 from contacts import find_contacts
 from email_draft import draft_emails
 
@@ -49,107 +60,94 @@ def main():
     seen_companies = load_seen_companies()
     log_info(f"Loaded {len(seen_companies)} previously seen companies")
     
-    # Get companies to process
+    total_contacts   = 0
+    total_emails     = 0
+    total_unverified = 0
+    index_data       = []
+    found_names      = set()
+
+    def process_batch(batch):
+        """Discover → write to CSV → find contacts → write again. Called once per phase."""
+        nonlocal total_contacts, total_emails, total_unverified
+        if not batch:
+            return
+        # Write all companies in this batch immediately so stopping shows them
+        write_discovered_companies(batch, run_date)
+
+        for company_data in batch:
+            company_name = company_data.get("name")
+            log_info(f"Processing {company_name}...")
+            try:
+                if args.test:
+                    contacts = get_test_contacts(company_name)
+                else:
+                    company_domain = company_data.get("domain", "")
+                    contacts = find_contacts(
+                        company_name,
+                        company_domain or (company_name.lower().replace(" ", "") + ".com"),
+                        company_data
+                    )
+                if not contacts:
+                    contacts = [{"name": "Contact not found", "title": "N/A", "email": "N/A", "verified": False}]
+                    log_info(f"  No contacts found for {company_name}")
+                else:
+                    verified   = sum(1 for c in contacts if c.get("verified", False))
+                    unverified = len(contacts) - verified
+                    log_info(f"  Found {len(contacts)} contacts: {verified} verified, {unverified} unverified")
+                    total_unverified += unverified
+
+                emails = draft_emails(company_data, contacts)
+                log_info(f"  Drafting {len(emails)} emails")
+
+                result_file   = save_company_results(company_name, company_data, contacts, emails, run_date)
+                verified_count = sum(1 for c in contacts if c.get("verified", False))
+                index_data.append({
+                    "date": run_date, "company": company_name,
+                    "signal": company_data.get("signal"),
+                    "signal_detail": company_data.get("signal_detail", ""),
+                    "contacts_found": verified_count,
+                    "contacts_unverified": len(contacts) - verified_count,
+                    "emails_drafted": len(emails),
+                    "source_url": company_data.get("source_url", ""),
+                    "file_path": str(result_file),
+                })
+                total_contacts += len(contacts)
+                total_emails   += len(emails)
+                seen_companies.add(company_name)
+                found_names.add(company_name)
+
+                # Write after every company so partial stops always show data
+                update_index_csv(index_data)
+                update_contacts_csv(index_data)
+                time.sleep(1)
+
+            except Exception as e:
+                log_error(f"Error processing {company_name}: {e}")
+
+    # ── Phase 1: fast web signals (funding / CRO hires, ~30s) ────────────────
     if args.test:
-        companies = get_test_companies(seen_companies)
-        log_info("Using TEST MODE data (3 mock companies)")
+        process_batch(get_test_companies(seen_companies))
     elif args.csv:
-        companies = load_companies_from_csv(args.csv, seen_companies)
+        process_batch(load_companies_from_csv(args.csv, seen_companies))
     else:
-        companies = find_companies(seen_companies)
-    
-    if not companies:
+        phase1 = find_signal_companies(seen_companies, found_names)
+        process_batch(phase1)
+
+        # ── Phase 2: AE/SDR board scan (~5 min) ──────────────────────────────
+        phase2 = find_spike_companies(seen_companies, found_names)
+        process_batch(phase2)
+
+    total_companies = len(index_data)
+    if not total_companies:
         log_info("No new companies found")
         return
-    
-    log_info(f"Processing {len(companies)} companies...")
-    
-    # Process each company
-    total_contacts = 0
-    total_emails = 0
-    total_unverified = 0
-    index_data = []
-    
-    for company_data in companies:
-        company_name = company_data.get("name")
-        log_info(f"Processing {company_name}...")
-        
-        try:
-            # Find contacts at company
-            if args.test:
-                contacts = get_test_contacts(company_name)
-            else:
-                # Use company domain, not source URL
-                source_url = company_data.get("website", "")
-                company_domain = company_data.get("domain", "")
-                contacts = find_contacts(
-                    company_name,
-                    company_domain or (company_name.lower().replace(" ", "") + ".com"),
-                    company_data
-                )
-            
-            if not contacts:
-                contacts = [{"name": "Contact not found", "title": "N/A", "email": "N/A", "verified": False}]
-                log_info(f"  No contacts found for {company_name}")
-            else:
-                verified = sum(1 for c in contacts if c.get("verified", False))
-                unverified = len(contacts) - verified
-                log_info(f"  Found {len(contacts)} contacts: {verified} verified, {unverified} unverified")
-                total_unverified += unverified
-            
-            # Draft emails for verified contacts only
-            emails = draft_emails(company_data, contacts)
-            log_info(f"  Drafting {len(emails)} emails (only for verified contacts)")
-            
-            # Save results file
-            result_file = save_company_results(
-                company_name,
-                company_data,
-                contacts,
-                emails,
-                run_date
-            )
-            
-            # Add to index
-            verified_count = sum(1 for c in contacts if c.get("verified", False))
-            index_data.append({
-                "date": run_date,
-                "company": company_name,
-                "signal": company_data.get("signal"),
-                "signal_detail": company_data.get("signal_detail", ""),
-                "contacts_found": verified_count,
-                "contacts_unverified": len(contacts) - verified_count,
-                "emails_drafted": len(emails),
-                "source_url": company_data.get("source_url", ""),
-                "file_path": str(result_file)
-            })
-            
-            total_contacts += len(contacts)
-            total_emails += len(emails)
-            
-            # Mark as seen
-            seen_companies.add(company_name)
-            
-            # Rate limit
-            time.sleep(1)
-            
-        except Exception as e:
-            log_error(f"Error processing {company_name}: {e}")
-            continue
-    
+
     # Update seen companies file
     save_seen_companies(seen_companies)
-    
-    # Update index CSV
-    update_index_csv(index_data)
-    update_contacts_csv(index_data)
-    
-    # Send Telegram notification
-    message = (
-        f"🎯 Prospector Run Complete — {run_date}\n"
+
     elapsed = (datetime.now() - start_time).total_seconds()
     log_info(f"Run complete in {elapsed:.1f}s")
-    log_info(f"Summary: {len(companies)} companies, {total_contacts} total contacts ({total_emails} verified, {total_unverified} unverified), {total_emails} emails drafted")
+    log_info(f"Summary: {total_companies} companies, {total_contacts} total contacts, {total_emails} emails drafted")
 
     # Push updated results to git so Railway redeploys the dashboard
     push_results_to_git(run_date)
@@ -207,7 +205,7 @@ def push_results_to_git(run_date):
             log_error(f"GitHub API error pushing {rel_path}: {r.status_code} {r.text[:200]}")
 
     if pushed:
-        log_info(f"Pushed {pushed} files to GitHub via API — Railway will redeploy")
+        log_info(f"Pushed {pushed} files to GitHub — dashboard will update")
 
 
 def get_test_companies(seen):
@@ -363,6 +361,51 @@ def save_company_results(company_name, company_data, contacts, emails, run_date)
     return filepath
 
 
+def write_discovered_companies(companies: list, run_date: str):
+    """Write all discovered companies to CSV immediately after discovery,
+    with empty contact fields. The processing loop will overwrite these
+    rows as each company gets contacts + emails."""
+    results_dir = Path(__file__).parent / "results"
+    csv_path = results_dir / "outreach.csv"
+
+    today_names = {c["name"] for c in companies}
+
+    existing_rows = []
+    if csv_path.exists():
+        with open(csv_path, "r") as f:
+            reader = csv.DictReader(f)
+            existing_rows = [r for r in reader if r["company"] not in today_names]
+
+    new_rows = []
+    for c in companies:
+        name = c["name"]
+        slug = name.lower().replace(" ", "").replace(",", "").replace(".", "")
+        new_rows.append({
+            "date": run_date,
+            "company": name,
+            "company_website": f"https://{slug}.com",
+            "signal": c.get("signal", ""),
+            "signal_detail": c.get("signal_detail", ""),
+            "source_url": c.get("source_url", ""),
+            "contact_name": "",
+            "contact_title": "",
+            "contact_email": "",
+            "email_subject": "",
+            "email_body": "",
+            "li_note": "",
+            "verify_demand_gen_linkedin": (
+                f"https://www.linkedin.com/search/results/people/"
+                f"?keywords=demand+generation+{name.replace(' ', '+')}&origin=GLOBAL_SEARCH_HEADER"
+            ),
+        })
+
+    fieldnames = ["date", "company", "company_website", "signal", "signal_detail",
+                  "verify_demand_gen_linkedin", "contact_name", "contact_title",
+                  "contact_email", "email_subject", "email_body", "li_note", "source_url"]
+    _atomic_csv_write(csv_path, fieldnames, existing_rows + new_rows)
+    log_info(f"Pre-wrote {len(new_rows)} discovered companies to CSV")
+
+
 def update_contacts_csv(index_data):
     """Write flat contacts CSV — one row per contact with email body."""
     results_dir = Path(__file__).parent / "results"
@@ -382,6 +425,8 @@ def update_contacts_csv(index_data):
         company = entry["company"]
         signal = entry["signal"]
         source_url = entry["source_url"]
+        slug = company.lower().replace(" ", "").replace(",", "").replace(".", "")
+        company_website = entry.get("company_website") or f"https://{slug}.com"
         md_path = Path(entry["file_path"])
         if not md_path.exists():
             continue
@@ -453,6 +498,7 @@ def update_contacts_csv(index_data):
             new_rows.append({
                 "date": entry.get("date", ""),
                 "company": company,
+                "company_website": company_website,
                 "signal": signal,
                 "signal_detail": entry.get("signal_detail", ""),
                 "source_url": source_url,
@@ -465,13 +511,8 @@ def update_contacts_csv(index_data):
                 "verify_demand_gen_linkedin": f"https://www.linkedin.com/search/results/people/?keywords=demand+generation+{company.replace(chr(32), '+')}&origin=GLOBAL_SEARCH_HEADER",
             })
 
-    all_rows = existing_rows + new_rows
-    fieldnames = ["date", "company", "signal", "signal_detail", "verify_demand_gen_linkedin", "contact_name", "contact_title", "contact_email", "email_subject", "email_body", "li_note", "source_url"]
-    with open(csv_path, 'w', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(all_rows)
-
+    fieldnames = ["date", "company", "company_website", "signal", "signal_detail", "verify_demand_gen_linkedin", "contact_name", "contact_title", "contact_email", "email_subject", "email_body", "li_note", "source_url"]
+    _atomic_csv_write(csv_path, fieldnames, existing_rows + new_rows)
     log_info(f"Updated outreach.csv with {len(new_rows)} contact rows")
 
 

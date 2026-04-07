@@ -6,24 +6,19 @@ from datetime import datetime, timedelta
 from typing import List, Dict, Set
 
 sys.path.insert(0, str(Path(__file__).parent))
-from config import SERPER_API_KEY, SERPER_API_URL, ANTHROPIC_API_KEY
+from config import ANTHROPIC_API_KEY
+from search import web_search
 from utils import log_info, log_error
 from ae_sdr_boards import detect_spikes
 
-def _after(days: int = 60) -> str:
-    """Return a Serper-compatible after: date string N days ago."""
-    return (datetime.utcnow() - timedelta(days=days)).strftime("%Y-%m-%d")
-
 def get_search_queries():
-    after = _after(60)
+    """Return list of (kind, query, include_domains, days) tuples for Tavily."""
     return [
-        ("funding", f"raised Series B SaaS site:techcrunch.com after:{after}"),
-        ("funding", f"raised Series C SaaS site:techcrunch.com after:{after}"),
-        ("funding", f"raised funding B2B SaaS site:techcrunch.com after:{after}"),
-        ("cro",     f"appointed CRO B2B SaaS site:businesswire.com after:{after}"),
-        ("cro",     f"appointed Chief Revenue Officer site:prnewswire.com after:{after}"),
-        ("cro",     f"appointed Chief Marketing Officer B2B SaaS site:prnewswire.com after:{after}"),
-        ("cro",     f"appointed \"VP of Sales\" OR \"VP Sales\" SaaS site:businesswire.com after:{after}"),
+        ("funding", "raised Series B SaaS",                       ["techcrunch.com"], 60),
+        ("funding", "raised Series C SaaS",                       ["techcrunch.com"], 60),
+        ("funding", "raised funding B2B SaaS",                    ["techcrunch.com"], 60),
+        ("cro",     "appointed CRO OR Chief Revenue Officer SaaS", ["businesswire.com"], 60),
+        ("cro",     "appoints Chief Revenue Officer",              ["prnewswire.com"],  60),
     ]
 
 AE_SDR_QUERIES = [
@@ -49,96 +44,108 @@ def normalise_amount(raw: str) -> str:
     unit = 'B' if m.group(2).lower().startswith('b') else 'M'
     return f"${num}{unit}"
 
-# ─── main ─────────────────────────────────────────────────────────────────────
-def find_companies(seen: Set[str]) -> List[Dict]:
+# ─── helpers shared by both phases ────────────────────────────────────────────
+def _settings():
     from settings_manager import get_settings
-    s = get_settings()
-    signals_enabled = s["signals_enabled"]
-    blocklist = {c.lower() for c in s.get("blocklist_companies", [])}
+    return get_settings()
 
-    log_info("="*80)
-    log_info("SERPER.DEV LIVE SEARCH")
-    log_info("="*80)
-
-    companies, found = [], set()
-
-    for kind, query in get_search_queries():
-        log_info(f"\n{'─'*80}")
-        log_info(f"QUERY: {query}")
-        log_info(f"{'─'*80}")
-
-        data = serper_search(query)
-        results = data.get("organic", [])
-        log_info(f"  {len(results)} results\n")
-
-        for i, r in enumerate(results, 1):
-            title   = r.get("title", "")
-            snippet = r.get("snippet", "")
-            url     = r.get("link", "")
-            print(f"  [{i}] {title}")
-            print(f"      {snippet}")
-            print(f"      {url}")
-
-        print()
-        log_info("PARSING:")
-
-        signal_type = "funding" if kind == "funding" else "cro_hire"
-        if signal_type not in signals_enabled:
-            log_info(f"  ⏭ SKIPPED (disabled in settings): {signal_type}")
-            continue
-
-        if kind == "funding":
-            batch = parse_funding(results, seen, found)
-        else:
-            batch = parse_cro(results, seen, found)
-
-        companies.extend(batch)
-        found.update(c["name"] for c in batch)
-
-    # ── AE/SDR spike detection via Greenhouse + Lever APIs ───────────────────
-    if "ae_spike" in signals_enabled or "sdr_spike" in signals_enabled:
-        spike_batch = detect_spikes(seen, found)
-    else:
-        spike_batch = []
-        log_info("  ⏭ SKIPPED AE/SDR spikes (disabled in settings)")
-    companies.extend(spike_batch)
-    found.update(c["name"] for c in spike_batch)
-
-    # Step 1: keyword-based non-SaaS filter (fast, free)
+def _filter_and_dedupe(companies: List[Dict], blocklist: set) -> List[Dict]:
+    """Keyword filter + Claude B2B SaaS confirmation + deduplication."""
     filtered = []
     for c in companies:
         if not is_likely_b2b_saas(c):
-            log_info(f"  🚫 FILTERED (keyword match, non-SaaS): {c['name']}")
+            log_info(f"  🚫 FILTERED (keyword, non-SaaS): {c['name']}")
             continue
         if c["name"].lower() in blocklist:
             log_info(f"  ⛔ BLOCKED: {c['name']}")
             continue
         filtered.append(c)
-
-    # Step 2: Claude-powered B2B SaaS confirmation (positive signal check)
     filtered = claude_saas_filter(filtered)
-    companies = filtered
-    companies = dedupe(companies)
-    log_info(f"\n{'='*80}")
-    log_info(f"TOTAL: {len(companies)} companies found")
+    return dedupe(filtered)
+
+
+# ─── Phase 1: fast web signals (funding / CRO hires) ─────────────────────────
+def find_signal_companies(seen: Set[str], found: Set[str] = None) -> List[Dict]:
+    """Search Tavily for funding rounds and CRO hires. Fast (~30s)."""
+    s = _settings()
+    signals_enabled = s["signals_enabled"]
+    blocklist = {c.lower() for c in s.get("blocklist_companies", [])}
+    if found is None:
+        found = set()
+
     log_info("="*80)
+    log_info("PHASE 1 — Web signals (funding / CRO hires)")
+    log_info("="*80)
+
+    companies = []
+    for kind, query, domains, days in get_search_queries():
+        log_info(f"\n{'─'*60}")
+        log_info(f"QUERY: {query} | domains={domains} | last {days}d")
+        log_info(f"{'─'*60}")
+
+        data = serper_search(query, domains=domains, days=days)
+        results = data.get("organic", [])
+        log_info(f"  {len(results)} results\n")
+        for i, r in enumerate(results, 1):
+            print(f"  [{i}] {r.get('title','')}")
+            print(f"      {r.get('snippet','')[:120]}")
+            print(f"      {r.get('link','')}")
+        print()
+        log_info("PARSING:")
+
+        signal_type = "funding" if kind == "funding" else "cro_hire"
+        if signal_type not in signals_enabled:
+            log_info(f"  ⏭ SKIPPED (disabled): {signal_type}")
+            continue
+
+        batch = parse_funding(results, seen, found) if kind == "funding" else parse_cro(results, seen, found)
+        companies.extend(batch)
+        found.update(c["name"] for c in batch)
+
+    companies = _filter_and_dedupe(companies, blocklist)
+    log_info(f"\nPhase 1 complete — {len(companies)} signal companies")
     return companies
 
 
-# ─── serper call ──────────────────────────────────────────────────────────────
-def serper_search(query: str) -> Dict:
-    try:
-        r = requests.post(
-            SERPER_API_URL,
-            headers={"X-API-KEY": SERPER_API_KEY, "Content-Type": "application/json"},
-            json={"q": query, "num": 10},
-            timeout=10,
-        )
-        r.raise_for_status()
-        return r.json()
-    except Exception as e:
-        log_error(f"Serper error: {e}")
-        return {"organic": []}
+# ─── Phase 2: AE/SDR spike detection (slow board scan) ───────────────────────
+def find_spike_companies(seen: Set[str], found: Set[str] = None) -> List[Dict]:
+    """Scan Greenhouse + Lever boards for AE/SDR hiring spikes. Slow (~5 min)."""
+    s = _settings()
+    signals_enabled = s["signals_enabled"]
+    blocklist = {c.lower() for c in s.get("blocklist_companies", [])}
+    if found is None:
+        found = set()
+
+    if "ae_spike" not in signals_enabled and "sdr_spike" not in signals_enabled:
+        log_info("  ⏭ SKIPPED AE/SDR spikes (disabled in settings)")
+        return []
+
+    log_info("="*80)
+    log_info("PHASE 2 — AE/SDR hiring spikes (job board scan)")
+    log_info("="*80)
+
+    spike_batch = detect_spikes(seen, found)
+    companies = _filter_and_dedupe(spike_batch, blocklist)
+    log_info(f"\nPhase 2 complete — {len(companies)} spike companies")
+    return companies
+
+
+# ─── Legacy wrapper (kept for compatibility) ──────────────────────────────────
+def find_companies(seen: Set[str]) -> List[Dict]:
+    found: Set[str] = set()
+    phase1 = find_signal_companies(seen, found)
+    found.update(c["name"] for c in phase1)
+    phase2 = find_spike_companies(seen, found)
+    all_companies = dedupe(phase1 + phase2)
+    log_info(f"\n{'='*80}")
+    log_info(f"TOTAL: {len(all_companies)} companies found")
+    log_info("="*80)
+    return all_companies
+
+
+# ─── search call ──────────────────────────────────────────────────────────────
+def serper_search(query: str, domains: list = None, days: int = None) -> Dict:
+    return web_search(query, num=10, include_domains=domains, days=days)
 
 
 # ─── funding parser ───────────────────────────────────────────────────────────
@@ -213,7 +220,7 @@ def parse_funding(results, seen, found):
 #   [Company] appoints/names [Name] as CRO/Chief Revenue Officer
 #   [Company] appoints [Adj] [Name] as …  (e.g. "Industry Veteran John Smith")
 APPT_RE = re.compile(
-    r'([\w][A-Za-z0-9\s\.\-]+?)\s+(?:appoints|names|hires|announced the appointment of)\s+(?:[A-Za-z0-9]+\s+){0,5}([A-Z][a-zA-Z]+\s+[A-Z][a-zA-Z]+)\s+as\s+(CRO|CMO|Chief Revenue Officer|Chief Marketing Officer)',
+    r'([\w][A-Za-z0-9\s\.\-]+?)\s+(?:appoints|names|hires|announced the appointment of)\s+(?:[A-Za-z0-9]+\s+){0,5}([A-Z][a-zA-Z\']+\s+[A-Z][a-zA-Z\']+)\s+as\s+(CRO|CMO|Chief Revenue Officer|Chief Marketing Officer)',
     re.IGNORECASE
 )
 # Second pass for "and X as CRO" in same headline (e.g. Mosai)
