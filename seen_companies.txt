@@ -14,6 +14,7 @@ Fyllo|2026-04-07
 Impact|2026-04-07
 Josys|2026-04-07
 Kantata|2026-04-07
+Kustomer|2026-04-07
 LastPass|2026-04-07
 Mindtickle|2026-04-07
 Mixpanel|2026-04-07
