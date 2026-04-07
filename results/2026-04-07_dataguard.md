@@ -11,10 +11,10 @@
 | Name | Title | LinkedIn | Email | Status |
 |------|-------|----------|-------|--------|
 | Andrew Foley | CRO | [Link](https://linkedin.com/search/results/people/?keywords=Andrew%20Foley) | andrew@dataguard.com | ✓ Verified (https://www.businesswire.com/news/home/20260401378603/en/DataGuard-Appoints-Andrew-Foley-as-Chief-Revenue-Officer) |
-| Information Security | cro | [Link](https://br.linkedin.com/company/dataguard1?trk=public_profile_topcard-current-company) | information@dataguard.com | ✓ Verified (https://br.linkedin.com/company/dataguard1?trk=public_profile_topcard-current-company) |
+| Kivanc Semen | CEO | [Link](https://www.linkedin.com/posts/dataguard1_2899-billion-thats-the-annual-damage-activity-7434902368401432576-kWVr) | kivanc@dataguard.com | ✓ Verified (https://www.linkedin.com/posts/dataguard1_2899-billion-thats-the-annual-damage-activity-7434902368401432576-kWVr) |
 | Thiago Luz | VP of Marketing | [Link](https://www.linkedin.com/in/thiago-luz-b5892b189) | thiago@dataguard.com | ✓ Verified (https://www.linkedin.com/in/thiago-luz-b5892b189) |
 | Christine Walch | VP Marketing | [Link](https://www.linkedin.com/posts/dataguard1_christine-walch-vp-marketing-dataguard-activity-7158762359077920769-Uurw) | christine@dataguard.com | ✓ Verified (https://www.linkedin.com/posts/dataguard1_christine-walch-vp-marketing-dataguard-activity-7158762359077920769-Uurw) |
-| Sebastian Reisgen | cro | [Link](https://nl.linkedin.com/in/sebastianreisgen) | sebastian@dataguard.com | ✓ Verified (https://nl.linkedin.com/in/sebastianreisgen) |
+| Information Security | cro | [Link](https://www.linkedin.com/company/dataguard1) | information@dataguard.com | ✓ Verified (https://www.linkedin.com/company/dataguard1) |
 
 ## Outreach Emails
 
@@ -39,9 +39,9 @@ Jacob Landsman
 
 ### Email 2
 
-**To:** Information Security (cro)
+**To:** Kivanc Semen (CEO)
 
-**Subject:** Welcome to DataGuard, Information
+**Subject:** Welcome to DataGuard, Kivanc
 
 **Body:**
 
@@ -54,7 +54,7 @@ No pitch, no process — just 20 minutes to explore if there's a fit. Would you 
 Best,
 Jacob Landsman
 
-**LI Note:** Hi Information — saw DataGuard just brought on a new CRO. I specialize in demand gen for scaling B2B SaaS teams. Would love to connect.
+**LI Note:** Hi Kivanc — saw DataGuard just brought on a new CRO. I specialize in demand gen for scaling B2B SaaS teams. Would love to connect.
 
 ### Email 3
 
@@ -96,9 +96,9 @@ Jacob Landsman
 
 ### Email 5
 
-**To:** Sebastian Reisgen (cro)
+**To:** Information Security (cro)
 
-**Subject:** Welcome to DataGuard, Sebastian
+**Subject:** Welcome to DataGuard, Information
 
 **Body:**
 
@@ -111,4 +111,4 @@ No pitch, no process — just 20 minutes to explore if there's a fit. Would you 
 Best,
 Jacob Landsman
 
-**LI Note:** Hi Sebastian — saw DataGuard just brought on a new CRO. I specialize in demand gen for scaling B2B SaaS teams. Would love to connect.
+**LI Note:** Hi Information — saw DataGuard just brought on a new CRO. I specialize in demand gen for scaling B2B SaaS teams. Would love to connect.
