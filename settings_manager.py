@@ -16,7 +16,7 @@ DEFAULTS = {
     "recent_days": 45,
 
     # Company size filter (min is auto-derived from spike thresholds)
-    "max_total_roles": 100,
+    "max_total_roles": 50,
 
     # Email / sender
     "sender_name": "Jacob Landsman",

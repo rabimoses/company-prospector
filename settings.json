@@ -9,7 +9,7 @@
   "sdr_min_absolute": 2,
   "spike_growth_pct": 0.5,
   "recent_days": 45,
-  "max_total_roles": 100,
+  "max_total_roles": 50,
   "sender_name": "Jacob Landsman",
   "sender_title": "Demand Generation Leader",
   "max_contacts_per_company": 5,

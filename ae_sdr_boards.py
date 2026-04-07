@@ -1,4 +1,4 @@
-"""AE/SDR hiring spike detector using Greenhouse and Lever public APIs."""
+"""AE/SDR hiring spike detector using Greenhouse, Lever, and Ashby public APIs."""
 
 import requests
 from typing import List, Dict, Set
@@ -113,6 +113,28 @@ def scrape_lever(company: str) -> List[Dict]:
     return []
 
 
+def scrape_ashby(company: str) -> List[Dict]:
+    """Fetch jobs from Ashby's public job board API."""
+    try:
+        url = f"https://api.ashbyhq.com/posting-api/job-board/{company}"
+        r = requests.get(url, timeout=10)
+        if r.status_code == 200:
+            data = r.json()
+            jobs = data.get("jobPostings", [])
+            return [
+                {
+                    "title": j.get("title", ""),
+                    "company": company,
+                    "url": j.get("jobUrl", f"https://jobs.ashbyhq.com/{company}"),
+                    "posted_at": None,   # Ashby API doesn't expose post date easily
+                }
+                for j in jobs if j.get("title")
+            ]
+    except:
+        pass
+    return []
+
+
 def is_ae_role(title: str) -> bool:
     t = title.lower()
     return any(k in t for k in AE_KEYWORDS)
@@ -138,7 +160,7 @@ def detect_spikes(seen: Set[str], found: Set[str]) -> List[Dict]:
     min_total_roles  = min(ae_min_absolute, sdr_min_absolute)
     blocklist        = {c.lower() for c in s.get("blocklist_companies", [])}
 
-    log_info("\nScanning Greenhouse + Lever for AE/SDR spikes...")
+    log_info("\nScanning Greenhouse, Lever, Ashby, Wellfound + Builtin for AE/SDR spikes...")
 
     companies = []
 
@@ -149,7 +171,7 @@ def detect_spikes(seen: Set[str], found: Set[str]) -> List[Dict]:
     log_info(f"  Total companies to scan: {len(all_companies)} ({len(dynamic_slugs)} discovered dynamically)")
 
     for company in all_companies:
-        jobs = scrape_greenhouse(company) + scrape_lever(company)
+        jobs = scrape_greenhouse(company) + scrape_lever(company) + scrape_ashby(company)
         if not jobs:
             continue
 
@@ -267,26 +289,40 @@ def discover_companies_via_serper() -> list:
         ('greenhouse', 'site:boards.greenhouse.io "account executive" software'),
         ('lever',      'site:jobs.lever.co "account executive" "B2B SaaS"'),
         ('lever',      'site:jobs.lever.co "account executive" software'),
+        ('ashby',      'site:jobs.ashbyhq.com "account executive" saas'),
+        ('ashby',      'site:jobs.ashbyhq.com "account executive" software'),
+        ('wellfound',  'site:wellfound.com/jobs "account executive" "b2b saas"'),
+        ('wellfound',  'site:wellfound.com "account executive" software startup'),
+        ('builtin',    'site:builtin.com "account executive" "b2b saas"'),
+        ('builtin',    'site:builtin.com "sales development representative" saas'),
     ]
 
-    GH_RE    = re.compile(r'boards\.greenhouse\.io/([a-z0-9_\-]+)/', re.IGNORECASE)
-    LEVER_RE = re.compile(r'jobs\.lever\.co/([a-z0-9_\-]+)/', re.IGNORECASE)
+    GH_RE        = re.compile(r'boards\.greenhouse\.io/([a-z0-9_\-]+)/', re.IGNORECASE)
+    LEVER_RE     = re.compile(r'jobs\.lever\.co/([a-z0-9_\-]+)/', re.IGNORECASE)
+    ASHBY_RE     = re.compile(r'jobs\.ashbyhq\.com/([a-z0-9_\-]+)/', re.IGNORECASE)
+    WELLFOUND_RE = re.compile(r'wellfound\.com/company/([a-z0-9_\-]+)/', re.IGNORECASE)
+
+    board_re = {
+        'greenhouse': GH_RE,
+        'lever':      LEVER_RE,
+        'ashby':      ASHBY_RE,
+        'wellfound':  WELLFOUND_RE,
+        'builtin':    None,   # Builtin URLs don't expose clean slugs — used for signal only
+    }
 
     for board, query in queries:
         try:
             data = web_search(query, num=10)
+            pattern = board_re.get(board)
+            if not pattern:
+                continue
             for result in data.get("organic", []):
                 url = result.get("link", "")
-                if board == "greenhouse":
-                    m = GH_RE.search(url)
-                    if m:
-                        slugs[m.group(1)] = "greenhouse"
-                else:
-                    m = LEVER_RE.search(url)
-                    if m:
-                        slugs[m.group(1)] = "lever"
+                m = pattern.search(url)
+                if m:
+                    slugs[m.group(1)] = board
         except:
             pass
 
-    log_info(f"  Discovered {len(slugs)} companies dynamically via Tavily")
+    log_info(f"  Discovered {len(slugs)} companies dynamically via Tavily (Greenhouse, Lever, Ashby, Wellfound)")
     return [{"slug": slug, "board": board} for slug, board in slugs.items()]
