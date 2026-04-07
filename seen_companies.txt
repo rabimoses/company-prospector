@@ -1,18 +1,17 @@
 Amplitude|2026-04-07
-Appfire|2026-04-07
 Axonius|2026-04-07
 Cognism|2026-04-07
+Contentful|2026-04-07
+Coupa|2026-04-07
 Customerio|2026-04-07
 DataGuard|2026-04-07
 Impact|2026-04-07
-LastPass|2026-04-07
-Lio|2026-04-07
-Matillion|2026-04-07
 Mindtickle|2026-04-07
 Mixpanel|2026-04-07
-MongoDB|2026-04-07
+Motive|2026-04-07
 Pendo|2026-04-07
 Salesloft|2026-04-07
 Showpad|2026-04-07
+Tiugo Technologies|2026-04-07
 Webflow|2026-04-07
 Zuora|2026-04-07
