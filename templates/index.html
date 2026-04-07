@@ -1032,9 +1032,9 @@
 
   function progressSubtitle(pct) {
     if (pct === 0) return 'Scanning signals & job boards — hang tight, this takes a minute…';
-    if (pct < 20) return 'Companies found! Starting contact research…';
-    if (pct < 50) return 'Finding contacts and drafting emails…';
-    if (pct < 85) return 'Almost there — wrapping up remaining companies…';
+    if (pct < 20) return 'Phase 1 companies found — researching contacts…';
+    if (pct < 85) return 'Researching contacts… Phase 2 job board scan starts after this — hang tight for more companies';
+    if (pct < 100) return 'Phase 2: scanning job boards for AE/SDR hiring spikes — more companies incoming…';
     return 'Saving and pushing results…';
   }
 
