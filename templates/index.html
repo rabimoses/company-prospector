@@ -1087,7 +1087,7 @@
       .then(data => {
         const subtitle = data.running
           ? progressSubtitle(data.progress)
-          : (data.error ? 'Error occurred' : 'Complete!');
+          : (data.error ? 'Error occurred' : (data.summary ? 'Complete!' : 'Run finished'));
 
         setProgress(data.progress, subtitle, data.log_tail || []);
 
@@ -1107,11 +1107,12 @@
             errEl.textContent = data.error;
             errEl.classList.add('show');
           } else {
-            document.getElementById('progress-title').textContent = 'Complete!';
+            const noResults = data.progress === 0 || !data.summary;
+            document.getElementById('progress-title').textContent = noResults ? 'No new companies found' : 'Complete!';
             const doneEl = document.getElementById('progress-done');
             doneEl.textContent = data.summary
               ? '✓ ' + data.summary
-              : '✓ Run complete — results updated.';
+              : 'No new companies matched the current signals and filters.';
             doneEl.classList.add('show');
           }
         } else if (data.running) {

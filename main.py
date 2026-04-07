@@ -147,7 +147,7 @@ def main():
 
     elapsed = (datetime.now() - start_time).total_seconds()
     log_info(f"Run complete in {elapsed:.1f}s")
-    log_info(f"Summary: {total_companies} companies, {total_contacts} total contacts, {total_emails} emails drafted")
+    log_info(f"Summary: {total_companies} new companies, {total_contacts} total contacts, {total_emails} emails drafted")
 
     # Push updated results to git so Railway redeploys the dashboard
     push_results_to_git(run_date)
