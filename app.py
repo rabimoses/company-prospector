@@ -3,6 +3,7 @@ import json
 import os
 import signal
 import subprocess
+import sys
 import threading
 from datetime import date, datetime
 from pathlib import Path
@@ -95,7 +96,7 @@ def _run_agent_thread():
         with open(RUN_LOG, "w") as log_f:
             with _proc_lock:
                 proc = subprocess.Popen(
-                    ["python3", str(BASE_DIR / "main.py")],
+                    [sys.executable, str(BASE_DIR / "main.py")],
                     stdout=log_f, stderr=subprocess.STDOUT,
                     cwd=str(BASE_DIR), env=env,
                     start_new_session=True,  # own process group so we can kill all children
@@ -285,6 +286,14 @@ def run_status():
         "error":    state.get("error", ""),
         "finished": bool(state.get("finished_at") and not state.get("running")),
     })
+
+
+@app.route("/logs")
+def view_logs():
+    """Show the full raw log from the last run — useful for debugging."""
+    log_text = RUN_LOG.read_text(errors="replace") if RUN_LOG.exists() else "(no log file)"
+    state = _get_run_state()
+    return f"<pre style='font-family:monospace;font-size:12px;white-space:pre-wrap'><b>Run state:</b> {json.dumps(state, indent=2)}\n\n<b>Log:</b>\n{log_text}</pre>"
 
 
 @app.route("/settings", methods=["GET"])
