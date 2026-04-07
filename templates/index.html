@@ -43,6 +43,11 @@
       gap: 10px;
     }
 
+    .last-fetched {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
     .badge-count {
       background: #ede9fe;
       color: #4f46e5;
@@ -724,6 +729,9 @@
 <header>
   <h1>Prospector <span>Dashboard</span></h1>
   <div class="header-right">
+    {% if run_state.finished_at and not run_state.running %}
+    <span class="last-fetched">Last fetched: {{ run_state.finished_at[:16].replace('T', ' ') }} UTC</span>
+    {% endif %}
     <span class="badge-count">{{ total }} companies</span>
     <select class="date-selector" onchange="window.location='/date/'+this.value">
       <option value="all" {% if not selected_date %}selected{% endif %}>All dates</option>
