@@ -14,7 +14,7 @@
 | Glenn Vanderlinden | CEO | [Link](https://www.linkedin.com/posts/glennvanderlinden_according-to-amplitudes-ceo-spenser-skates-activity-7438509283945828353-k1MQ) | glenn@amplitude.com | ✓ Verified (https://www.linkedin.com/posts/glennvanderlinden_according-to-amplitudes-ceo-spenser-skates-activity-7438509283945828353-k1MQ) |
 | Joe Putin | VP Marketing | [Link](https://www.linkedin.com/in/joe-putin-a18b05102) | joe@amplitude.com | ✓ Verified (https://www.linkedin.com/in/joe-putin-a18b05102) |
 | Adrian Wainwright | CEO | [Link](https://www.linkedin.com/in/adrian-wainwright-17649114) | adrian@amplitude.com | ✓ Verified (https://www.linkedin.com/in/adrian-wainwright-17649114) |
-| Angie Volk | VP of Sales | [Link](https://www.linkedin.com/in/angie-volk) | angie@amplitude.com | ✓ Verified (https://www.linkedin.com/in/angie-volk) |
+| Amplitude Transitions | Cro | [Link](https://amplitude.com/press/new-chief-revenue-officer) | amplitude@amplitude.com | ✓ Verified (https://amplitude.com/press/new-chief-revenue-officer) |
 
 ## Outreach Emails
 
@@ -96,9 +96,9 @@ Jacob Landsman
 
 ### Email 5
 
-**To:** Angie Volk (VP of Sales)
+**To:** Amplitude Transitions (Cro)
 
-**Subject:** Saw Amplitude is scaling its sales team, Angie
+**Subject:** Saw Amplitude is scaling its sales team, Amplitude
 
 **Body:**
 
@@ -111,4 +111,4 @@ No pitch, no process — just 20 minutes to explore if there's a fit. Would you 
 Best,
 Jacob Landsman
 
-**LI Note:** Hi Angie — noticed Amplitude is scaling its AE team. I build demand gen engines for B2B SaaS companies at this stage. Would love to connect.
+**LI Note:** Hi Amplitude — noticed Amplitude is scaling its AE team. I build demand gen engines for B2B SaaS companies at this stage. Would love to connect.
