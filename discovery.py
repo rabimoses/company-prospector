@@ -13,10 +13,13 @@ from ae_sdr_boards import detect_spikes
 
 def get_search_queries():
     """Return list of (kind, query, include_domains, days) tuples for Tavily."""
+    year = datetime.now().year
+    funding_domains = ["techcrunch.com", "businesswire.com", "prnewswire.com", "venturebeat.com"]
     return [
-        ("funding", "raised Series B SaaS",                       ["techcrunch.com"], 60),
-        ("funding", "raised Series C SaaS",                       ["techcrunch.com"], 60),
-        ("funding", "raised funding B2B SaaS",                    ["techcrunch.com"], 60),
+        ("funding", f"raised Series B SaaS {year}",              funding_domains, 90),
+        ("funding", f"raised Series C SaaS {year}",              funding_domains, 90),
+        ("funding", f"raised funding B2B SaaS {year}",           funding_domains, 90),
+        ("funding", f"Series B OR Series C SaaS funding {year}", funding_domains, 90),
         ("cro",     "appointed CRO OR Chief Revenue Officer SaaS", ["businesswire.com"], 60),
         ("cro",     "appoints Chief Revenue Officer",              ["prnewswire.com"],  60),
     ]
@@ -160,7 +163,7 @@ FUND_RE = re.compile(
 )
 SERIES_RE = re.compile(r'Series\s+([A-G][+]?)', re.IGNORECASE)
 
-def is_recent_url(url, months=3):
+def is_recent_url(url, months=12):
     """Return True if URL date is within the last N months, or if no date found."""
     from datetime import datetime, timedelta
     import re
