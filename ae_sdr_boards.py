@@ -1,6 +1,10 @@
 """AE/SDR hiring spike detector using Greenhouse, Lever, and Ashby public APIs."""
 
+import re
 import requests
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime, timezone, timedelta
 from typing import List, Dict, Set
 from collections import defaultdict
 from utils import log_info, log_error
@@ -170,118 +174,110 @@ def detect_spikes(seen: Set[str], found: Set[str]) -> List[Dict]:
     all_companies = list(set(AE_SDR_COMPANIES + dynamic_slugs))
     log_info(f"  Total companies to scan: {len(all_companies)} ({len(dynamic_slugs)} discovered dynamically)")
 
-    for company in all_companies:
+    now           = datetime.now(tz=timezone.utc)
+    recent_cutoff = now - timedelta(days=recent_days)
+    prior_cutoff  = now - timedelta(days=PRIOR_DAYS)
+    seen_lower    = {x.lower() for x in list(seen) + list(found)}
+    lock          = threading.Lock()
+
+    def spike_str(recent, prior, total_count, label):
+        pct = f"+∞%" if prior == 0 else f"+{round((recent - prior) / prior * 100)}%"
+        return f"{recent} new {label} roles in last 45d (prior 45d: {prior} → now: {recent}, {pct}) | {total_count} total open {label}"
+
+    def scan_company(company):
+        """Fetch jobs for one company and return a spike result or None."""
         jobs = scrape_greenhouse(company) + scrape_lever(company) + scrape_ashby(company)
         if not jobs:
-            continue
+            return None
 
         total     = len(jobs)
         ae_jobs   = [j for j in jobs if is_ae_role(j["title"])]
         sdr_jobs  = [j for j in jobs if is_sdr_role(j["title"])]
         ae_count  = len(ae_jobs)
         sdr_count = len(sdr_jobs)
-        ae_ratio  = ae_count / total
-        sdr_ratio = sdr_count / total
 
         name = company.replace("-", " ").title()
-        if name.lower() in {x.lower() for x in list(seen) + list(found)}:
-            continue
-        if company.lower() in blocklist or name.lower() in blocklist:
-            log_info(f"  ⛔ BLOCKED: {name}")
-            continue
 
-        # Skip if company is too large or too small
+        with lock:
+            if name.lower() in seen_lower:
+                return None
+            if company.lower() in blocklist or name.lower() in blocklist:
+                log_info(f"  ⛔ BLOCKED: {name}")
+                return None
+
         if total > max_total_roles or total < min_total_roles:
-            continue
-
-        # Skip known slug-style names
+            return None
         if company.lower() in EXCLUDE_SLUGS:
-            continue
-
-        # Skip slug-style names (contain digits or look like URLs)
-        import re
+            return None
         if re.search(r'\d', name) or len(name.replace(" ", "")) > 20:
-            continue
-
-        # Split into recent (0-45d) and prior (46-90d) windows
-        from datetime import datetime, timezone, timedelta
-        now = datetime.now(tz=timezone.utc)
-        recent_cutoff = now - timedelta(days=recent_days)
-        prior_cutoff  = now - timedelta(days=PRIOR_DAYS)
+            return None
 
         def in_recent(j): return j.get("posted_at") and j["posted_at"] >= recent_cutoff
         def in_prior(j):  return j.get("posted_at") and prior_cutoff <= j["posted_at"] < recent_cutoff
 
-        ae_recent_count  = sum(1 for j in ae_jobs  if in_recent(j))
-        ae_prior_count   = sum(1 for j in ae_jobs  if in_prior(j))
-        sdr_recent_count = sum(1 for j in sdr_jobs if in_recent(j))
-        sdr_prior_count  = sum(1 for j in sdr_jobs if in_prior(j))
-        sales_recent     = ae_recent_count + sdr_recent_count
-        sales_prior      = ae_prior_count  + sdr_prior_count
+        ae_recent  = sum(1 for j in ae_jobs  if in_recent(j))
+        ae_prior   = sum(1 for j in ae_jobs  if in_prior(j))
+        sdr_recent = sum(1 for j in sdr_jobs if in_recent(j))
+        sdr_prior  = sum(1 for j in sdr_jobs if in_prior(j))
+        s_recent   = ae_recent + sdr_recent
+        s_prior    = ae_prior  + sdr_prior
 
-        ae_growth    = (ae_recent_count - ae_prior_count) / ae_prior_count if ae_prior_count > 0 else (999 if ae_recent_count >= ae_min_absolute else None)
-        sdr_growth   = (sdr_recent_count - sdr_prior_count) / sdr_prior_count if sdr_prior_count > 0 else (999 if sdr_recent_count >= sdr_min_absolute else None)
-        sales_growth = (sales_recent - sales_prior) / sales_prior if sales_prior > 0 else (999 if sales_recent >= 3 else None)
+        ae_growth    = (ae_recent - ae_prior) / ae_prior if ae_prior > 0 else (999 if ae_recent >= ae_min_absolute else None)
+        sdr_growth   = (sdr_recent - sdr_prior) / sdr_prior if sdr_prior > 0 else (999 if sdr_recent >= sdr_min_absolute else None)
+        sales_growth = (s_recent - s_prior) / s_prior if s_prior > 0 else (999 if s_recent >= 3 else None)
 
-        ae_primary      = ae_growth    is not None and ae_growth    >= spike_growth_pct and ae_recent_count    >= ae_min_absolute
-        sdr_primary     = sdr_growth   is not None and sdr_growth   >= spike_growth_pct and sdr_recent_count   >= sdr_min_absolute
-        sales_secondary = sales_growth is not None and sales_growth >= spike_growth_pct and sales_recent >= 3
+        ae_primary      = ae_growth    is not None and ae_growth    >= spike_growth_pct and ae_recent  >= ae_min_absolute
+        sdr_primary     = sdr_growth   is not None and sdr_growth   >= spike_growth_pct and sdr_recent >= sdr_min_absolute
+        sales_secondary = sales_growth is not None and sales_growth >= spike_growth_pct and s_recent   >= 3
 
         if not ae_primary and not sdr_primary and not sales_secondary:
-            continue
-
-        def spike_str(recent, prior, total, label):
-            pct = f"+∞%" if prior == 0 else f"+{round((recent - prior) / prior * 100)}%"
-            return f"{recent} new {label} roles in last 45d (prior 45d: {prior} → now: {recent}, {pct}) | {total} total open {label}"
+            return None
 
         if ae_primary:
-            signal_str = spike_str(ae_recent_count, ae_prior_count, ae_count, "AE")
-            if sdr_recent_count > 0:
-                signal_str += f" + {sdr_recent_count} SDR"
-            log_info(f"  ✅ AE SPIKE: {name} — {signal_str}")
-            companies.append({
-                "name": name,
-                "signal": "ae_spike",
-                "signal_detail": signal_str,
-                "website": ae_jobs[0]["url"],
-                "source_url": ae_jobs[0]["url"],
-                "source_title": f"{name} is hiring {ae_count}+ Account Executives",
-            })
-            found.add(name.lower())
+            sig = spike_str(ae_recent, ae_prior, ae_count, "AE")
+            if sdr_recent > 0:
+                sig += f" + {sdr_recent} SDR"
+            log_info(f"  ✅ AE SPIKE: {name} — {sig}")
+            return {"name": name, "signal": "ae_spike", "signal_detail": sig,
+                    "website": ae_jobs[0]["url"], "source_url": ae_jobs[0]["url"],
+                    "source_title": f"{name} is hiring {ae_count}+ Account Executives"}
+        elif sdr_primary:
+            sig = spike_str(sdr_recent, sdr_prior, sdr_count, "SDR")
+            log_info(f"  ✅ SDR SPIKE: {name} — {sig}")
+            return {"name": name, "signal": "sdr_spike", "signal_detail": sig,
+                    "website": sdr_jobs[0]["url"], "source_url": sdr_jobs[0]["url"],
+                    "source_title": f"{name} is hiring {sdr_count}+ SDRs"}
+        else:
+            pct_str = f"+∞%" if s_prior == 0 else f"+{round((s_recent - s_prior) / s_prior * 100)}%"
+            sig = f"{s_recent} new sales roles in last 45d (prior 45d: {s_prior} → now: {s_recent}, {pct_str}) — {ae_recent} AE + {sdr_recent} SDR | {ae_count+sdr_count} total open"
+            log_info(f"  ✅ SALES SPIKE: {name} — {sig}")
+            src = ae_jobs[0]["url"] if ae_jobs else sdr_jobs[0]["url"]
+            return {"name": name, "signal": "ae_spike", "signal_detail": sig,
+                    "website": src, "source_url": src,
+                    "source_title": f"{name} combined sales hiring spike"}
 
-        elif sdr_primary and name.lower() not in found:
-            signal_str = spike_str(sdr_recent_count, sdr_prior_count, sdr_count, "SDR")
-            log_info(f"  ✅ SDR SPIKE: {name} — {signal_str}")
-            companies.append({
-                "name": name,
-                "signal": "sdr_spike",
-                "signal_detail": signal_str,
-                "website": sdr_jobs[0]["url"],
-                "source_url": sdr_jobs[0]["url"],
-                "source_title": f"{name} is hiring {sdr_count}+ SDRs",
-            })
-            found.add(name.lower())
-
-        elif sales_secondary and name.lower() not in found:
-            pct = f"+∞%" if sales_prior == 0 else f"+{round((sales_recent - sales_prior) / sales_prior * 100)}%"
-            signal_str = f"{sales_recent} new sales roles in last 45d (prior 45d: {sales_prior} → now: {sales_recent}, {pct}) — {ae_recent_count} AE + {sdr_recent_count} SDR | {ae_count+sdr_count} total open"
-            log_info(f"  ✅ SALES SPIKE: {name} — {signal_str}")
-            companies.append({
-                "name": name,
-                "signal": "ae_spike",
-                "signal_detail": signal_str,
-                "website": ae_jobs[0]["url"] if ae_jobs else sdr_jobs[0]["url"],
-                "source_url": ae_jobs[0]["url"] if ae_jobs else sdr_jobs[0]["url"],
-                "source_title": f"{name} combined sales hiring spike",
-            })
-            found.add(name.lower())
+    # Scan all companies in parallel (20 workers)
+    log_info(f"  Scanning {len(all_companies)} companies in parallel (20 workers)...")
+    with ThreadPoolExecutor(max_workers=20) as executor:
+        futures = {executor.submit(scan_company, c): c for c in all_companies}
+        done = 0
+        for future in as_completed(futures):
+            done += 1
+            if done % 20 == 0:
+                log_info(f"  ... {done}/{len(all_companies)} scanned")
+            result = future.result()
+            if result:
+                with lock:
+                    if result["name"].lower() not in seen_lower:
+                        companies.append(result)
+                        seen_lower.add(result["name"].lower())
+                        found.add(result["name"].lower())
 
     return companies
 
 
 def discover_companies_via_serper() -> list:
-    """Dynamically discover B2B SaaS company slugs from Greenhouse/Lever via Tavily."""
-    import re
+    """Dynamically discover B2B SaaS company slugs from job boards via Tavily."""
     slugs = {}  # slug -> board type
 
     queries = [
