@@ -54,12 +54,24 @@ def _save_run_state(state: dict):
 
 def _estimate_progress(log_lines: list) -> int:
     """Progress tied to what's actually visible in the results list.
-    Stays 0 until the first CSV write; then scales with processing."""
+    Stays 0 until the first CSV write; then scales with processing.
+    Phase 2 board scan progress comes from '... X/Y scanned' log lines."""
     import re
     text = "\n".join(log_lines)
 
     if "Pushed " in text:
         return 100
+
+    # Phase 2 board scan in progress — scale 65→90% based on scan progress
+    board_scan_started = "companies in parallel" in text
+    if board_scan_started:
+        scan_matches = list(re.finditer(r'\.\.\.?\s*(\d+)/(\d+)\s*scanned', text))
+        if scan_matches:
+            last = scan_matches[-1]
+            done, total = int(last.group(1)), int(last.group(2))
+            pct = 65 + int((done / total) * 25) if total > 0 else 65
+            return min(pct, 90)
+        return 65  # scan started but no progress logged yet
 
     # Count how many pre-writes have happened (one per phase batch)
     pre_writes = list(re.finditer(r"Pre-wrote (\d+) discovered companies", text))
@@ -74,9 +86,9 @@ def _estimate_progress(log_lines: list) -> int:
     # Count fully-processed companies
     writes = text.count("Updated outreach.csv")
 
-    # Phase 1 done = 15%, scale 15→90% as companies are processed
-    pct = 15 + int((writes / total_discovered) * 75)
-    return min(pct, 90)
+    # Phase 1 done = 15%, scale 15→65% as Phase 1 companies are processed
+    pct = 15 + int((writes / total_discovered) * 50)
+    return min(pct, 65)
 
 def _parse_summary(log_text: str) -> str:
     for line in log_text.splitlines():
@@ -192,12 +204,13 @@ def index():
     rows        = load_rows()
     all_dates   = sorted({r["date"] for r in rows}, reverse=True)
     all_signals = sorted({r["signal"] for r in rows if r.get("signal")})
-    # Default: no date filter — show all companies, most recent first
-    companies   = group_companies(rows, filter_date=None)
-    companies   = sorted(companies, key=lambda c: c["date"], reverse=True)
+    # Default to most recent date so fresh run results are shown immediately
+    default_date = all_dates[0] if all_dates else None
+    companies    = group_companies(rows, filter_date=default_date)
+    companies    = sorted(companies, key=lambda c: c["date"], reverse=True)
     return render_template("index.html",
         companies=companies, all_dates=all_dates, all_signals=all_signals,
-        selected_date=None, signal_labels=SIGNAL_LABELS,
+        selected_date=default_date, signal_labels=SIGNAL_LABELS,
         total=len(companies), s=get_settings(),
         run_state=_get_run_state(),
     )

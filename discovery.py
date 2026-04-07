@@ -12,16 +12,18 @@ from utils import log_info, log_error
 from ae_sdr_boards import detect_spikes
 
 def get_search_queries():
-    """Return list of (kind, query, include_domains, days) tuples for Tavily."""
-    year = datetime.now().year
-    funding_domains = ["techcrunch.com", "businesswire.com", "prnewswire.com", "venturebeat.com"]
+    """Return list of (kind, query, include_domains, days) tuples for Tavily.
+    Using press release domains for funding — BusinessWire/PRNewswire publish
+    dated announcements that Tavily's recency filter works reliably on,
+    unlike TechCrunch which returns old articles regardless of days= param."""
+    pr_domains = ["businesswire.com", "prnewswire.com"]
     return [
-        ("funding", f"raised Series B SaaS {year}",              funding_domains, 90),
-        ("funding", f"raised Series C SaaS {year}",              funding_domains, 90),
-        ("funding", f"raised funding B2B SaaS {year}",           funding_domains, 90),
-        ("funding", f"Series B OR Series C SaaS funding {year}", funding_domains, 90),
+        ("funding", "raises Series B SaaS software",          pr_domains, 90),
+        ("funding", "raises Series C SaaS software",          pr_domains, 90),
+        ("funding", "raises Series B B2B software platform",  pr_domains, 90),
+        ("funding", "raises Series C B2B software platform",  pr_domains, 90),
         ("cro",     "appointed CRO OR Chief Revenue Officer SaaS", ["businesswire.com"], 60),
-        ("cro",     "appoints Chief Revenue Officer",              ["prnewswire.com"],  60),
+        ("cro",     "appoints Chief Revenue Officer",               ["prnewswire.com"],  60),
     ]
 
 AE_SDR_QUERIES = [
