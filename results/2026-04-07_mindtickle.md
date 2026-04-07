@@ -11,10 +11,10 @@
 | Name | Title | LinkedIn | Email | Status |
 |------|-------|----------|-------|--------|
 | Nikhil Dua | cro | [Link](https://in.linkedin.com/in/nikhil-dua-24345814) | nikhil@mindtickle.com | ✓ Verified (https://in.linkedin.com/in/nikhil-dua-24345814) |
-| Joan Jenkins | CMO | [Link](https://www.linkedin.com/in/joanj) | joan@mindtickle.com | ✓ Verified (https://www.linkedin.com/in/joanj) |
 | Mindtickle Names | Chief Revenue Officer | [Link](https://www.mindtickle.com/news/mindtickle-names-jeff-santelices-chief-revenue-officer/) | mindtickle@mindtickle.com | ✓ Verified (https://www.mindtickle.com/news/mindtickle-names-jeff-santelices-chief-revenue-officer/) |
-| Accelerates Readiness | chief revenue officer | [Link](https://salestechstar.com/sales-engagement/mindtickle-accelerates-leadership-in-readiness-for-customer-centric-companies/) | accelerates@mindtickle.com | ✓ Verified (https://salestechstar.com/sales-engagement/mindtickle-accelerates-leadership-in-readiness-for-customer-centric-companies/) |
 | Jeff Santelices | Chief Revenue Officer | [Link](https://www.responsive.io/news/rfpio-appoints-jeff-santelices-as-chief-revenue-officer) | jeff@mindtickle.com | ✓ Verified (https://www.responsive.io/news/rfpio-appoints-jeff-santelices-as-chief-revenue-officer) |
+| Mindtickle Strengthens | cro | [Link](https://www.mindtickle.com/news/mindtickle-strengthens-leadership-team-with-chris-lynch-as-chief-marketing-officer-to-accelerate-growth/) | mindtickle@mindtickle.com | ✓ Verified (https://www.mindtickle.com/news/mindtickle-strengthens-leadership-team-with-chris-lynch-as-chief-marketing-officer-to-accelerate-growth/) |
+| Mindtickle Executive | CEO | [Link](https://www.comparably.com/companies/mindtickle/executive-team) | mindtickle@mindtickle.com | ✓ Verified (https://www.comparably.com/companies/mindtickle/executive-team) |
 
 ## Outreach Emails
 
@@ -39,25 +39,6 @@ Jacob Landsman
 
 ### Email 2
 
-**To:** Joan Jenkins (CMO)
-
-**Subject:** Saw Mindtickle is building out its SDR team, Joan
-
-**Body:**
-
-I noticed Mindtickle is building out its SDR team — a clear sign that top-of-funnel investment is accelerating. Wanted to connect while the timing is right.
-
-I lead demand generation strategy for B2B SaaS companies, and I've spent the last several years building pipeline engines that actually move revenue. When teams are scaling like Mindtickle, there's typically a moment when demand gen strategy becomes critical — and I thought it might be worth a quick conversation.
-
-No pitch, no process — just 20 minutes to explore if there's a fit. Would you be open to that?
-
-Best,
-Jacob Landsman
-
-**LI Note:** Hi Joan — noticed Mindtickle is expanding its SDR team. I specialize in demand gen for scaling B2B SaaS teams. Would love to connect.
-
-### Email 3
-
 **To:** Mindtickle Names (Chief Revenue Officer)
 
 **Subject:** Saw Mindtickle is building out its SDR team, Mindtickle
@@ -75,26 +56,7 @@ Jacob Landsman
 
 **LI Note:** Hi Mindtickle — noticed Mindtickle is expanding its SDR team. I specialize in demand gen for scaling B2B SaaS teams. Would love to connect.
 
-### Email 4
-
-**To:** Accelerates Readiness (chief revenue officer)
-
-**Subject:** Saw Mindtickle is building out its SDR team, Accelerates
-
-**Body:**
-
-I noticed Mindtickle is building out its SDR team — a clear sign that top-of-funnel investment is accelerating. Wanted to connect while the timing is right.
-
-I lead demand generation strategy for B2B SaaS companies, and I've spent the last several years building pipeline engines that actually move revenue. When teams are scaling like Mindtickle, there's typically a moment when demand gen strategy becomes critical — and I thought it might be worth a quick conversation.
-
-No pitch, no process — just 20 minutes to explore if there's a fit. Would you be open to that?
-
-Best,
-Jacob Landsman
-
-**LI Note:** Hi Accelerates — noticed Mindtickle is expanding its SDR team. I specialize in demand gen for scaling B2B SaaS teams. Would love to connect.
-
-### Email 5
+### Email 3
 
 **To:** Jeff Santelices (Chief Revenue Officer)
 
@@ -112,3 +74,41 @@ Best,
 Jacob Landsman
 
 **LI Note:** Hi Jeff — noticed Mindtickle is expanding its SDR team. I specialize in demand gen for scaling B2B SaaS teams. Would love to connect.
+
+### Email 4
+
+**To:** Mindtickle Strengthens (cro)
+
+**Subject:** Saw Mindtickle is building out its SDR team, Mindtickle
+
+**Body:**
+
+I noticed Mindtickle is building out its SDR team — a clear sign that top-of-funnel investment is accelerating. Wanted to connect while the timing is right.
+
+I lead demand generation strategy for B2B SaaS companies, and I've spent the last several years building pipeline engines that actually move revenue. When teams are scaling like Mindtickle, there's typically a moment when demand gen strategy becomes critical — and I thought it might be worth a quick conversation.
+
+No pitch, no process — just 20 minutes to explore if there's a fit. Would you be open to that?
+
+Best,
+Jacob Landsman
+
+**LI Note:** Hi Mindtickle — noticed Mindtickle is expanding its SDR team. I specialize in demand gen for scaling B2B SaaS teams. Would love to connect.
+
+### Email 5
+
+**To:** Mindtickle Executive (CEO)
+
+**Subject:** Saw Mindtickle is building out its SDR team, Mindtickle
+
+**Body:**
+
+I noticed Mindtickle is building out its SDR team — a clear sign that top-of-funnel investment is accelerating. Wanted to connect while the timing is right.
+
+I lead demand generation strategy for B2B SaaS companies, and I've spent the last several years building pipeline engines that actually move revenue. When teams are scaling like Mindtickle, there's typically a moment when demand gen strategy becomes critical — and I thought it might be worth a quick conversation.
+
+No pitch, no process — just 20 minutes to explore if there's a fit. Would you be open to that?
+
+Best,
+Jacob Landsman
+
+**LI Note:** Hi Mindtickle — noticed Mindtickle is expanding its SDR team. I specialize in demand gen for scaling B2B SaaS teams. Would love to connect.
