@@ -14,7 +14,7 @@
 | Post Congrats | Chief Marketing Officer | [Link](https://www.linkedin.com/posts/customer-io_customerios-growth-journey-activity-7386835524768100354-EJGC) | post@customerio.com | ✓ Verified (https://www.linkedin.com/posts/customer-io_customerios-growth-journey-activity-7386835524768100354-EJGC) |
 | John Schoenstein | Chief Revenue Officer | [Link](https://www.linkedin.com/posts/john-schoenstein_meet-john-schoenstein-customerios-new-activity-7194864414112587776-hGro) | john@customerio.com | ✓ Verified (https://www.linkedin.com/posts/john-schoenstein_meet-john-schoenstein-customerios-new-activity-7194864414112587776-hGro) |
 | Sterling Beck | VP Demand | [Link](https://www.linkedin.com/in/sterlingbeck) | sterling@customerio.com | ✓ Verified (https://www.linkedin.com/in/sterlingbeck) |
-| Crunchbase Url | cro | [Link](https://www.linkedin.com/company/customer-io) | crunchbase@customerio.com | ✓ Verified (https://www.linkedin.com/company/customer-io) |
+| Katy Yuan | Head of Demand | [Link](https://www.linkedin.com/posts/matt-avero-sturm_anyone-in-my-network-have-deep-customerio-activity-7173343595658203136-vL3u) | katy@customerio.com | ✓ Verified (https://www.linkedin.com/posts/matt-avero-sturm_anyone-in-my-network-have-deep-customerio-activity-7173343595658203136-vL3u) |
 
 ## Outreach Emails
 
@@ -96,9 +96,9 @@ Jacob Landsman
 
 ### Email 5
 
-**To:** Crunchbase Url (cro)
+**To:** Katy Yuan (Head of Demand)
 
-**Subject:** Saw Customerio is scaling its sales team, Crunchbase
+**Subject:** Saw Customerio is scaling its sales team, Katy
 
 **Body:**
 
@@ -111,4 +111,4 @@ No pitch, no process — just 20 minutes to explore if there's a fit. Would you 
 Best,
 Jacob Landsman
 
-**LI Note:** Hi Crunchbase — noticed Customerio is scaling its AE team. I build demand gen engines for B2B SaaS companies at this stage. Would love to connect.
+**LI Note:** Hi Katy — noticed Customerio is scaling its AE team. I build demand gen engines for B2B SaaS companies at this stage. Would love to connect.
