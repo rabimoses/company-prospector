@@ -11,7 +11,7 @@
 | Name | Title | LinkedIn | Email | Status |
 |------|-------|----------|-------|--------|
 | Chris Masino | CRO | [Link](https://linkedin.com/search/results/people/?keywords=Chris%20Masino) | chris@contentful.com | ✓ Verified (https://www.businesswire.com/news/home/20250210927187/en/Contentful-Appoints-Chris-Masino-as-Chief-Revenue-Officer) |
-| Karthik Rau | CEO | [Link](https://www.linkedin.com/in/krrau) | karthik@contentful.com | ✓ Verified (https://www.linkedin.com/in/krrau) |
+| Karthik Rau | CEO | [Link](https://www.linkedin.com/posts/krrau_contentful-appoints-karthik-rau-as-ceo-activity-7184253575856885760-ynCi) | karthik@contentful.com | ✓ Verified (https://www.linkedin.com/posts/krrau_contentful-appoints-karthik-rau-as-ceo-activity-7184253575856885760-ynCi) |
 | North America | VP of Sales | [Link](https://www.linkedin.com/in/brettmcnay) | north@contentful.com | ✓ Verified (https://www.linkedin.com/in/brettmcnay) |
 | Elizabeth Maxson | Chief Marketing Officer | [Link](https://www.contentful.com/leadership/) | elizabeth@contentful.com | ✓ Verified (https://www.contentful.com/leadership/) |
 | Contentful Expands | cro | [Link](https://www.contentful.com/newsroom/contentful-expands-executive-leadership-team-with-new-chief-product-officer-and-evp-of-engineering/) | contentful@contentful.com | ✓ Verified (https://www.contentful.com/newsroom/contentful-expands-executive-leadership-team-with-new-chief-product-officer-and-evp-of-engineering/) |
