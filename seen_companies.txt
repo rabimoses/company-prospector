@@ -41,6 +41,7 @@ Showpad|2026-04-07
 Tiugo Technologies|2026-04-07
 Torii|2026-04-08
 Tropic|2026-04-07
+TrustRadius|2026-04-08
 Tulip|2026-04-08
 Vendr|2026-04-08
 Vertice|2026-04-08
