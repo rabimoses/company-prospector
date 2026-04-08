@@ -3,6 +3,7 @@ Apollo.io|2026-04-07
 Appfire|2026-04-07
 Artificial Labs|2026-04-08
 Axonius|2026-04-07
+Calero|2026-04-08
 Cardinality|2026-04-08
 Celigo|2026-04-07
 Cognism|2026-04-07
@@ -12,6 +13,7 @@ Coupa|2026-04-07
 Customerio|2026-04-07
 DataGuard|2026-04-07
 Druva|2026-04-07
+Evinced|2026-04-08
 Fact Base|2026-04-08
 Frontegg|2026-04-08
 Fyllo|2026-04-07
@@ -39,6 +41,7 @@ Showpad|2026-04-07
 Tiugo Technologies|2026-04-07
 Torii|2026-04-08
 Tropic|2026-04-07
+Tulip|2026-04-08
 Vendr|2026-04-08
 Vertice|2026-04-08
 Webflow|2026-04-07
