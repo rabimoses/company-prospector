@@ -29,8 +29,10 @@ Obsidian Security|2026-04-07
 Olio|2026-04-07
 OneDay|2026-04-07
 OneSpan|2026-04-07
+Outreach|2026-04-10
 Paddle|2026-04-07
 Pendo|2026-04-07
+Pipedrive|2026-04-10
 Prismatic|2026-04-07
 Profound|2026-04-07
 Rocketlane|2026-04-07
