@@ -18,10 +18,12 @@ Fact Base|2026-04-08
 Frontegg|2026-04-08
 Fyllo|2026-04-07
 Impact|2026-04-07
+Iterable|2026-04-11
 Josys|2026-04-07
 Kantata|2026-04-07
 Kustomer|2026-04-07
 LastPass|2026-04-07
+Lattice|2026-04-11
 Mindtickle|2026-04-07
 Mixpanel|2026-04-07
 MongoDB|2026-04-07
@@ -45,6 +47,7 @@ Torii|2026-04-08
 Tropic|2026-04-07
 TrustRadius|2026-04-08
 Tulip|2026-04-08
+Typeform|2026-04-11
 Vendr|2026-04-08
 Vertice|2026-04-08
 Webflow|2026-04-07
