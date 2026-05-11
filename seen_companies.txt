@@ -1,8 +1,10 @@
 Amplitude|2026-04-07
 Apollo.io|2026-04-07
+AppOmni|2026-05-11
 Appfire|2026-04-07
 Artificial Labs|2026-04-08
 Axonius|2026-04-07
+CData Software|2026-05-11
 Calero|2026-04-08
 Cardinality|2026-04-08
 Celigo|2026-04-07
@@ -12,7 +14,9 @@ Conveyor|2026-04-07
 Coupa|2026-04-07
 Customerio|2026-04-07
 DataGuard|2026-04-07
+Dataiku|2026-05-11
 Druva|2026-04-07
+Evergage|2026-05-11
 Evinced|2026-04-08
 Fact Base|2026-04-08
 Frontegg|2026-04-08
@@ -32,11 +36,13 @@ Olio|2026-04-07
 OneDay|2026-04-07
 OneSpan|2026-04-07
 Outreach|2026-04-10
+PROS|2026-05-11
 Paddle|2026-04-07
 Pendo|2026-04-07
 Pipedrive|2026-04-10
 Prismatic|2026-04-07
 Profound|2026-04-07
+Rainforest|2026-05-11
 Rocketlane|2026-04-07
 SaaS procurement - TechCrunch CADDi|2026-04-07
 Salesloft|2026-04-07
