@@ -4,6 +4,7 @@ AppOmni|2026-05-11
 Appfire|2026-04-07
 Artificial Labs|2026-04-08
 Axonius|2026-04-07
+BillingPlatform|2026-05-14
 CData Software|2026-05-11
 Calero|2026-04-08
 Cardinality|2026-04-08
@@ -28,6 +29,8 @@ Kantata|2026-04-07
 Kustomer|2026-04-07
 LastPass|2026-04-07
 Lattice|2026-04-11
+LumApps|2026-05-14
+Metadata.io|2026-05-14
 Mindtickle|2026-04-07
 Mixpanel|2026-04-07
 MongoDB|2026-04-07
@@ -48,6 +51,7 @@ SaaS procurement - TechCrunch CADDi|2026-04-07
 Salesloft|2026-04-07
 Second Front Systems|2026-04-07
 Showpad|2026-04-07
+TESORIO|2026-05-14
 Tiugo Technologies|2026-04-07
 Torii|2026-04-08
 Tropic|2026-04-07
@@ -59,5 +63,6 @@ Vertice|2026-04-08
 Webflow|2026-04-07
 Whatfix|2026-04-07
 WorkSpan|2026-04-07
+Wrike|2026-05-14
 Zuora|2026-04-07
 dapulse|2026-04-07
