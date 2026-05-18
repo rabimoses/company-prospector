@@ -12,11 +12,13 @@ Celigo|2026-04-07
 Cognism|2026-04-07
 Contentful|2026-04-07
 Conveyor|2026-04-07
+Copado|2026-05-18
 Coupa|2026-04-07
 Customerio|2026-04-07
 DataGuard|2026-04-07
 Dataiku|2026-05-11
 Druva|2026-04-07
+Dynata|2026-05-18
 Evergage|2026-05-11
 Evinced|2026-04-08
 Fact Base|2026-04-08
