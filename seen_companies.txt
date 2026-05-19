@@ -5,6 +5,7 @@ Appfire|2026-04-07
 Artificial Labs|2026-04-08
 Axonius|2026-04-07
 BillingPlatform|2026-05-14
+Boost|2026-05-19
 CData Software|2026-05-11
 Calero|2026-04-08
 Cardinality|2026-04-08
@@ -36,6 +37,7 @@ Metadata.io|2026-05-14
 Mindtickle|2026-04-07
 Mixpanel|2026-04-07
 MongoDB|2026-04-07
+New Charter Technologies|2026-05-19
 Obsidian Security|2026-04-07
 Olio|2026-04-07
 OneDay|2026-04-07
@@ -53,6 +55,7 @@ SaaS procurement - TechCrunch CADDi|2026-04-07
 Salesloft|2026-04-07
 Second Front Systems|2026-04-07
 Showpad|2026-04-07
+Software|2026-05-19
 TESORIO|2026-05-14
 Tiugo Technologies|2026-04-07
 Torii|2026-04-08
