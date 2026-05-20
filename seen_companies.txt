@@ -6,6 +6,7 @@ Artificial Labs|2026-04-08
 Axonius|2026-04-07
 BillingPlatform|2026-05-14
 Boost|2026-05-19
+Botify|2026-05-20
 CData Software|2026-05-11
 Calero|2026-04-08
 Cardinality|2026-04-08
@@ -18,6 +19,7 @@ Coupa|2026-04-07
 Customerio|2026-04-07
 DataGuard|2026-04-07
 Dataiku|2026-05-11
+Docupace|2026-05-20
 Druva|2026-04-07
 Dynata|2026-05-18
 Evergage|2026-05-11
