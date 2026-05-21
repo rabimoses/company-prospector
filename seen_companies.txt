@@ -11,6 +11,7 @@ CData Software|2026-05-11
 Calero|2026-04-08
 Cardinality|2026-04-08
 Celigo|2026-04-07
+ClickUp|2026-05-21
 Cognism|2026-04-07
 Contentful|2026-04-07
 Conveyor|2026-04-07
