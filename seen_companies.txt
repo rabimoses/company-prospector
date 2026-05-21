@@ -32,6 +32,7 @@ Impact|2026-04-07
 Iterable|2026-04-11
 Josys|2026-04-07
 Kantata|2026-04-07
+Keepit|2026-05-21
 Kustomer|2026-04-07
 LastPass|2026-04-07
 Lattice|2026-04-11
@@ -51,6 +52,7 @@ Paddle|2026-04-07
 Pendo|2026-04-07
 Pipedrive|2026-04-10
 Prismatic|2026-04-07
+Procurify|2026-05-21
 Profound|2026-04-07
 Rainforest|2026-05-11
 Rocketlane|2026-04-07
