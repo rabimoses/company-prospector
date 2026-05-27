@@ -14,6 +14,7 @@ Celigo|2026-04-07
 ClickUp|2026-05-21
 Cognism|2026-04-07
 Contentful|2026-04-07
+Contentstack|2026-05-27
 Conveyor|2026-04-07
 Copado|2026-05-18
 Coupa|2026-04-07
@@ -37,6 +38,7 @@ Kustomer|2026-04-07
 LastPass|2026-04-07
 Lattice|2026-04-11
 LumApps|2026-05-14
+Merge|2026-05-27
 Metadata.io|2026-05-14
 Mindtickle|2026-04-07
 Mixpanel|2026-04-07
