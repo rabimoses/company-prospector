@@ -184,6 +184,15 @@ def is_recent_url(url, months=12):
     if not m:
         if "prnewswire.com" in url:
             return False
+        # BusinessWire embeds date as /home/20YYMMDD — extract and check
+        import re as re2
+        bw = re2.search(r"/home/(20\d{6})/", url)
+        if bw:
+            from datetime import datetime, timedelta
+            try:
+                d = datetime.strptime(bw.group(1), "%Y%m%d")
+                return d >= datetime.now() - timedelta(days=180)
+            except: pass
         return True
     try:
         article_date = datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)))
