@@ -1,6 +1,7 @@
 Amplitude|2026-05-28
 Axonius|2026-05-28
 Cognism|2026-05-28
+Contentstack|2026-05-28
 DataGuard|2026-05-28
 Deeto|2026-05-28
 Druva|2026-05-28
@@ -15,6 +16,7 @@ Paddle|2026-05-28
 Pendo|2026-05-28
 Rainforest|2026-05-28
 Remark|2026-05-28
+Render|2026-05-28
 Showpad|2026-05-28
 Software|2026-05-28
 StackOne|2026-05-28
@@ -23,3 +25,4 @@ Toku|2026-05-28
 Typeform|2026-05-28
 Vendr|2026-05-28
 Wrike|2026-05-28
+Zenskar|2026-05-28
