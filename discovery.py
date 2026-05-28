@@ -17,11 +17,13 @@ def get_search_queries():
     dated announcements that Tavily's recency filter works reliably on,
     unlike TechCrunch which returns old articles regardless of days= param."""
     pr_domains = ["businesswire.com", "prnewswire.com"]
+    tc_domains = ["techcrunch.com", "venturebeat.com", "businesswire.com"]
     return [
-        ("series_a", "raises Series A SaaS software",               pr_domains, 90),
-        ("series_a", "raises Series A B2B software platform",       pr_domains, 90),
-        ("series_a", "Series A funding round SaaS",                 pr_domains, 90),
-        ("series_a", "closes Series A B2B software",                pr_domains, 90),
+        ("series_a", "Series A funding SaaS 2025",         tc_domains, 90),
+        ("series_a", "Series A funding B2B software 2025", tc_domains, 90),
+        ("series_a", "raises Series A SaaS 2025",          tc_domains, 90),
+        ("series_a", "Series A funding SaaS 2026",         tc_domains, 90),
+        ("series_a", "raises Series A B2B software 2026",  tc_domains, 90),
         ("funding",  "raises Series B SaaS software",               pr_domains, 90),
         ("funding", "raises Series C SaaS software",          pr_domains, 90),
         ("funding", "raises Series B B2B software platform",  pr_domains, 90),
@@ -180,7 +182,9 @@ def is_recent_url(url, months=12):
     import re
     m = re.search(r'/(\d{4})/(\d{2})/(\d{2})/', url)
     if not m:
-        return True  # no date in URL, allow it
+        if "prnewswire.com" in url:
+            return False
+        return True
     try:
         article_date = datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)))
         cutoff = datetime.now() - timedelta(days=months*30)
