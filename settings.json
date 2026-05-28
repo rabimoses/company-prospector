@@ -1,5 +1,6 @@
 {
   "signals_enabled": [
+    "series_a",
     "ae_spike",
     "sdr_spike",
     "funding",
@@ -8,7 +9,7 @@
   "ae_min_absolute": 2,
   "sdr_min_absolute": 2,
   "spike_growth_pct": 0.5,
-  "recent_days": 45,
+  "recent_days": 90,
   "max_total_roles": 50,
   "sender_name": "Jacob Landsman",
   "sender_title": "Demand Generation Leader",

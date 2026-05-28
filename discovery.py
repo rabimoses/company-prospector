@@ -18,7 +18,11 @@ def get_search_queries():
     unlike TechCrunch which returns old articles regardless of days= param."""
     pr_domains = ["businesswire.com", "prnewswire.com"]
     return [
-        ("funding", "raises Series B SaaS software",          pr_domains, 90),
+        ("series_a", "raises Series A SaaS software",               pr_domains, 90),
+        ("series_a", "raises Series A B2B software platform",       pr_domains, 90),
+        ("series_a", "Series A funding round SaaS",                 pr_domains, 90),
+        ("series_a", "closes Series A B2B software",                pr_domains, 90),
+        ("funding",  "raises Series B SaaS software",               pr_domains, 90),
         ("funding", "raises Series C SaaS software",          pr_domains, 90),
         ("funding", "raises Series B B2B software platform",  pr_domains, 90),
         ("funding", "raises Series C B2B software platform",  pr_domains, 90),
@@ -98,12 +102,17 @@ def find_signal_companies(seen: Set[str], found: Set[str] = None) -> List[Dict]:
         print()
         log_info("PARSING:")
 
-        signal_type = "funding" if kind == "funding" else "cro_hire"
+        signal_type = "series_a" if kind == "series_a" else ("funding" if kind == "funding" else "cro_hire")
         if signal_type not in signals_enabled:
-            log_info(f"  ⏭ SKIPPED (disabled): {signal_type}")
-            continue
-
-        batch = parse_funding(results, seen, found) if kind == "funding" else parse_cro(results, seen, found)
+            if not (signal_type == "series_a" and "funding" in signals_enabled):
+                log_info(f"  ⏭ SKIPPED (disabled): {signal_type}")
+                continue
+        if kind == "series_a":
+            batch = parse_funding(results, seen, found, force_signal="series_a")
+        elif kind == "funding":
+            batch = parse_funding(results, seen, found)
+        else:
+            batch = parse_cro(results, seen, found)
         companies.extend(batch)
         found.update(c["name"] for c in batch)
 
@@ -179,7 +188,13 @@ def is_recent_url(url, months=12):
     except:
         return True
 
-def parse_funding(results, seen, found):
+def _parse_amount_millions(a):
+    import re
+    m = re.match(r"\$?([\d\.]+)\s*([MB])", a.strip(), re.I)
+    if not m: return -1
+    return float(m.group(1)) * (1000 if m.group(2).upper()=="B" else 1)
+
+def parse_funding(results, seen, found, force_signal=None):
     companies = []
     for r in results:
         title   = r.get("title", "")
@@ -208,9 +223,19 @@ def parse_funding(results, seen, found):
 
         log_info(f"  ✅ EXTRACTED: {name} — {amount} {series_label}")
         log_info(f"               Source: {url}")
+        if force_signal == "series_a":
+            am = _parse_amount_millions(amount)
+            if am > 0 and not (5 <= am <= 50):
+                log_info(f"  ❌ SKIP (amount out of Series A range): {name}")
+                continue
+            sig = "series_a"
+        else:
+            am = _parse_amount_millions(amount)
+            is_a = bool(series and series.group(1).upper() == "A") and (am < 0 or 5 <= am <= 50)
+            sig = "series_a" if is_a else "funding"
         companies.append({
             "name": name,
-            "signal": "funding",
+            "signal": sig,
             "signal_detail": f"Raised {amount} {series_label}",
             "website": url,
             "source_url": url,

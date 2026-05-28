@@ -20,6 +20,7 @@ RUN_LOG    = BASE_DIR / "results" / ".run_log.txt"
 RUN_STATE  = BASE_DIR / "results" / ".run_state.json"
 
 SIGNAL_LABELS = {
+    "series_a":  "Series A",
     "ae_spike":  "AE Spike",
     "sdr_spike": "SDR Spike",
     "funding":   "Funding",
@@ -29,6 +30,7 @@ SIGNAL_LABELS = {
 }
 
 SIGNAL_COLORS = {
+    "series_a":  "#f97316",
     "ae_spike":  "#60a5fa",
     "sdr_spike": "#a78bfa",
     "funding":   "#34d399",
