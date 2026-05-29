@@ -13,7 +13,7 @@
 | Andrew Foley | CRO | [Link](https://linkedin.com/search/results/people/?keywords=Andrew%20Foley+DataGuard) | andrew.foley@dataguard.com | ✓ Verified (https://www.businesswire.com/news/home/20260401378603/en/DataGuard-Appoints-Andrew-Foley-as-Chief-Revenue-Officer) |
 | Christine Walch | Vice President Marketing | [Link](https://linkedin.com/search/results/people/?keywords=Christine%20Walch+DataGuard) | christine.walch@dataguard.com | ⚠️ Unverified — Found via search — verify before sending |
 | Arie Teter | Chief Product & Technology Officer | [Link](https://linkedin.com/search/results/people/?keywords=Arie%20Teter+DataGuard) | arie.teter@dataguard.com | ⚠️ Unverified — Found via search — verify before sending |
-| Thomas Regier | Co-Founder and Co-CEO | [Link](https://linkedin.com/search/results/people/?keywords=Thomas%20Regier+DataGuard) | thomas.regier@dataguard.com | ⚠️ Unverified — Found via search — verify before sending |
+| Johannes Kamleitner | Chief Revenue Officer | [Link](https://linkedin.com/search/results/people/?keywords=Johannes%20Kamleitner+DataGuard) | johannes.kamleitner@dataguard.com | ⚠️ Unverified — Found via search — verify before sending |
 
 ## Outreach Emails
 
