@@ -176,7 +176,7 @@ FUND_RE = re.compile(
 )
 SERIES_RE = re.compile(r'Series\s+([A-G][+]?)', re.IGNORECASE)
 
-def is_recent_url(url, months=12):
+def is_recent_url(url, months=6):
     """Return True if URL date is within the last N months, or if no date found."""
     from datetime import datetime, timedelta
     import re
