@@ -1,14 +1,3 @@
-Axonius|2026-05-30
-Cognism|2026-05-30
-DataGuard|2026-05-30
-H1|2026-05-30
-Iterable|2026-05-30
-Keepit|2026-05-30
-Legato|2026-05-30
-Mixpanel|2026-05-30
-OneSpan|2026-05-30
-Outreach|2026-05-30
-Pendo|2026-05-30
-Showpad|2026-05-30
-Typeform|2026-05-30
+Greenboard|2026-05-30
+Sapiom|2026-05-30
 Zenskar|2026-05-30
