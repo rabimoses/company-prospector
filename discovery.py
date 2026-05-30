@@ -17,7 +17,7 @@ def get_search_queries():
     dated announcements that Tavily's recency filter works reliably on,
     unlike TechCrunch which returns old articles regardless of days= param."""
     pr_domains = ["businesswire.com", "prnewswire.com"]
-    tc_domains = ["techcrunch.com", "venturebeat.com", "businesswire.com"]
+    tc_domains = ["techcrunch.com", "venturebeat.com", "businesswire.com", "fortune.com", "forbes.com"]
     return [
         ("series_a", "Series A funding SaaS 2025",         tc_domains, 90),
         ("series_a", "Series A funding B2B software 2025", tc_domains, 90),
@@ -186,7 +186,7 @@ def is_recent_url(url, months=6):
             return False
         # BusinessWire embeds date as /home/20YYMMDD — extract and check
         import re as re2
-        bw = re2.search(r"/home/(20\d{6})/", url)
+        bw = re2.search(r"/home/(20\d\d\d\d\d\d)", url)
         if bw:
             from datetime import datetime, timedelta
             try:
