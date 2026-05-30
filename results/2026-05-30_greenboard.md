@@ -10,7 +10,7 @@
 
 | Name | Title | LinkedIn | Email | Status |
 |------|-------|----------|-------|--------|
-| Dave Feldman | Founder & CEO | [Link](https://linkedin.com/search/results/people/?keywords=Dave%20Feldman+Greenboard) | dave.feldman@greenboard.com | ⚠️ Unverified — Found via search — verify before sending |
+| Dave Feldman | Co-founder and CEO | [Link](https://linkedin.com/search/results/people/?keywords=Dave%20Feldman+Greenboard) | dave.feldman@greenboard.com | ⚠️ Unverified — Found via search — verify before sending |
 | Derick Edwards | Director of Sales | [Link](https://linkedin.com/search/results/people/?keywords=Derick%20Edwards+Greenboard) | derick.edwards@greenboard.com | ⚠️ Unverified — Found via search — verify before sending |
 
 ## Outreach Emails
