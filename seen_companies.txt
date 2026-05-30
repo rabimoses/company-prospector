@@ -1,3 +1,6 @@
+DataGuard|2026-05-30
 Greenboard|2026-05-30
+Keepit|2026-05-30
+OneSpan|2026-05-30
 Sapiom|2026-05-30
 Zenskar|2026-05-30
