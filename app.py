@@ -203,11 +203,16 @@ def group_companies(rows, filter_date=None):
 
 @app.route("/reset", methods=["POST"])
 def reset_data():
-    header = "date,company,company_website,signal,signal_detail,verify_demand_gen_linkedin,contact_name,contact_title,contact_email,email_subject,email_body,li_note,source_url"
-    open(OUTREACH_CSV, "w").write(header + "\n")
-    open(INDEX_CSV, "w").close()
-    open(SEEN_FILE, "w").close()
-    return jsonify({"status": "ok", "message": "reset complete"})
+    try:
+        from pathlib import Path
+        base = Path(__file__).parent
+        header = "date,company,company_website,signal,signal_detail,verify_demand_gen_linkedin,contact_name,contact_title,contact_email,email_subject,email_body,li_note,source_url"
+        (base / "results" / "outreach.csv").write_text(header + "\n")
+        (base / "results" / "index.csv").write_text("")
+        (base / "seen_companies.txt").write_text("")
+        return jsonify({"status": "ok", "message": "reset complete"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 @app.route("/")
 def index():
