@@ -328,8 +328,7 @@ def view_logs():
 def reset_data():
     import csv
     header = "date,company,company_website,signal,signal_detail,verify_demand_gen_linkedin,contact_name,contact_title,contact_email,email_subject,email_body,li_note,source_url"
-    open(OUTREACH_CSV, "w").write(header + "
-")
+    open(OUTREACH_CSV, "w").write(header + "\n")
     open(INDEX_CSV, "w").close()
     open(SEEN_FILE, "w").close()
     return jsonify({"status": "ok", "message": "Data reset complete"})
