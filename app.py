@@ -324,15 +324,6 @@ def view_logs():
     return f"<pre style='font-family:monospace;font-size:12px;white-space:pre-wrap'><b>Run state:</b> {json.dumps(state, indent=2)}\n\n<b>Log:</b>\n{log_text}</pre>"
 
 
-@app.route("/reset", methods=["POST"])
-def reset_data():
-    import csv
-    header = "date,company,company_website,signal,signal_detail,verify_demand_gen_linkedin,contact_name,contact_title,contact_email,email_subject,email_body,li_note,source_url"
-    open(OUTREACH_CSV, "w").write(header + "\n")
-    open(INDEX_CSV, "w").close()
-    open(SEEN_FILE, "w").close()
-    return jsonify({"status": "ok", "message": "Data reset complete"})
-
 @app.route("/settings", methods=["GET"])
 def settings_page():
     s = get_settings()
