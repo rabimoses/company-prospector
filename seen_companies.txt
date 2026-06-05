@@ -1,1 +1,11 @@
+Axonius|2026-06-05
+Cognism|2026-06-05
+DataGuard|2026-06-05
+Iterable|2026-06-05
+Keepit|2026-06-05
+Outreach|2026-06-05
+Pendo|2026-06-05
+Showpad|2026-06-05
+Typeform|2026-06-05
+Webflow|2026-06-05
 Zenskar|2026-06-05
