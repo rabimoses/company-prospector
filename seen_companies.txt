@@ -1,13 +1,1 @@
-Axonius|2026-06-04
-Clazar|2026-06-04
-Cognism|2026-06-04
-DataGuard|2026-06-04
-H1|2026-06-04
-Iterable|2026-06-04
-Keepit|2026-06-04
-Mixpanel|2026-06-04
-Outreach|2026-06-04
-Pendo|2026-06-04
-Showpad|2026-06-04
-Typeform|2026-06-04
-Zenskar|2026-06-04
+Zenskar|2026-06-05
