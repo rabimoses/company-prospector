@@ -236,12 +236,8 @@ def parse_funding(results, seen, found, force_signal=None):
 
         log_info(f"  ✅ EXTRACTED: {name} — {amount} {series_label}")
         log_info(f"               Source: {url}")
-        if force_signal == "series_a":
-            am = _parse_amount_millions(amount)
-            if am > 0 and not (5 <= am <= 50):
-                log_info(f"  ❌ SKIP (amount out of Series A range): {name}")
-                continue
-            sig = "series_a"
+        if force_signal in ("series_a", "series_b"):
+            sig = force_signal
         else:
             am = _parse_amount_millions(amount)
             is_a = bool(series and series.group(1).upper() == "A") and (am < 0 or 5 <= am <= 50)
