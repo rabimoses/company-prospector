@@ -24,10 +24,10 @@ def get_search_queries():
         ("series_a", "raises Series A SaaS 2025",          tc_domains, 90),
         ("series_a", "Series A funding SaaS 2026",         tc_domains, 90),
         ("series_a", "raises Series A B2B software 2026",  tc_domains, 90),
-        ("funding",  "raises Series B SaaS software",               pr_domains, 90),
-        ("funding", "raises Series C SaaS software",          pr_domains, 90),
-        ("funding", "raises Series B B2B software platform",  pr_domains, 90),
-        ("funding", "raises Series C B2B software platform",  pr_domains, 90),
+        ("series_b", "Series B funding SaaS 2025",          tc_domains, 90),
+        ("series_b", "Series B funding B2B software 2025",  tc_domains, 90),
+        ("series_b", "raises Series B SaaS 2026",             tc_domains, 90),
+        ("series_b", "Series B funding SaaS 2026",            tc_domains, 90),
         ("cro",     "appointed CRO OR Chief Revenue Officer SaaS", ["businesswire.com"], 60),
         ("cro",     "appoints Chief Revenue Officer",               ["prnewswire.com"],  60),
     ]
@@ -104,13 +104,13 @@ def find_signal_companies(seen: Set[str], found: Set[str] = None) -> List[Dict]:
         print()
         log_info("PARSING:")
 
-        signal_type = "series_a" if kind == "series_a" else ("funding" if kind == "funding" else "cro_hire")
+        signal_type = kind if kind in ("series_a", "series_b") else ("funding" if kind == "funding" else "cro_hire")
         if signal_type not in signals_enabled:
             if not (signal_type == "series_a" and "funding" in signals_enabled):
                 log_info(f"  ⏭ SKIPPED (disabled): {signal_type}")
                 continue
-        if kind == "series_a":
-            batch = parse_funding(results, seen, found, force_signal="series_a")
+        if kind in ("series_a", "series_b"):
+            batch = parse_funding(results, seen, found, force_signal=kind)
         elif kind == "funding":
             batch = parse_funding(results, seen, found)
         else:

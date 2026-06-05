@@ -21,6 +21,7 @@ RUN_STATE  = BASE_DIR / "results" / ".run_state.json"
 
 SIGNAL_LABELS = {
     "series_a":  "Series A",
+    "series_b":  "Series B",
     "ae_spike":  "AE Spike",
     "sdr_spike": "SDR Spike",
     "funding":   "Funding",
@@ -31,6 +32,7 @@ SIGNAL_LABELS = {
 
 SIGNAL_COLORS = {
     "series_a":  "#f97316",
+    "series_b":  "#8b5cf6",
     "ae_spike":  "#60a5fa",
     "sdr_spike": "#a78bfa",
     "funding":   "#34d399",

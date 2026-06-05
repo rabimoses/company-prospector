@@ -4,7 +4,8 @@
     "ae_spike",
     "sdr_spike",
     "funding",
-    "cro_hire"
+    "cro_hire",
+    "series_b"
   ],
   "ae_min_absolute": 2,
   "sdr_min_absolute": 2,
