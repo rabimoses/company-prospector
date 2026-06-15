@@ -1,8 +1,12 @@
 Axonius|2026-06-05
 Cognism|2026-06-05
+Contentful|2026-06-15
+Customerio|2026-06-15
 DataGuard|2026-06-05
+Epicor|2026-06-15
 Iterable|2026-06-05
 Keepit|2026-06-05
+Lattice|2026-06-15
 Outreach|2026-06-05
 Pendo|2026-06-05
 Showpad|2026-06-05
